@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7188742918304108410}
-  - component: {fileID: 7188742918304108411}
+  - component: {fileID: 8771529944038256829}
   - component: {fileID: 7188742918304108408}
   - component: {fileID: 7188742918304108409}
   - component: {fileID: 7188742918304108415}
@@ -35,7 +35,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7188742918304108411
+--- !u!114 &8771529944038256829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -49,6 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitEffect: {fileID: 6227976024497365898, guid: 93a5659572ec3a2498b43d981e8e9b7e, type: 3}
   damage: 40
+  radius: 10
+  force: 400
 --- !u!33 &7188742918304108408
 MeshFilter:
   m_ObjectHideFlags: 0
