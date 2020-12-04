@@ -6,6 +6,7 @@ public class Bomb : MonoBehaviour
 {
 
     public GameObject hitEffect;
+    public GameObject smokeEffect;
     public int damage = 40;
     public float radius = 5f;
     public float force = 700f;
@@ -18,7 +19,9 @@ public class Bomb : MonoBehaviour
         //}
         Explode();
         GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
+        GameObject smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
         Destroy(effect, 0.5f);
+        Destroy(smokeEffect, 5f);
         Destroy(gameObject);
     }
     void Start()
@@ -35,6 +38,11 @@ public class Bomb : MonoBehaviour
             if (rb != null)
             {
                 rb.AddExplosionForce(force, transform.position, radius);
+            }
+            Destructible ds = nearbyObject.GetComponent<Destructible>();
+            if (ds != null && (Random.Range(1, 100) < 30))
+            {
+                ds.Break();
             }
         }
     }

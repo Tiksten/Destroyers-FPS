@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitEffect: {fileID: 6227976024497365898, guid: 93a5659572ec3a2498b43d981e8e9b7e, type: 3}
+  smokeEffect: {fileID: 7733231712424382172, guid: 02d228749c5aae847ab7ab99794d2f08, type: 3}
   damage: 40
   radius: 10
   force: 400
