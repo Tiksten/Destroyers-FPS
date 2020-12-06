@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class ParticleDestroyer : MonoBehaviour
 {
-    public float time = 5f;
+    public float minTime = 5f;
+    public float maxTime = 10f;
     public Vector3 torque;
-    float force = 50f;
+    public float force = 50f;
     void Start()
     {
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
@@ -14,7 +15,7 @@ public class ParticleDestroyer : MonoBehaviour
         torque.y = Random.Range (-force, force);
         torque.z = Random.Range (-force, force);
         rb.AddForce(torque, ForceMode.Impulse);
-        Destroy(gameObject, time);
+        Destroy(gameObject, Random.Range(minTime, maxTime));
     }
 
 }

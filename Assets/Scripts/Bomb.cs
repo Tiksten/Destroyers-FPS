@@ -18,8 +18,14 @@ public class Bomb : MonoBehaviour
         //    enemy.TakeDamage(damage);
         //}
         Explode();
+        GameObject box = hitInfo.gameObject;
         GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
         GameObject smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
+        Destructible boxScript = box.GetComponent<Destructible>();
+        if(boxScript != null)
+        {
+            boxScript.Break();
+        }
         Destroy(effect, 0.5f);
         Destroy(smokeEffect, 5f);
         Destroy(gameObject);
@@ -40,9 +46,14 @@ public class Bomb : MonoBehaviour
                 rb.AddExplosionForce(force, transform.position, radius);
             }
             Destructible ds = nearbyObject.GetComponent<Destructible>();
-            if (ds != null && (Random.Range(1, 100) < 30))
+            if (ds != null && (Random.Range(1, 100) < 40))
             {
                 ds.Break();
+            }
+            PlayerHealth ph = nearbyObject.GetComponent<PlayerHealth>();
+            if (ph != null)
+            {
+                ph.TakeDamage(20);
             }
         }
     }
