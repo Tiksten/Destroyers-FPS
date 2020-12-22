@@ -183,7 +183,6 @@ GameObject:
   - component: {fileID: 1198325797895998484}
   - component: {fileID: 1198325797895998487}
   - component: {fileID: 1198325797895998485}
-  - component: {fileID: 1198325797895998486}
   - component: {fileID: 1198325797895998475}
   - component: {fileID: 1198325797895998474}
   - component: {fileID: 1198325797895998473}
@@ -229,6 +228,7 @@ MonoBehaviour:
   bloodPoint: {fileID: 1198325797453730622}
   bloodEffect: {fileID: 8186109007466582512, guid: 41f36bf1e174ecf44975397733fbd004, type: 3}
   healthBar: {fileID: 0}
+  gun: {fileID: 0}
 --- !u!114 &1198325797895998485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -254,27 +254,6 @@ MonoBehaviour:
   slideForce: 400
   slideCounterMovement: 0.2
   jumpForce: 300
---- !u!114 &1198325797895998486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1198325797895998479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63ba95e7e8cf9f446ae6de9d7751558e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Shoot: {fileID: 0}
-  firePoint: {fileID: 0}
-  bulletPrefab: {fileID: 7188742918304108412, guid: a5c19918f02b2f846ab1bf19747c6de8, type: 3}
-  cartrigeEjector: {fileID: 0}
-  cartrigePrefab: {fileID: 849244247974534240, guid: cbb6cb724d8e0444d9ee97e111145b8e, type: 3}
-  firespeed: 0.2
-  bulletForce: 30
-  cartrigeForce: 1
-  timecode: 0
 --- !u!33 &1198325797895998475
 MeshFilter:
   m_ObjectHideFlags: 0

@@ -27,7 +27,7 @@ public class Bomb : MonoBehaviour
             boxScript.Break();
         }
         Destroy(effect, 0.5f);
-        Destroy(smokeEffect, 5f);
+        Destroy(smoke, 5f);
         Destroy(gameObject);
     }
     void Start()

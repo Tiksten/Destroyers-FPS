@@ -20,9 +20,9 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            TakeDamage(20);
+            TakeDamage(-20);
         }
     }
 
@@ -35,8 +35,11 @@ public class PlayerHealth : MonoBehaviour
         if (currentHealth <= 0)
         {
             GameObject effect = Instantiate(bloodEffect, bloodPoint.position, bloodPoint.rotation);
-            Destroy(gameObject);
-            Destroy(gun);
+        }
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
         }
     }
 }
