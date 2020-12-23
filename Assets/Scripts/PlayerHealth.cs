@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviour
     public int currentHealth;
     public Transform bloodPoint;
     public GameObject bloodEffect;
-
+    public GameObject healthEffect;
     public HealthBar healthBar;
     public GameObject gun;
 
@@ -20,9 +20,11 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) & (currentHealth < maxHealth))
         {
             TakeDamage(-20);
+            GameObject effectH = Instantiate(healthEffect, bloodPoint.position, bloodPoint.rotation);
+            Destroy(effectH, 7f);
         }
     }
 
@@ -34,7 +36,9 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            GameObject effect = Instantiate(bloodEffect, bloodPoint.position, bloodPoint.rotation);
+            GameObject effectB = Instantiate(bloodEffect, bloodPoint.position, bloodPoint.rotation);
+            Destroy(effectB, 1f);
+            currentHealth = 0;
         }
 
         if (currentHealth > maxHealth)

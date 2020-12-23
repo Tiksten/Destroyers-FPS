@@ -8,13 +8,17 @@ public class ParticleDestroyer : MonoBehaviour
     public float maxTime = 10f;
     public Vector3 torque;
     public float force = 50f;
+    public bool randomForce = true;
     void Start()
     {
-        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-        torque.x = Random.Range (-force, force);
-        torque.y = Random.Range (-force, force);
-        torque.z = Random.Range (-force, force);
-        rb.AddForce(torque, ForceMode.Impulse);
+        if(randomForce)
+        {
+            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            torque.x = Random.Range (-force, force);
+            torque.y = Random.Range (-force, force);
+            torque.z = Random.Range (-force, force);
+            rb.AddForce(torque, ForceMode.Impulse);
+        }
         Destroy(gameObject, Random.Range(minTime, maxTime));
     }
 

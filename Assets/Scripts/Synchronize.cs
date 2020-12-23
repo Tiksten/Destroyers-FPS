@@ -9,6 +9,7 @@ public class Synchronize : MonoBehaviour {
         if (player != null)
         {
             transform.position = player.position;
+            transform.rotation = player.rotation;
         }
     }
 }

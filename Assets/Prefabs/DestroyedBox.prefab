@@ -59,6 +59,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &1709695191750890439
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -188,6 +189,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &938093090860904506
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -317,6 +319,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &2257130924568251215
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -397,6 +400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5609836106550235502}
   - component: {fileID: 8974188476683831159}
+  - component: {fileID: 7282786934203793104}
   m_Layer: 0
   m_Name: DestroyedBox
   m_TagString: Untagged
@@ -527,6 +531,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7282786934203793104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2571609181019959399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9fce8aaedaa71649ad7288baa24ef07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minTime: 11
+  maxTime: 11
+  torque: {x: 0, y: 0, z: 0}
+  force: 0
+  randomForce: 0
 --- !u!1 &3434121192273503035
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +607,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &4793948564556350144
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -715,6 +737,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &6340521666191463753
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -844,6 +867,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &6540635201289782866
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -973,6 +997,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &5168575681458523070
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1102,6 +1127,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &7082522255816112578
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1231,6 +1257,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &1304115789059128537
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1360,6 +1387,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &1651847401523684446
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1489,6 +1517,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &2690292837802622331
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1618,6 +1647,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &6277726844923500026
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1747,6 +1777,7 @@ MonoBehaviour:
   maxTime: 10
   torque: {x: 0, y: 0, z: 0}
   force: 50
+  randomForce: 1
 --- !u!23 &7657411126069678913
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleSystem: MonoBehaviour
+public class MyParticleSystem: MonoBehaviour
 {
     public GameObject itemToSpawn;
     public Vector3 torque;

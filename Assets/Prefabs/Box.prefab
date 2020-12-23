@@ -55,6 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db4f56ca32388cf46a0b0da7aaff2e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectHealth: 100
   DestroyedVersion: {fileID: 2571609181019959399, guid: a15453faf0472b74296cec554a9cb064, type: 3}
   WoodParticleSystem1: {fileID: 8488544868109769718, guid: 820853116099b174ea65df9311515148, type: 3}
   WoodParticleSystem2: {fileID: 8488544868109769718, guid: 49cc2acc7fc7ee94186a7e6fa9edd553, type: 3}
