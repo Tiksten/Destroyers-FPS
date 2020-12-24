@@ -12,10 +12,14 @@ public class AK47 : MonoBehaviour
     public float impactForce;
     public Transform cartrigeEjector;
     public GameObject cartrigePrefab;
-    public ParticleSystem impactEffect;
+    public ParticleSystem impactEffect1;
+    public ParticleSystem impactEffect2;
+    public ParticleSystem impactEffect3;
     public ParticleSystem barrelSmoke;
     public float firespeed = 0.1f;
     public float cartrigeForce = 5f;
+    public float force = 1f;
+    public float radius = 1f;
 
     private float timecode = 0;
     void Update()
@@ -53,8 +57,22 @@ public class AK47 : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
 
-            ParticleSystem impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, 2f);
+            ParticleSystem impactGO1 = Instantiate(impactEffect1, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(impactGO1, 3f);
+            ParticleSystem impactGO2 = Instantiate(impactEffect2, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(impactGO2, 3f);
+            ParticleSystem impactGO3 = Instantiate(impactEffect3, hit.point, Quaternion.LookRotation(hit.normal));
+            Destroy(impactGO3, 3f);
+
+            Collider[] colliders = Physics.OverlapSphere(hit.point, radius);
+            foreach (Collider nearbyObject in colliders)
+            {
+                Rigidbody rd = nearbyObject.GetComponent<Rigidbody>();
+                if (rd != null)
+                {
+                    rd.AddExplosionForce(force, hit.point, radius);
+                }
+            }
         }
     }
 }
