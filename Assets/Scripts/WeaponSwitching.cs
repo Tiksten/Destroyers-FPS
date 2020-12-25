@@ -3,7 +3,9 @@
 public class WeaponSwitching : MonoBehaviour
 {
     public int selectedWeapon = 0;
-
+    ReloadScript ammoScript;
+    [HideInInspector]
+    public bool canChange = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,15 +17,24 @@ public class WeaponSwitching : MonoBehaviour
     {
 
         int previousSelectedWeapon = selectedWeapon;
-
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f)
+        ReloadScript ammoScript = GetComponentInChildren<ReloadScript>();
+        if(ammoScript != null)
+        {
+            if(ammoScript.reloading == false)
+                canChange = true;
+            else
+                canChange = false;
+        }
+        else
+            canChange = true;
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f & (canChange))
         {
             if (selectedWeapon >= transform.childCount - 1)
                 selectedWeapon = 0;
             else
                 selectedWeapon++;
         }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f)
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f & (canChange))
         {
             if (selectedWeapon <= 0)
                 selectedWeapon = transform.childCount - 1;

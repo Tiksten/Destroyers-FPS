@@ -17,15 +17,20 @@ public class GrenadeLauncher : MonoBehaviour
     public float cartrigeForce = 5f;
 
     public float timecode = 0;
+    ReloadScript ammoScript;
 
     // Update is called once per frame
+    void Start() {
+       ammoScript = GetComponent<ReloadScript>(); 
+    }
     void Update()
     {
 
-        if ((Time.time >= timecode) && Input.GetButton("Fire1"))
+        if ((Time.time >= timecode) && Input.GetButton("Fire1") && !ammoScript.noAmmo && !ammoScript.reloading)
         {
             Shot();
             timecode = Time.time + firespeed;
+            ammoScript.currentAmmo--;
         }
     }
 

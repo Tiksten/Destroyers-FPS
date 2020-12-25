@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7113406816565869390}
   - component: {fileID: 7113406816565869389}
   - component: {fileID: 7113406816565869388}
+  - component: {fileID: 1428705276516371718}
   m_Layer: 0
   m_Name: BulletImpactSmoke2
   m_TagString: Untagged
@@ -4870,3 +4871,20 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &1428705276516371718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113406816565869387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9fce8aaedaa71649ad7288baa24ef07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minTime: 3
+  maxTime: 3
+  torque: {x: 0, y: 0, z: 0}
+  force: 0
+  randomForce: 0

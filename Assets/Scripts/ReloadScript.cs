@@ -13,6 +13,7 @@ public class ReloadScript : MonoBehaviour
     public Text ammoText;
     [HideInInspector]
     public bool noAmmo;
+    [HideInInspector]
     public bool reloading = false;
     public AudioSource reloadSound;
     public AudioSource reloadSound1;

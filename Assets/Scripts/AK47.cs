@@ -70,6 +70,7 @@ public class AK47 : MonoBehaviour
     { 
         muzzleFlash.Play();
         GameObject cartrige = Instantiate(cartrigePrefab, cartrigeEjector.position, cartrigeEjector.rotation);
+        Destroy(cartrige, 2f);
         Rigidbody rb = cartrige.GetComponent<Rigidbody>();
         rb.AddForce(cartrigeEjector.right * cartrigeForce, ForceMode.Impulse);
         Shoot.pitch = Random.Range(1.3f, 1.5f);
@@ -92,12 +93,9 @@ public class AK47 : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
 
-            ParticleSystem impactGO1 = Instantiate(impactEffect1, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO1, 3f);
-            ParticleSystem impactGO2 = Instantiate(impactEffect2, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO2, 3f);
-            ParticleSystem impactGO3 = Instantiate(impactEffect3, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO3, 3f);
+            Instantiate(impactEffect1, hit.point, Quaternion.LookRotation(hit.normal));
+            Instantiate(impactEffect2, hit.point, Quaternion.LookRotation(hit.normal));
+            Instantiate(impactEffect3, hit.point, Quaternion.LookRotation(hit.normal));
 
             Collider[] colliders = Physics.OverlapSphere(hit.point, radius);
             foreach (Collider nearbyObject in colliders)
