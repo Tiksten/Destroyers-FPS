@@ -17,6 +17,11 @@ public class Destructible : MonoBehaviour
     public GameObject WoodParticleSystem9;
     public GameObject WoodParticleSystem10;
     public Vector3 torque;
+    public bool isExplosive = false;
+    public float radius = 5f;
+    public float force = 500f;
+    public ParticleSystem sparksPrefab;
+    public ParticleSystem smokePrefab;
     public void Break()
     {
         Instantiate(DestroyedVersion, gameObject.transform.position, gameObject.transform.rotation);
@@ -41,6 +46,8 @@ public class Destructible : MonoBehaviour
         Destroy(WPS9, 5f);
         var WPS10 = Instantiate(WoodParticleSystem10, gameObject.transform.position, gameObject.transform.rotation);
         Destroy(WPS10, 5f);
+        if(isExplosive)
+            Explode();
     }
     public void TakeDamage(int damage)
     {
@@ -49,5 +56,31 @@ public class Destructible : MonoBehaviour
         {
             Break();
         } 
+    }
+    void Explode()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider nearbyObject in colliders)
+        {
+            Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddExplosionForce(force, transform.position, radius);
+            }
+            Destructible ds = nearbyObject.GetComponent<Destructible>();
+            if (ds != null && (Random.Range(1, 100) < 40))
+            {
+                ds.Break();
+            }
+            PlayerHealth ph = nearbyObject.GetComponent<PlayerHealth>();
+            if (ph != null)
+            {
+                ph.TakeDamage(20);
+            }
+        }
+    var sparks = Instantiate(sparksPrefab, gameObject.transform.position, gameObject.transform.rotation);
+    Destroy(sparks, 5f);
+    var smoke = Instantiate(smokePrefab, gameObject.transform.position, gameObject.transform.rotation);
+    Destroy(smoke, 5f);
     }
 }

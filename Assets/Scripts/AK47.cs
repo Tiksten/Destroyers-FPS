@@ -20,26 +20,61 @@ public class AK47 : MonoBehaviour
     public float cartrigeForce = 5f;
     public float force = 1f;
     public float radius = 1f;
+    public Vector3 upRecoil;
+    Vector3 originalRotation;
+    public Vector3 maxRecoil;
+    public bool recoil = false;
 
     private float timecode = 0;
+    ReloadScript ammoScript;
+    void Start()
+    {
+        originalRotation = transform.localEulerAngles;
+        ammoScript = GetComponent<ReloadScript>();
+    }
     void Update()
     {
-        if ((Time.time >= timecode) && Input.GetButton("Fire1"))
+        if ((Time.time >= timecode) && Input.GetButton("Fire1") && !ammoScript.noAmmo && !ammoScript.reloading)
         {
             Shot();
             timecode = Time.time + firespeed;
+            barrelSmoke.Stop();
+            AddRecoil();
+            ammoScript.currentAmmo--;
+        }
+        else if (Input.GetButtonUp("Fire1"))
+        {
+            barrelSmoke.Play();
+            StopRecoil();
         }
     }
-
+    void AddRecoil()
+    {
+        if(true != recoil)
+        {
+            transform.localEulerAngles -= upRecoil;
+            recoil = true;
+        }
+        else if(recoil)
+        {
+            transform.localEulerAngles = originalRotation;
+            recoil = false;
+        }
+    }
+    void StopRecoil()
+    {
+        transform.localEulerAngles = originalRotation;
+        recoil = false;
+    }
     void Shot() 
     { 
         muzzleFlash.Play();
         GameObject cartrige = Instantiate(cartrigePrefab, cartrigeEjector.position, cartrigeEjector.rotation);
         Rigidbody rb = cartrige.GetComponent<Rigidbody>();
         rb.AddForce(cartrigeEjector.right * cartrigeForce, ForceMode.Impulse);
+        Shoot.pitch = Random.Range(1.3f, 1.5f);
         Shoot.Play ();
         RaycastHit hit;
-        barrelSmoke.Play();
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             Destructible target = hit.transform.GetComponent<Destructible>();
