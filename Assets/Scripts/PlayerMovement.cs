@@ -8,18 +8,22 @@ public class PlayerMovement : MonoBehaviour {
     //Assingables
     public Transform playerCam;
     public Transform orientation;
-    
     //Other
     private Rigidbody rb;
-
+    
     //Rotation and look
     private float xRotation;
     private float sensitivity = 50f;
     private float sensMultiplier = 1f;
-    
+
     //Movement
+    [HideInInspector]
     public float moveSpeed = 4500;
-    public float maxSpeed = 20;
+
+    public float maxSpeed = 10;
+    public float maxRunSpeed = 10;
+    public float maxWalkSpeed = 4;
+
     public bool grounded;
     public LayerMask whatIsGround;
     
@@ -62,6 +66,12 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void Update() {
+        if(Input.GetKey(KeyCode.LeftShift)){
+            maxSpeed = maxWalkSpeed;
+        }
+        else{
+            maxSpeed = maxRunSpeed;
+        }
         MyInput();
         Look();
     }
