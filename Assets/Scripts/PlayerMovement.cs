@@ -127,7 +127,7 @@ public class PlayerMovement : MonoBehaviour {
         if (y < 0 && yMag < -maxSpeed) y = 0;
 
         //Some multipliers
-        float multiplier = 1f, multiplierV = 1f;
+        float multiplier = 1f; float multiplierV = 1f;
         
         // Movement in air
         if (!grounded) {

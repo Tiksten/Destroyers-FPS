@@ -24,6 +24,7 @@ public class AK47 : MonoBehaviour
     Vector3 originalRotation;
     public Vector3 maxRecoil;
     public bool recoil = false;
+    public Animator animator;
 
     private float timecode = 0;
     ReloadScript ammoScript;
@@ -34,37 +35,24 @@ public class AK47 : MonoBehaviour
     }
     void Update()
     {
+        if(Input.GetButton("Fire1") && !ammoScript.noAmmo && !ammoScript.reloading)
+        {
+            animator.SetBool("Shooting", true);
+        }
+        else{
+            animator.SetBool("Shooting", false);
+        }
         if ((Time.time >= timecode) && Input.GetButton("Fire1") && !ammoScript.noAmmo && !ammoScript.reloading)
         {
             Shot();
             timecode = Time.time + firespeed;
             barrelSmoke.Stop();
-            AddRecoil();
             ammoScript.currentAmmo--;
         }
-        else if (Input.GetButtonUp("Fire1"))
+        else if (Input.GetButtonUp("Fire1") & !Input.GetButton("Fire1"))
         {
             barrelSmoke.Play();
-            StopRecoil();
         }
-    }
-    void AddRecoil()
-    {
-        if(true != recoil)
-        {
-            transform.localEulerAngles -= upRecoil;
-            recoil = true;
-        }
-        else if(recoil)
-        {
-            transform.localEulerAngles = originalRotation;
-            recoil = false;
-        }
-    }
-    void StopRecoil()
-    {
-        transform.localEulerAngles = originalRotation;
-        recoil = false;
     }
     void Shot() 
     { 

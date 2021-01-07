@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
 
-    public GameObject hitEffect;
+    public GameObject sparksEffect;
     public GameObject smokeEffect;
     public int damage = 40;
     public float radius = 5f;
@@ -19,15 +19,15 @@ public class Bomb : MonoBehaviour
         //}
         Explode();
         GameObject box = hitInfo.gameObject;
-        GameObject effect = Instantiate(hitEffect, transform.position, Quaternion.identity);
-        GameObject smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
+        var sparks = Instantiate(sparksEffect, transform.position, Quaternion.identity);
+        var smoke = Instantiate(smokeEffect, transform.position, Quaternion.identity);
+        Destroy(sparks, 0.5f);
+        Destroy(smoke, 5f);
         Destructible boxScript = box.GetComponent<Destructible>();
         if(boxScript != null)
         {
             boxScript.Break();
         }
-        Destroy(effect, 0.5f);
-        Destroy(smoke, 5f);
         Destroy(gameObject);
     }
     void Start()
