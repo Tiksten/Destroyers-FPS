@@ -20,17 +20,12 @@ public class AK47 : MonoBehaviour
     public float cartrigeForce = 5f;
     public float force = 1f;
     public float radius = 1f;
-    public Vector3 upRecoil;
-    Vector3 originalRotation;
-    public Vector3 maxRecoil;
-    public bool recoil = false;
     public Animator animator;
 
     private float timecode = 0;
     ReloadScript ammoScript;
     void Start()
     {
-        originalRotation = transform.localEulerAngles;
         ammoScript = GetComponent<ReloadScript>();
     }
     void Update()
