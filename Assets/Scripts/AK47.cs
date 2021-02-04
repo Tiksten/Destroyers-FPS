@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AK47 : MonoBehaviour
 {
+    public GameObject bulletHolePrefab;
     public AudioSource Shoot;
     public ParticleSystem muzzleFlash;
     public Camera fpsCam;
@@ -55,7 +56,8 @@ public class AK47 : MonoBehaviour
         GameObject cartrige = Instantiate(cartrigePrefab, cartrigeEjector.position, cartrigeEjector.rotation);
         Destroy(cartrige, 2f);
         Rigidbody rb = cartrige.GetComponent<Rigidbody>();
-        rb.AddForce(cartrigeEjector.right * cartrigeForce, ForceMode.Impulse);
+        rb.AddForce(cartrigeEjector.right * (cartrigeForce + Random.Range(0, 0.2f)), ForceMode.Impulse);
+        rb.AddTorque(Random.Range(-15, 15), Random.Range(-15, 15), 0, ForceMode.Impulse);
         Shoot.pitch = Random.Range(1.3f, 1.5f);
         Shoot.Play ();
         RaycastHit hit;
@@ -79,7 +81,9 @@ public class AK47 : MonoBehaviour
             Instantiate(impactEffect1, hit.point, Quaternion.LookRotation(hit.normal));
             Instantiate(impactEffect2, hit.point, Quaternion.LookRotation(hit.normal));
             Instantiate(impactEffect3, hit.point, Quaternion.LookRotation(hit.normal));
-
+            GameObject bulletHole = Instantiate(bulletHolePrefab, hit.point, Quaternion.LookRotation(hit.normal));
+            bulletHole.transform.parent = hit.transform;
+            
             Collider[] colliders = Physics.OverlapSphere(hit.point, radius);
             foreach (Collider nearbyObject in colliders)
             {

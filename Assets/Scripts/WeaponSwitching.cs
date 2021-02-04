@@ -2,6 +2,7 @@
 
 public class WeaponSwitching : MonoBehaviour
 {
+    public Collider playerPickUpTrigger;
     public int selectedWeapon = 0;
     ReloadScript ammoScript;
     [HideInInspector]
@@ -15,7 +16,6 @@ public class WeaponSwitching : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         int previousSelectedWeapon = selectedWeapon;
         ReloadScript ammoScript = GetComponentInChildren<ReloadScript>();
         if(ammoScript != null)
@@ -46,8 +46,7 @@ public class WeaponSwitching : MonoBehaviour
             SelectWeapon();
         }
     }
-
-    void SelectWeapon ()
+    public void SelectWeapon ()
     {
         int i = 0;
         foreach (Transform weapon in transform)

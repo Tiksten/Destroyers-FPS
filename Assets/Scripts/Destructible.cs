@@ -79,8 +79,8 @@ public class Destructible : MonoBehaviour
             }
         }
     var sparks = Instantiate(sparksPrefab, gameObject.transform.position, gameObject.transform.rotation);
-    Destroy(sparks, 5f);
+    Destroy(sparks, 6f);
     var smoke = Instantiate(smokePrefab, gameObject.transform.position, gameObject.transform.rotation);
-    Destroy(smoke, 5f);
+    Destroy(smoke, 6f);
     }
 }
