@@ -65,6 +65,7 @@ public class AK47 : MonoBehaviour
         {
             Destructible target = hit.transform.GetComponent<Destructible>();
             PlayerHealth targetPlayer = hit.transform.GetComponent<PlayerHealth>();
+            SC_NPCEnemy targetEnemy = hit.transform.GetComponent<SC_NPCEnemy>();
             if (target != null)
             {
                 target.TakeDamage(damage);
@@ -73,7 +74,11 @@ public class AK47 : MonoBehaviour
             {
                 targetPlayer.TakeDamage(damage);
             }
-            if(hit.rigidbody != null)
+            if (targetEnemy != null)
+            {
+                targetEnemy.ApplyDamage(damage);
+            }
+            if (hit.rigidbody != null)
             {
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
