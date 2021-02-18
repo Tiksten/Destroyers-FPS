@@ -8,6 +8,10 @@ public class SwordDamageZone : MonoBehaviour
     public bool active = true;
     public Sword sword;
     public ParticleSystem hitEffect;
+    public ParticleSystem hitEnemyEffect;
+    public AudioSource swordAudioSource;
+    public AudioClip woodHit;
+    public AudioClip alienHit;
     [HideInInspector]
     public bool canDamage = true;
     void OnTriggerStay(Collider hitInfo)
@@ -16,14 +20,23 @@ public class SwordDamageZone : MonoBehaviour
         {
             GameObject target = hitInfo.gameObject;
             var damageScript = target.GetComponent<Destructible>();
-            if(active && canDamage)
+            var targetEnemy = target.GetComponent<SC_NPCEnemy>();
+            if (active && canDamage)
             {
                 sword.stopAttack = true;
                 if(damageScript != null)
                 {
-                    Destructible targetScript = damageScript;
-                    targetScript.TakeDamage(damage);
-                    Instantiate(hitEffect, hitInfo.transform);
+                    damageScript.TakeDamage(damage);
+                    Instantiate(hitEffect, hitInfo.transform.position, hitInfo.transform.rotation);
+                    swordAudioSource.clip = woodHit;
+                    swordAudioSource.Play();
+                }
+                if (targetEnemy != null)
+                {
+                    targetEnemy.ApplyDamage(damage);
+                    Instantiate(hitEnemyEffect, hitInfo.transform.position, hitInfo.transform.rotation);
+                    swordAudioSource.clip = alienHit;
+                    swordAudioSource.Play();
                 }
             }
         }

@@ -22,6 +22,8 @@ public class Destructible : MonoBehaviour
     public float force = 500f;
     public ParticleSystem sparksPrefab;
     public ParticleSystem smokePrefab;
+    public AudioSource audioSource;
+    public AudioClip woodHit;
     public void Break()
     {
         Instantiate(DestroyedVersion, gameObject.transform.position, gameObject.transform.rotation);
@@ -55,7 +57,10 @@ public class Destructible : MonoBehaviour
         if (objectHealth <= 0)
         {
             Break();
-        } 
+        }
+        audioSource.clip = woodHit;
+        audioSource.Play();
+
     }
     void Explode()
     {
@@ -67,15 +72,23 @@ public class Destructible : MonoBehaviour
             {
                 rb.AddExplosionForce(force, transform.position, radius);
             }
+
             Destructible ds = nearbyObject.GetComponent<Destructible>();
             if (ds != null && (Random.Range(1, 100) < 40))
             {
                 ds.Break();
             }
+
             PlayerHealth ph = nearbyObject.GetComponent<PlayerHealth>();
             if (ph != null)
             {
                 ph.TakeDamage(20);
+            }
+
+            SC_NPCEnemy eh = nearbyObject.GetComponent<SC_NPCEnemy>();
+            if (eh != null)
+            {
+                eh.ApplyDamage(100);
             }
         }
     var sparks = Instantiate(sparksPrefab, gameObject.transform.position, gameObject.transform.rotation);

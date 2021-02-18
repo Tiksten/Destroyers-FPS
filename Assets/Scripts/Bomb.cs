@@ -55,6 +55,11 @@ public class Bomb : MonoBehaviour
             {
                 ph.TakeDamage(20);
             }
+            SC_NPCEnemy eh = nearbyObject.GetComponent<SC_NPCEnemy>();
+            if (eh != null)
+            {
+                eh.ApplyDamage(100);
+            }
         }
     }
 }
