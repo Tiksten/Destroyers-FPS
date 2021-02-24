@@ -1,9 +1,15 @@
 // Some stupid rigidbody based movement by Dani
 
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
+
+    public AudioClip[] steps;
+    public AudioSource audioSource;
+    private bool stepPlayed;
+    public float timeBetweenSteps;
 
     //Assingables
     public Transform playerCam;
@@ -65,6 +71,26 @@ public class PlayerMovement : MonoBehaviour {
         Movement();
     }
 
+    private void StepSoundPlay()
+    {
+        if (!stepPlayed)
+        {
+            if (grounded && (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0))
+            {
+                stepPlayed = true;
+                audioSource.clip = steps[UnityEngine.Random.Range(0, steps.Length)];
+                audioSource.Play();
+                StartCoroutine(Wait());
+            }
+        }
+    }
+
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(timeBetweenSteps);
+        stepPlayed = false;
+    }
+
     private void Update() {
         if(Input.GetKey(KeyCode.LeftShift)){
             maxSpeed = maxWalkSpeed;
@@ -74,6 +100,7 @@ public class PlayerMovement : MonoBehaviour {
         }
         MyInput();
         Look();
+        StepSoundPlay();
     }
 
     /// <summary>
