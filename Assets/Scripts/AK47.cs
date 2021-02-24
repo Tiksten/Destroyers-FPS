@@ -22,14 +22,12 @@ public class AK47 : MonoBehaviour
     public float force = 1f;
     public float radius = 1f;
     public Animator animator;
-    public GameObject muzzleFlashLight;
 
     private float timecode = 0;
     ReloadScript ammoScript;
     void Start()
     {
         ammoScript = GetComponent<ReloadScript>();
-        muzzleFlashLight.SetActive(false);
     }
     void Update()
     {
@@ -55,7 +53,6 @@ public class AK47 : MonoBehaviour
     void Shot() 
     { 
         muzzleFlash.Play();
-        muzzleFlashLight.SetActive(true);
         GameObject cartrige = Instantiate(cartrigePrefab, cartrigeEjector.position, cartrigeEjector.rotation);
         Destroy(cartrige, 2f);
         Rigidbody rb = cartrige.GetComponent<Rigidbody>();
@@ -102,6 +99,5 @@ public class AK47 : MonoBehaviour
                 }
             }
         }
-        muzzleFlashLight.SetActive(false);
     }
 }
