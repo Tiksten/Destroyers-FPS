@@ -64,8 +64,9 @@ public class AK47 : MonoBehaviour
         if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
             Destructible target = hit.transform.GetComponent<Destructible>();
-            PlayerHealth targetPlayer = hit.transform.GetComponent<PlayerHealth>();
+            PlayerHealth targetPlayer = hit.transform.GetComponent<PlayerHealth>();    //Optimize******************************************************
             SC_NPCEnemy targetEnemy = hit.transform.GetComponent<SC_NPCEnemy>();
+            ButtonScript button = hit.transform.GetComponent<ButtonScript>();
             if (target != null)
             {
                 target.TakeDamage(damage);
@@ -82,6 +83,8 @@ public class AK47 : MonoBehaviour
             {
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
+            if (button != null)
+                button.ClickButton();
 
             Instantiate(impactEffect1, hit.point, Quaternion.LookRotation(hit.normal));
             Instantiate(impactEffect2, hit.point, Quaternion.LookRotation(hit.normal));
