@@ -6,9 +6,6 @@ public class Helper : MonoBehaviour
 {
     static public void GiveDamage(GameObject target, int damage)
     {
-        Vector3 torque;
-        float force = 50f;
-
         Destructible target1 = target.GetComponent<Destructible>();
         PlayerHealth target2 = target.GetComponent<PlayerHealth>();
         SC_NPCEnemy target3 = target.GetComponent<SC_NPCEnemy>();
@@ -25,6 +22,11 @@ public class Helper : MonoBehaviour
 
         else if (target4 != null)
             target4.ClickButton();
+    }  
+
+    static public void GiveRandomForce(GameObject target, float force)
+    {
+        Vector3 torque;
 
         if (target.GetComponent<Rigidbody>() != null)
         {
@@ -34,5 +36,5 @@ public class Helper : MonoBehaviour
             torque.z = Random.Range(-force, force);
             rb.AddForce(torque, ForceMode.Impulse);
         }
-    }  
+    }
 }
