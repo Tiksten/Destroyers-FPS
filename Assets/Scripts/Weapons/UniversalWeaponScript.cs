@@ -81,11 +81,17 @@ public class UniversalWeaponScript : MonoBehaviour
     {
         currentAmmo = startAmmo;
         foreach (AnimationClip i in tagShootVariations)
+        {
             i.wrapMode = WrapMode.Once;
+        }
         foreach (AnimationClip i in tagReloadVariations)
+        {
             i.wrapMode = WrapMode.Once;
+        }
         foreach (AnimationClip i in tagIdleVariations)
+        {
             i.wrapMode = WrapMode.Once;
+        }
     }
 
     void Update()
@@ -194,9 +200,7 @@ public class UniversalWeaponScript : MonoBehaviour
 
 
             //Bullet Hole
-            var material = hit.collider.material;
-
-            var chosenBulletHole = memory.BulletHoleChose(material);
+            var chosenBulletHole = memory.BulletHoleChose(hit.collider);
 
             GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
 

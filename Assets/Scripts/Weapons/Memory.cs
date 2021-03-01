@@ -11,12 +11,12 @@ public class Memory : MonoBehaviour
     [System.Serializable]
     public class BulletHoleType
     {
-        public Material material;
+        public PhysicMaterial material;
         public GameObject[] bulletHolePrefab;
     }
 
 
-    public GameObject BulletHoleChose(PhysicMaterial material)
+    public GameObject BulletHoleChose(Collider collider)
     {
         var chosenBulletHole = defaultBulletHolePrefab;
 
@@ -24,7 +24,7 @@ public class Memory : MonoBehaviour
         {
             foreach (BulletHoleType type in bulletHoleTypes)
             {
-                if (type.material == material)
+                if (type.material == collider.sharedMaterial)
                     chosenBulletHole = type.bulletHolePrefab[Random.Range(0, type.bulletHolePrefab.Length)];
             }
         }

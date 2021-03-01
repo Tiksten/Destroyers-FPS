@@ -4,9 +4,11 @@ public class WeaponSwitching : MonoBehaviour
 {
     public Collider playerPickUpTrigger;
     public int selectedWeapon = 0;
-    ReloadScript ammoScript;
+
     [HideInInspector]
     public bool canChange = true;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,15 +20,31 @@ public class WeaponSwitching : MonoBehaviour
     {
         int previousSelectedWeapon = selectedWeapon;
         ReloadScript ammoScript = GetComponentInChildren<ReloadScript>();
-        if(ammoScript != null)
+        UniversalWeaponScript weaponScript = GetComponentInChildren<UniversalWeaponScript>();
+
+        if (ammoScript != null)
         {
             if(ammoScript.reloading == false)
                 canChange = true;
             else
                 canChange = false;
         }
+
+
+        if (weaponScript != null)
+        {
+            if (weaponScript.animator.GetCurrentAnimatorStateInfo(0).IsTag("Idle"))
+                canChange = true;
+            else
+                canChange = false;
+        }
+
         else
-            canChange = true;
+        {
+            if (ammoScript == null)
+                canChange = true;
+        }
+
         if (Input.GetAxis("Mouse ScrollWheel") > 0f & (canChange))
         {
             if (selectedWeapon >= transform.childCount - 1)
@@ -52,9 +70,22 @@ public class WeaponSwitching : MonoBehaviour
         foreach (Transform weapon in transform)
         {
             if (i == selectedWeapon)
+            {
                 weapon.gameObject.SetActive(true);
+                if (weapon.gameObject.GetComponent<UniversalWeaponScript>() != null)
+                {
+                    weapon.gameObject.GetComponent<UniversalWeaponScript>().animator.Rebind();
+                }
+            }
+
             else
+            {
+                if (weapon.gameObject.GetComponent<UniversalWeaponScript>() != null)
+                {
+                    weapon.gameObject.GetComponent<UniversalWeaponScript>().animator.Rebind();
+                }
                 weapon.gameObject.SetActive(false);
+            }
             i++;
         }
     }
