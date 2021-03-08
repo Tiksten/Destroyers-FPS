@@ -276,6 +276,8 @@ public class UniversalWeaponScript : MonoBehaviour
         ammoText.text = currentAmmo + "/" + maxAmmo;
 
         NextIdle();
+
+        currentSprayStep = 0;
     }
 
     private void NextIdle()
@@ -288,16 +290,16 @@ public class UniversalWeaponScript : MonoBehaviour
         var ml = fpsCam.GetComponent<MouseLook>();
 
         //Moves shootingPoint to next step
-        if (sprayPattern.weaponSprayPattern.Length > currentSprayStep + 1)
+        if (sprayPattern.weaponSprayPattern.Length >= currentSprayStep + 1)
         {
-            var step = sprayPattern.weaponSprayPattern[currentSprayStep + 1];
+            var step = sprayPattern.weaponSprayPattern[currentSprayStep];
 
             Recoil(step.x, step.y);
         }
         else
         {
-            if (currentSprayStep == sprayPattern.weaponCyclePattern.Length + sprayPattern.weaponSprayPattern.Length - 1)
-                currentSprayStep -= sprayPattern.weaponCyclePattern.Length;
+            if (currentSprayStep == sprayPattern.weaponCyclePattern.Length + sprayPattern.weaponSprayPattern.Length)
+                currentSprayStep = sprayPattern.weaponSprayPattern.Length;
 
             var step = sprayPattern.weaponCyclePattern[currentSprayStep - sprayPattern.weaponSprayPattern.Length];
 

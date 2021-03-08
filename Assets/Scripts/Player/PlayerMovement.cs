@@ -20,7 +20,6 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
 
     Vector3 velocity;
-    float previousVelocityY;
     bool isGrounded;
 
     // Update is called once per frame
@@ -55,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
             if (isGrounded && (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0))
             {
                 stepPlayed = true;
-                audioSource.clip = steps[UnityEngine.Random.Range(0, steps.Length)];
+                audioSource.clip = steps[Random.Range(0, steps.Length)];
                 audioSource.Play();
                 StartCoroutine(Wait());
             }
