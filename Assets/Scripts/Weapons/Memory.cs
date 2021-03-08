@@ -15,7 +15,6 @@ public class Memory : MonoBehaviour
         public GameObject[] bulletHolePrefab;
     }
 
-
     public GameObject BulletHoleChose(Collider collider)
     {
         var chosenBulletHole = defaultBulletHolePrefab;

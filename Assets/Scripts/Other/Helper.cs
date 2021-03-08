@@ -4,6 +4,38 @@ using UnityEngine;
 
 public class Helper : MonoBehaviour
 {
+    [System.Serializable]
+    public class SprayPattern
+    {
+        public string weaponPatternName;
+        public Vector3[] weaponSprayPattern;
+        public Vector3[] weaponCyclePattern; //Pattern goes after spray ending untill not out of ammo
+
+        [HideInInspector]
+        private float _patternShotRandomnessRange;
+
+        public float maxPatternShotRandomnessRange;
+        
+        public float patternShotRandomnessRange //Every shot random range (very small but gets bigger)
+        {
+            get => _patternShotRandomnessRange;
+            set
+            {
+                if (value < maxPatternShotRandomnessRange)
+                {
+                    _patternShotRandomnessRange = value;
+                }
+            }
+        }
+
+
+        public float shotWithoutScopeRandomRange; //From hip shooting (should be big enough gets bigger after some time)
+
+        public float timeToResetToPreviousPose; //After this time, if its smaller than timeToResetFullPattern, patternStep goes -1 and again...
+        public float timeToResetFullPattern; //After this time pattern pos resets
+        public float shootingSpeed;
+    }
+
     static public void GiveDamage(GameObject target, int damage)
     {
         Destructible target1 = target.GetComponent<Destructible>();

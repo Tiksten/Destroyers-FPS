@@ -12,6 +12,7 @@ public class UniversalWeaponScript : MonoBehaviour
     public Animator animator;
     public bool pistolShootingType;
     public Memory memory;
+    public string weaponPatternName;
     [Space(10)]
 
     [Header("ANIMATIONS")]
@@ -54,7 +55,16 @@ public class UniversalWeaponScript : MonoBehaviour
     public float cartrigeForce = 5f;
     [Space(10)]
 
+    [Header("SPRAY PATTERN")]
+    public Helper.SprayPattern sprayPattern;
 
+
+
+    [HideInInspector]
+    public Transform shootingPoint;
+
+    [HideInInspector]
+    public int currentSprayStep;
 
     [HideInInspector]
     public bool weaponPutAway;
@@ -260,5 +270,28 @@ public class UniversalWeaponScript : MonoBehaviour
     private void NextIdle()
     {
         animator.Play(tagIdleVariations[Random.Range(0, tagIdleVariations.Length)].name);
+    }
+
+    private void MoveNextSprayStep()
+    {
+        //Moves shootingPoint to next step
+        if(sprayPattern.weaponSprayPattern.Length > currentSprayStep + 1)
+            shootingPoint.transform.localPosition = Vector3.Lerp(
+                sprayPattern.weaponSprayPattern[currentSprayStep],
+                sprayPattern.weaponSprayPattern[currentSprayStep + 1],
+                sprayPattern.shootingSpeed);
+        else
+            shootingPoint.transform.localPosition = Vector3.Lerp(
+                sprayPattern.weaponCyclePattern[currentSprayStep - sprayPattern.weaponSprayPattern.Length],
+                sprayPattern.weaponCyclePattern[currentSprayStep - sprayPattern.weaponSprayPattern.Length + 1],
+                sprayPattern.shootingSpeed);
+    }
+
+    private void ResetSpray()
+    {
+        shootingPoint.transform.localPosition = Vector3.Lerp(
+            shootingPoint.transform.localPosition,
+            sprayPattern.weaponSprayPattern[0],
+            sprayPattern.shootingSpeed);
     }
 }
