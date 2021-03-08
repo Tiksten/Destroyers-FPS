@@ -5,14 +5,11 @@ using UnityEngine.UI;
 
 public class UniversalWeaponScript : MonoBehaviour
 {
-
-
     [Header("GENERAL")]
     public Camera fpsCam;
     public Animator animator;
     public bool pistolShootingType;
     public Memory memory;
-    public string weaponPatternName;
     [Space(10)]
 
     [Header("ANIMATIONS")]
@@ -26,7 +23,8 @@ public class UniversalWeaponScript : MonoBehaviour
     public int range;
     public int damage;
     public float impactForce;
-    //public float firespeed = 0.1f; Firespeed based on shot animation time
+    public float firespeed = 0.1f;
+    public float patternSizeMultiplier;
     [Space(10)]
 
     [Header("SOUNDS")]
@@ -56,7 +54,7 @@ public class UniversalWeaponScript : MonoBehaviour
     [Space(10)]
 
     [Header("SPRAY PATTERN")]
-    public Helper.SprayPattern sprayPattern;
+    public string sprayPatternName;
 
 
 
@@ -86,10 +84,14 @@ public class UniversalWeaponScript : MonoBehaviour
         public GameObject[] bulletHolePrefab;
     }
 
+    [HideInInspector]
+    Helper.SprayPattern sprayPattern;
+
 
     void Start()
     {
         currentAmmo = startAmmo;
+        ammoText.text = currentAmmo + "/" + maxAmmo;
         foreach (AnimationClip i in tagShootVariations)
         {
             i.wrapMode = WrapMode.Once;
@@ -101,6 +103,15 @@ public class UniversalWeaponScript : MonoBehaviour
         foreach (AnimationClip i in tagIdleVariations)
         {
             i.wrapMode = WrapMode.Once;
+        }
+
+        foreach (Helper.SprayPattern i in memory.sprayPatterns)
+        {
+            if (i.weaponPatternName == sprayPatternName)
+            {
+                sprayPattern = i;
+                break;
+            }
         }
     }
 
@@ -224,9 +235,9 @@ public class UniversalWeaponScript : MonoBehaviour
                 hit.rigidbody.AddForce(-hit.normal * impactForce);
             }
         }
-
+        MoveNextSprayStep();
         
-        yield return new WaitForSeconds(animation.length);
+        yield return new WaitForSeconds(firespeed);
 
         NextIdle();
     }
@@ -274,24 +285,31 @@ public class UniversalWeaponScript : MonoBehaviour
 
     private void MoveNextSprayStep()
     {
+        var ml = fpsCam.GetComponent<MouseLook>();
+
         //Moves shootingPoint to next step
-        if(sprayPattern.weaponSprayPattern.Length > currentSprayStep + 1)
-            shootingPoint.transform.localPosition = Vector3.Lerp(
-                sprayPattern.weaponSprayPattern[currentSprayStep],
-                sprayPattern.weaponSprayPattern[currentSprayStep + 1],
-                sprayPattern.shootingSpeed);
+        if (sprayPattern.weaponSprayPattern.Length > currentSprayStep + 1)
+        {
+            var step = sprayPattern.weaponSprayPattern[currentSprayStep + 1];
+
+            Recoil(step.x, step.y);
+        }
         else
-            shootingPoint.transform.localPosition = Vector3.Lerp(
-                sprayPattern.weaponCyclePattern[currentSprayStep - sprayPattern.weaponSprayPattern.Length],
-                sprayPattern.weaponCyclePattern[currentSprayStep - sprayPattern.weaponSprayPattern.Length + 1],
-                sprayPattern.shootingSpeed);
+        {
+            if (currentSprayStep == sprayPattern.weaponCyclePattern.Length + sprayPattern.weaponSprayPattern.Length - 1)
+                currentSprayStep -= sprayPattern.weaponCyclePattern.Length;
+
+            var step = sprayPattern.weaponCyclePattern[currentSprayStep - sprayPattern.weaponSprayPattern.Length];
+
+            Recoil(step.x, step.y);
+        }
+
+        currentSprayStep++;
     }
 
-    private void ResetSpray()
+    private void Recoil(float vertical, float horizontal)
     {
-        shootingPoint.transform.localPosition = Vector3.Lerp(
-            shootingPoint.transform.localPosition,
-            sprayPattern.weaponSprayPattern[0],
-            sprayPattern.shootingSpeed);
+        var ml = fpsCam.GetComponent<MouseLook>();
+        ml.AddRotation(horizontal, vertical);
     }
 }

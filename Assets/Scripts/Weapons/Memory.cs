@@ -8,6 +8,8 @@ public class Memory : MonoBehaviour
 
     public BulletHoleType[] bulletHoleTypes;
 
+    public Helper.SprayPattern[] sprayPatterns;
+
     [System.Serializable]
     public class BulletHoleType
     {

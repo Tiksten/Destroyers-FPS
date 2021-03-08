@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4635361259984274}
   - component: {fileID: 33956392326377634}
   - component: {fileID: 23965089399209698}
-  - component: {fileID: 5012493352542755058}
+  - component: {fileID: 497732649017840939}
+  - component: {fileID: 4227690354845391762}
   m_Layer: 9
   m_Name: Deck_WallWindow_02_snaps002
   m_TagString: Untagged
@@ -84,8 +85,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5012493352542755058
-BoxCollider:
+--- !u!64 &497732649017840939
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -94,6 +95,20 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 4353cb0de7f688b428bbd9dd238fba8e, type: 2}
+--- !u!65 &4227690354845391762
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707011455882000}
+  m_Material: {fileID: 13400000, guid: c24fa44d035a79f489839d91add8a5fd, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.50003, y: 4.0002675, z: 3.0000026}
-  m_Center: {x: 0, y: 1.9998662, z: 1.5000013}
+  m_Size: {x: 0.26, y: 1.3999999, z: 2}
+  m_Center: {x: 0, y: 1.93, z: 1.5}
