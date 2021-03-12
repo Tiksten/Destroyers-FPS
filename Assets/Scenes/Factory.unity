@@ -7022,7 +7022,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4608
   handsAnim: {fileID: 1960022205}
-  camera: {fileID: 986251952}
   cam: {fileID: 994192529}
   isGrounded: 0
   currentSpeed: 0
@@ -20678,6 +20677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 986251952}
+  - component: {fileID: 986251953}
   m_Layer: 11
   m_Name: Camera
   m_TagString: Untagged
@@ -20700,6 +20700,18 @@ Transform:
   m_Father: {fileID: 311808232}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &986251953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986251951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75e845b43f5005c4cbfa566a570b052e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &989978641
 PrefabInstance:
   m_ObjectHideFlags: 0

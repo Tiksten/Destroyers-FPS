@@ -9,6 +9,7 @@ public class MouseLook : MonoBehaviour
     public Transform playerBody;
 
     float xRotation = 0f;
+    float zRotation = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,7 @@ public class MouseLook : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.localRotation = Quaternion.Euler(xRotation, 0f, zRotation);
         playerBody.Rotate(Vector3.up * mouseX);
     }
 
@@ -35,9 +36,27 @@ public class MouseLook : MonoBehaviour
         playerBody.Rotate(Vector3.up * x);
     }
 
-    public void AddRotation(float x, float y)
+    public void AddRotation(float x, float y, float z)
     {
         xRotation -= y;
         playerBody.Rotate(Vector3.up * (Input.GetAxis("Mouse Y") + x) * mouseSensitivity * Time.deltaTime);
+        zRotation += z;
+        zRotation = Mathf.Clamp(zRotation, -4f, 4f);
+    }
+
+    public void AddRotation(Vector3 rot)
+    {
+        xRotation -= rot.y;
+        playerBody.Rotate(Vector3.up * (Input.GetAxis("Mouse Y") + rot.x) * mouseSensitivity * Time.deltaTime);
+        zRotation -= rot.z;
+    }
+
+    public void LerpRotation(Vector3 rotA, Vector3 rotB, float t)
+    {
+        var rotLerp = Vector3.Lerp(rotA, rotB, t);
+
+        xRotation -= rotLerp.y;
+        playerBody.Rotate(Vector3.up * (Input.GetAxis("Mouse Y") + rotLerp.x) * mouseSensitivity * Time.deltaTime);
+        zRotation -= rotLerp.z;
     }
 }

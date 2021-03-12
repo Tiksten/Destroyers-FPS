@@ -31,8 +31,6 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
 
 
-    public Transform camera;
-
     public Camera cam;
 
     [HideInInspector]
@@ -230,21 +228,22 @@ public class PlayerMovement : MonoBehaviour
 
         //Camera additional movement
         var pos = cam.transform.localPosition;
-        var rot = camera.transform.rotation;
+        var rotZ = cam.transform.localRotation.eulerAngles.z; //In degrees
 
         var isZero = pos.x < 0.1f && pos.x > -0.1f;
 
         if (Input.GetKey("a") && isZero)
+        {
             cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(-1, 0.5f, 0), 0.01f);
+        }
         else if (Input.GetKey("d") && isZero)
         {
             cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(1, 0.5f, 0), 0.01f);
-            camera.rotation = Quaternion.Lerp(rot, Quaternion.Euler(new Vector3(0, 0, 1)), 0.1f);
         }
         else if (pos.x < 0 || pos.x > 0)
+        {
             cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(0, 0.5f, 0), 0.01f);
-        Debug.Log(rot);
-
+        }
     }
 
     void OnTriggerEnter(Collider info)
