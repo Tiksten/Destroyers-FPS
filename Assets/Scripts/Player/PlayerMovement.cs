@@ -46,12 +46,12 @@ public class PlayerMovement : MonoBehaviour
         //Moving
 
 
-        if (Input.GetKey("left shift"))
+        if (Input.GetKey("left shift") && !handsAnim.GetBool("RunAndGun"))
         {
             controller.Move(move * runSpeed * Time.deltaTime);
             handsAnim.SetBool("Running", true);
         }
-        else
+        else if(!handsAnim.GetBool("RunAndGun"))
         {
             controller.Move(move * speed * Time.deltaTime);
             handsAnim.SetBool("Running", false);
@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         {
             handsAnim.SetBool("Running", false);
             handsAnim.SetBool("Walking", false);
+            handsAnim.SetBool("RunAndGun", false);
         }
 
         if (Input.GetKeyDown("space") && isGrounded)

@@ -55,6 +55,8 @@ public class UniversalWeaponScript : MonoBehaviour
 
     [Header("SPRAY PATTERN")]
     public string sprayPatternName;
+    public float timeToResetOneStep;
+    public float timeToResetFullRecoil;
 
 
 
@@ -69,6 +71,9 @@ public class UniversalWeaponScript : MonoBehaviour
 
     [HideInInspector]
     public int currentAmmo;
+
+    [HideInInspector]
+    public float recoilMultiplier;
 
     [System.Serializable]
     public class SoundPlan
@@ -86,7 +91,6 @@ public class UniversalWeaponScript : MonoBehaviour
 
     [HideInInspector]
     Helper.SprayPattern sprayPattern;
-
 
     void Start()
     {
@@ -240,6 +244,8 @@ public class UniversalWeaponScript : MonoBehaviour
         yield return new WaitForSeconds(firespeed);
 
         NextIdle();
+
+        StartCoroutine(SprayStabilize());
     }
 
 
@@ -312,6 +318,40 @@ public class UniversalWeaponScript : MonoBehaviour
     private void Recoil(float vertical, float horizontal)
     {
         var ml = fpsCam.GetComponent<MouseLook>();
-        ml.AddRotation(horizontal, vertical);
+        ml.AddRotation(horizontal * recoilMultiplier, vertical * recoilMultiplier);
+    }
+
+    private IEnumerator SprayStabilize()
+    {
+        var currentStep = currentSprayStep;
+        var totalTime = timeToResetFullRecoil;
+        var totalMinus = 0;
+        while (currentSprayStep + totalMinus == currentStep && currentStep != -1)
+        {
+            yield return new WaitForSeconds(timeToResetOneStep);
+            if (currentSprayStep + totalMinus == currentStep)
+            {
+                if (currentSprayStep != 0)
+                {
+                    currentSprayStep--;
+                    totalMinus++;
+                }
+                else
+                    currentStep = -1;
+            }
+            else
+                currentStep = -1;
+
+            totalTime -= timeToResetOneStep;
+            if(totalTime < timeToResetOneStep)
+            {
+                yield return new WaitForSeconds(totalTime);
+                if (currentSprayStep + totalMinus == currentStep)
+                {
+                    currentSprayStep = 0;
+                    currentStep = -1;
+                }
+            }
+        }
     }
 }

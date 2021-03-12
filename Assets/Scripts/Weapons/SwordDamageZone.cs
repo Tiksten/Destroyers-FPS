@@ -10,8 +10,8 @@ public class SwordDamageZone : MonoBehaviour
     public ParticleSystem hitEffect;
     public ParticleSystem hitEnemyEffect;
     public AudioSource swordAudioSource;
-    public AudioClip woodHit;
-    public AudioClip alienHit;
+    public AudioClip[] swordHitSounds;
+
     [HideInInspector]
     public bool canDamage = true;
     void OnTriggerStay(Collider hitInfo)
@@ -28,16 +28,14 @@ public class SwordDamageZone : MonoBehaviour
                 {
                     damageScript.TakeDamage(damage);
                     Instantiate(hitEffect, hitInfo.transform.position, hitInfo.transform.rotation);
-                    swordAudioSource.clip = woodHit;
-                    swordAudioSource.Play();
                 }
                 if (targetEnemy != null)
                 {
                     targetEnemy.ApplyDamage(damage);
                     Instantiate(hitEnemyEffect, hitInfo.transform.position, hitInfo.transform.rotation);
-                    swordAudioSource.clip = alienHit;
-                    swordAudioSource.Play();
                 }
+                swordAudioSource.clip = swordHitSounds[Random.Range(0, swordHitSounds.Length)];
+                swordAudioSource.Play();
             }
         }
     }

@@ -8,11 +8,15 @@ public class WeaponSwitching : MonoBehaviour
     [HideInInspector]
     public bool canChange = true;
 
+    [HideInInspector]
+    private Animator animator;
+
 
     // Start is called before the first frame update
     void Start()
     {
         SelectWeapon();
+        animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -63,6 +67,11 @@ public class WeaponSwitching : MonoBehaviour
         {
             SelectWeapon();
         }
+        animator.SetBool("RunAndGun", false);
+
+        if (animator.GetBool("Running") && weaponScript != null)
+            if (weaponScript.animator.GetCurrentAnimatorStateInfo(0).IsTag("Shoot"))
+                animator.SetBool("RunAndGun", true);
     }
     public void SelectWeapon ()
     {

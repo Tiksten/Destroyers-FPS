@@ -23,6 +23,11 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
     float nextAttackTime = 0;
     Rigidbody r;
 
+    public AudioClip[] enemyHitSounds;
+    public AudioClip[] enemyDeathSounds;
+    public AudioClip[] enemyBreatheSounds;
+    public AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +69,12 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
         transform.LookAt(new Vector3(playerTransform.transform.position.x, transform.position.y, playerTransform.position.z));
         //Gradually reduce rigidbody velocity if the force was applied by the bullet
         r.velocity *= 0.99f;
+
+        if (Random.Range(0, 1000) <= 2)
+        {
+            audioSource.clip = enemyBreatheSounds[Random.Range(0, enemyBreatheSounds.Length)];
+            audioSource.Play();
+        }
     }
 
     public void ApplyDamage(float points)
@@ -78,6 +89,14 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
             Destroy(npcDead, 10);
             es.EnemyEliminated(this);
             Destroy(gameObject);
+
+            audioSource.clip = enemyDeathSounds[Random.Range(0, enemyDeathSounds.Length)];
+            audioSource.Play();
+        }
+        else
+        {
+            audioSource.clip = enemyHitSounds[Random.Range(0, enemyHitSounds.Length)];
+            audioSource.Play();
         }
     }
 }
