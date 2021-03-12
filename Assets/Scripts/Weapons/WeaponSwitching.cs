@@ -11,6 +11,9 @@ public class WeaponSwitching : MonoBehaviour
     [HideInInspector]
     private Animator animator;
 
+    [HideInInspector]
+    public UniversalWeaponScript weaponScript;
+
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +27,7 @@ public class WeaponSwitching : MonoBehaviour
     {
         int previousSelectedWeapon = selectedWeapon;
         ReloadScript ammoScript = GetComponentInChildren<ReloadScript>();
-        UniversalWeaponScript weaponScript = GetComponentInChildren<UniversalWeaponScript>();
+        weaponScript = GetComponentInChildren<UniversalWeaponScript>();
 
         if (ammoScript != null)
         {

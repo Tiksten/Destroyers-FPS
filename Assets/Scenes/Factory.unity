@@ -2739,7 +2739,7 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 1dab3248022916d4d8716e3215fb3eae, type: 2}
   range: 200
   damage: 20
-  impactForce: 300
+  impactForce: 1
   firespeed: 0.1
   patternSizeMultiplier: 1
   weaponAudioSource: {fileID: 96777590}
@@ -6921,6 +6921,7 @@ GameObject:
   - component: {fileID: 311808231}
   - component: {fileID: 311808235}
   - component: {fileID: 311808234}
+  - component: {fileID: 311808233}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -6943,8 +6944,8 @@ CharacterController:
   m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.5
-  m_SkinWidth: 0.008
-  m_MinMoveDistance: 0.001
+  m_SkinWidth: 0.035
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &311808232
 Transform:
@@ -6959,14 +6960,28 @@ Transform:
   m_Children:
   - {fileID: 1198325797733784285}
   - {fileID: 884470551}
-  - {fileID: 994192532}
   - {fileID: 704047688}
   - {fileID: 1089820730}
   - {fileID: 1041997214}
   - {fileID: 1494503901}
+  - {fileID: 986251952}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &311808233
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311808230}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.4
+  m_Height: 1.9
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &311808234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6980,6 +6995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 311808231}
+  weaponSwitching: {fileID: 1960022204}
   steps:
   - {fileID: 8300000, guid: 16fdee035be49cc4fad92aeb61325aca, type: 3}
   - {fileID: 8300000, guid: b47d793d01358ac4d97e1eff920a6ea6, type: 3}
@@ -6991,19 +7007,31 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5f246643541f7164c816217b8d83a774, type: 3}
   - {fileID: 8300000, guid: 2a3a9eb708bc72b48a0534b5687483fb, type: 3}
   audioSource: {fileID: 1041997213}
-  timeBetweenSteps: 0.4
-  timeBetweenRunSteps: 0.25
-  speed: 5
+  timeBetweenSteps_Walk: 0.4
+  timeBetweenSteps_Run: 0.25
+  timeBetweenSteps_Crouch: 0.6
+  walkSpeed: 6
+  crouchSpeed: 3
   runSpeed: 10
   gravity: -45
   jumpHeight: 3
   cellingCheck: {fileID: 1494503901}
   groundCheck: {fileID: 1089820730}
-  groundDistance: 0.1
+  groundDistance: 0.3
   groundMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 4608
   handsAnim: {fileID: 1960022205}
+  camera: {fileID: 986251952}
+  cam: {fileID: 994192529}
+  isGrounded: 0
+  currentSpeed: 0
+  weaponScript: {fileID: 0}
+  isStaying: 0
+  isRunning: 0
+  currentTimeBetweenSteps: 0
+  inAirMultiplier: 1
+  minInAirMultiplier: 0.5
 --- !u!114 &311808235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14300,7 +14328,7 @@ Transform:
   m_LocalScale: {x: 0.75, y: 0.7692308, z: 0.75}
   m_Children: []
   m_Father: {fileID: 311808232}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &704404527
 PrefabInstance:
@@ -20641,6 +20669,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 978677102}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &986251951
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 986251952}
+  m_Layer: 11
+  m_Name: Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &986251952
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986251951}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 994192532}
+  m_Father: {fileID: 311808232}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &989978641
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20943,14 +21002,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 994192528}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 456469140}
   - {fileID: 1960022203}
-  m_Father: {fileID: 311808232}
-  m_RootOrder: 2
+  m_Father: {fileID: 986251952}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &994192533
 AudioSource:
@@ -22628,7 +22687,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 311808232}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1046067423 stripped
 Transform:
@@ -23634,7 +23693,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 311808232}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1090549428 stripped
 Transform:
@@ -29850,6 +29909,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 7185118538810434491, guid: cbf9331536269fc46a41505e207adf41,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7185118538810434500, guid: cbf9331536269fc46a41505e207adf41,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -31689,7 +31753,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 311808232}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1497473777
 PrefabInstance:
@@ -32333,7 +32397,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1535311021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32350,7 +32414,7 @@ MonoBehaviour:
     type: 3}
   playerHealth: {fileID: 311808235}
   player: {fileID: 311808230}
-  crosshairTexture: {fileID: 0}
+  crosshairTexture: {fileID: 10914, guid: 0000000000000000f000000000000000, type: 0}
   spawnInterval: 1
   enemiesPerWave: 6
   spawnPoints:
@@ -41274,6 +41338,7 @@ MonoBehaviour:
   playerPickUpTrigger: {fileID: 0}
   selectedWeapon: 0
   canChange: 1
+  weaponScript: {fileID: 0}
 --- !u!95 &1960022205
 Animator:
   serializedVersion: 3

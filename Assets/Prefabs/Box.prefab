@@ -57,36 +57,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectHealth: 100
-  DestroyedVersion: {fileID: 2571609181019959399, guid: a15453faf0472b74296cec554a9cb064,
+  destroyedVersion: {fileID: 2571609181019959399, guid: a15453faf0472b74296cec554a9cb064,
     type: 3}
-  WoodParticleSystem1: {fileID: 8488544868109769718, guid: 820853116099b174ea65df9311515148,
-    type: 3}
-  WoodParticleSystem2: {fileID: 8488544868109769718, guid: 49cc2acc7fc7ee94186a7e6fa9edd553,
-    type: 3}
-  WoodParticleSystem3: {fileID: 8488544868109769718, guid: 44b84ff934a323742bf200052a7c4f6f,
-    type: 3}
-  WoodParticleSystem4: {fileID: 8488544868109769718, guid: 5aed57cb3d5e8de44861294507d9d449,
-    type: 3}
-  WoodParticleSystem5: {fileID: 8488544868109769718, guid: 720774714f7cebd4f95c128d5035be17,
-    type: 3}
-  WoodParticleSystem6: {fileID: 8488544868109769718, guid: d45fdcca08c6a1243af842431c7a214b,
-    type: 3}
-  WoodParticleSystem7: {fileID: 8488544868109769718, guid: 2b534423045a20b47a49488d2d703e61,
-    type: 3}
-  WoodParticleSystem8: {fileID: 8488544868109769718, guid: 7b03f0ac5473a6c4da95428ca4ae55ae,
-    type: 3}
-  WoodParticleSystem9: {fileID: 8488544868109769718, guid: d4202ba6845f01f4c9807c43d7fcd466,
-    type: 3}
-  WoodParticleSystem10: {fileID: 8488544868109769718, guid: 86812522c651d6f478fc1435a797e826,
-    type: 3}
+  particleSystems:
+  - {fileID: 8488544868109769718, guid: 820853116099b174ea65df9311515148, type: 3}
+  - {fileID: 8488544868109769718, guid: 49cc2acc7fc7ee94186a7e6fa9edd553, type: 3}
+  - {fileID: 8488544868109769718, guid: 44b84ff934a323742bf200052a7c4f6f, type: 3}
+  - {fileID: 8488544868109769718, guid: 5aed57cb3d5e8de44861294507d9d449, type: 3}
+  - {fileID: 8488544868109769718, guid: 720774714f7cebd4f95c128d5035be17, type: 3}
+  - {fileID: 8488544868109769718, guid: d45fdcca08c6a1243af842431c7a214b, type: 3}
+  - {fileID: 8488544868109769718, guid: 2b534423045a20b47a49488d2d703e61, type: 3}
+  - {fileID: 8488544868109769718, guid: 7b03f0ac5473a6c4da95428ca4ae55ae, type: 3}
+  - {fileID: 8488544868109769718, guid: d4202ba6845f01f4c9807c43d7fcd466, type: 3}
+  - {fileID: 8488544868109769718, guid: 86812522c651d6f478fc1435a797e826, type: 3}
   torque: {x: 0, y: 0, z: 0}
   isExplosive: 0
   radius: 5
   force: 500
-  sparksPrefab: {fileID: 3781311426342273859, guid: 93a5659572ec3a2498b43d981e8e9b7e,
-    type: 3}
-  smokePrefab: {fileID: 7733231712424382174, guid: 02d228749c5aae847ab7ab99794d2f08,
-    type: 3}
   audioSource: {fileID: 899449886112296756}
   woodHit: {fileID: 8300000, guid: 02cc3b9da17546e45b1de5aad6e35b99, type: 3}
 --- !u!23 &7185118538810434500
@@ -151,14 +138,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7185118538810434490}
   serializedVersion: 2
-  m_Mass: 0.4
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!82 &899449886112296756
 AudioSource:
   m_ObjectHideFlags: 0

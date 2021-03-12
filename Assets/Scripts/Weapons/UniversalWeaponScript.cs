@@ -235,7 +235,7 @@ public class UniversalWeaponScript : MonoBehaviour
             //Impact
             if (hit.rigidbody != null)
             {
-                hit.rigidbody.AddForce(-hit.normal * impactForce);
+                hit.rigidbody.AddForceAtPosition((hit.point - gameObject.transform.position) * impactForce, hit.point, ForceMode.Impulse);
             }
         }
         MoveNextSprayStep();

@@ -6,13 +6,18 @@ public class PlayerMovement : MonoBehaviour
 {
     public CharacterController controller;
 
+
+    public WeaponSwitching weaponSwitching;
+
     public AudioClip[] steps;
     public AudioSource audioSource;
     private bool stepPlayed;
-    public float timeBetweenSteps;
-    public float timeBetweenRunSteps;
+    public float timeBetweenSteps_Walk;
+    public float timeBetweenSteps_Run;
+    public float timeBetweenSteps_Crouch;
 
-    public float speed = 8f;
+    public float walkSpeed = 8f;
+    public float crouchSpeed = 5f;
     public float runSpeed = 14f;
     public float gravity = -9.81f;
     public float jumpHeight = 3f;
@@ -24,15 +29,69 @@ public class PlayerMovement : MonoBehaviour
     public Animator handsAnim;
 
     Vector3 velocity;
-    bool isGrounded;
+
+
+    public Transform camera;
+
+    public Camera cam;
+
+    [HideInInspector]
+    public bool isGrounded;
+
+    [HideInInspector]
+    public float currentSpeed;
 
     [HideInInspector]
     private Vector3 previousPos;
 
+    [HideInInspector]
+    public UniversalWeaponScript weaponScript;
+
+    [HideInInspector]
+    public bool isStaying;
+
+    [HideInInspector]
+    public bool isRunning;
+
+    [HideInInspector]
+    public float currentTimeBetweenSteps;
+
+    [HideInInspector]
+    public float inAirMultiplier = 1f;
+
+    [HideInInspector]
+    public float minInAirMultiplier = 0.5f;
+
+    [HideInInspector]
+    bool canAddVelocity = true;
+
     // Update is called once per frame
     void Update()
     {
+        weaponScript = weaponSwitching.weaponScript;
+
+
+        //Bool defenition
+
+
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        if (previousPos == gameObject.transform.position)
+        {
+            isStaying = true;
+        }
+        else
+            isStaying = false;
+
+        isRunning = Input.GetKey("left shift");
+        if (Input.GetKey("left ctrl") || isStaying)
+            isRunning = false;
+
+        previousPos = gameObject.transform.position;
+
+
+        //Some manipulation
+
 
         if (isGrounded && velocity.y < -2f)
             velocity.y = -2f;
@@ -40,34 +99,83 @@ public class PlayerMovement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * x + transform.forward * z;
+        Vector3 move = transform.right * x * inAirMultiplier + transform.forward * z * inAirMultiplier;
 
 
         //Moving
 
 
-        if (Input.GetKey("left shift") && !handsAnim.GetBool("RunAndGun"))
+        handsAnim.SetBool("Falling", false);
+        if (isStaying)
         {
-            controller.Move(move * runSpeed * Time.deltaTime);
-            handsAnim.SetBool("Running", true);
-        }
-        else if(!handsAnim.GetBool("RunAndGun"))
-        {
-            controller.Move(move * speed * Time.deltaTime);
-            handsAnim.SetBool("Running", false);
-            handsAnim.SetBool("Walking", true);
-        }
-
-        if (previousPos == gameObject.transform.position)
-        {
+            //StayingAnim
             handsAnim.SetBool("Running", false);
             handsAnim.SetBool("Walking", false);
             handsAnim.SetBool("RunAndGun", false);
         }
+        else
+        {
+            if (isRunning)
+            {
+                //RunningAnim
+                handsAnim.SetBool("Running", true);
+            }
+            else
+            {
+                //WalkingAnim
+                handsAnim.SetBool("Running", false);
+                handsAnim.SetBool("Walking", true);
+            }
+        }
 
+
+        //Move
+        if (!Input.GetKey("left ctrl") && Input.GetKey("left shift"))
+        {
+            //Run
+            currentSpeed = runSpeed;
+            currentTimeBetweenSteps = timeBetweenSteps_Run;
+            if (weaponScript != null)
+                weaponScript.recoilMultiplier = 3f;
+        }
+        else if (!Input.GetKey("left ctrl"))
+        {
+            //Walk
+            currentSpeed = walkSpeed;
+            currentTimeBetweenSteps = timeBetweenSteps_Walk;
+            if(weaponScript != null)
+                weaponScript.recoilMultiplier = 2f;
+        }
+        else if (Input.GetKey("left ctrl"))
+        {
+            //Crouch
+            currentSpeed = crouchSpeed;
+            currentTimeBetweenSteps = timeBetweenSteps_Crouch;
+            if (weaponScript != null)
+                weaponScript.recoilMultiplier = 0.7f;
+        }
+            
+        if(isStaying && !Input.GetKey("left ctrl"))
+            if (weaponScript != null)
+                weaponScript.recoilMultiplier = 1f;
+
+        if(!isGrounded)
+            if (weaponScript != null)
+                weaponScript.recoilMultiplier = 4f;
+
+        controller.Move(move * currentSpeed * Time.deltaTime);
+
+        //Jump
         if (Input.GetKeyDown("space") && isGrounded)
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
 
+        if (isGrounded)
+            inAirMultiplier = 1f;
+        else
+        {
+            if(inAirMultiplier > minInAirMultiplier)
+                inAirMultiplier -= 0.001f;
+        }
 
         //Crouching
 
@@ -79,13 +187,34 @@ public class PlayerMovement : MonoBehaviour
                 i.localScale = new Vector3(1, i.localScale.y * 2.5f, 1);
         }
 
-        else if (!Input.GetKey("left ctrl") && !Physics.CheckSphere(cellingCheck.position, 0.5f, groundMask) && transform.localScale != new Vector3(1, 1, 1))
+        else if (!Input.GetKey("left ctrl") && transform.localScale != new Vector3(1, 1, 1))
         {
-            gameObject.transform.localScale = new Vector3(1, 1, 1);
-            gameObject.transform.position += new Vector3(0, gameObject.transform.position.y + 1, 0);
-            foreach (Transform i in transform)
-                i.localScale = new Vector3(1, i.localScale.y / 2.5f, 1);
+            if (!Physics.CheckSphere(cellingCheck.position, 0.5f, groundMask))
+            {
+                gameObject.transform.localScale = new Vector3(1, 1, 1);
+                gameObject.transform.position += new Vector3(0, gameObject.transform.position.y + 1, 0);
+                foreach (Transform i in transform)
+                    i.localScale = new Vector3(1, i.localScale.y / 2.5f, 1);
+            }
         }
+
+        //if(weaponScript != null)
+        //    if(isGrounded)
+        //    {
+        //        weaponScript.recoilMultiplier = 1f;
+        //        if (Input.GetKey("left ctrl"))
+        //        {
+        //            if(previousPos == gameObject.transform.position)
+        //                weaponScript.recoilMultiplier = 0.7f;
+        //        }
+        //        else if (handsAnim.GetBool("Running"))
+        //            weaponScript.recoilMultiplier = 3f;
+        //        else if
+        //    }
+        //else
+        //    {
+        //        weaponScript.recoilMultiplier = 3f;
+        //    }
 
 
         //Other
@@ -97,7 +226,42 @@ public class PlayerMovement : MonoBehaviour
 
         StepSoundPlay();
 
-        previousPos = gameObject.transform.position;
+
+
+        //Camera additional movement
+        var pos = cam.transform.localPosition;
+        var rot = camera.transform.rotation;
+
+        var isZero = pos.x < 0.1f && pos.x > -0.1f;
+
+        if (Input.GetKey("a") && isZero)
+            cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(-1, 0.5f, 0), 0.01f);
+        else if (Input.GetKey("d") && isZero)
+        {
+            cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(1, 0.5f, 0), 0.01f);
+            camera.rotation = Quaternion.Lerp(rot, Quaternion.Euler(new Vector3(0, 0, 1)), 0.1f);
+        }
+        else if (pos.x < 0 || pos.x > 0)
+            cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(0, 0.5f, 0), 0.01f);
+        Debug.Log(rot);
+
+    }
+
+    void OnTriggerEnter(Collider info)
+    {
+        var rb = info.GetComponent<Rigidbody>();
+        if (rb != null && canAddVelocity == true)
+        {
+            canAddVelocity = false;
+            rb.velocity = new Vector3(0, 2, 0);
+            StartCoroutine(VelocityWait());
+        }
+    }
+
+    private IEnumerator VelocityWait()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canAddVelocity = true;
     }
 
     private void StepSoundPlay()
@@ -116,10 +280,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Wait()
     {
-        if(handsAnim.GetBool("Running"))
-            yield return new WaitForSeconds(timeBetweenRunSteps);
-        else
-            yield return new WaitForSeconds(timeBetweenSteps);
+        yield return new WaitForSeconds(currentTimeBetweenSteps);
         stepPlayed = false;
     }
 }
