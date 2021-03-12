@@ -23,6 +23,9 @@ TextureImporter:
   - first:
       213: -4953087628982561906
     second: BulletHoleTypes_6
+  - first:
+      213: 971383702343228272
+    second: BulletHoleTypes_7
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -120,7 +123,7 @@ TextureImporter:
         width: 20
         height: 19
       alignment: 9
-      pivot: {x: 0.37823468, y: 0.600708}
+      pivot: {x: 0.36001754, y: 0.58288497}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -141,7 +144,7 @@ TextureImporter:
         width: 22
         height: 20
       alignment: 9
-      pivot: {x: 0.5, y: 0.44781417}
+      pivot: {x: 0.49999982, y: 0.44750747}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -254,6 +257,27 @@ TextureImporter:
       bones: []
       spriteID: e83dc154b09134bb0800000000000000
       internalID: -4953087628982561906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_7
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 97
+        width: 45
+        height: 6
+      alignment: 9
+      pivot: {x: 0.4922232, y: 0.58749133}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 07b95c6a45c0b7d00800000000000000
+      internalID: 971383702343228272
       vertices: []
       indices: 
       edges: []

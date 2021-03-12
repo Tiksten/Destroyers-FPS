@@ -22,11 +22,13 @@ public class DynamicCameraMovement : MonoBehaviour
         }
         else
         {
-            if(rotZ < 180 && rotZ != 0)
-                AddRotation(-0.15f);
-            else if(rotZ > 180 && rotZ != 0)
-                AddRotation(0.15f);
+            if(rotZ > 0)
+                AddRotation(-0.1f);
+            else if(rotZ < 0)
+                AddRotation(0.1f);
         }
+
+
     }
 
     public void AddRotation(float z)

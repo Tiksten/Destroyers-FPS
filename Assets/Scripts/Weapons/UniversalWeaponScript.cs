@@ -6,10 +6,15 @@ using UnityEngine.UI;
 public class UniversalWeaponScript : MonoBehaviour
 {
     [Header("GENERAL")]
+
+    [HideInInspector]
     public Camera fpsCam;
+    [HideInInspector]
     public Animator animator;
-    public bool pistolShootingType;
+    [HideInInspector]
     public Memory memory;
+
+    public bool pistolShootingType;
     [Space(10)]
 
     [Header("ANIMATIONS")]
@@ -116,6 +121,12 @@ public class UniversalWeaponScript : MonoBehaviour
                 break;
             }
         }
+
+        fpsCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
+        animator = gameObject.GetComponent<Animator>();
+
+        memory = FindObjectOfType<Memory>();
     }
 
     void Update()
