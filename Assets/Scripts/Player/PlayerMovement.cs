@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource audioSource;
     private bool stepPlayed;
     public float timeBetweenSteps;
+    public float timeBetweenRunSteps;
 
     public float speed = 8f;
     public float runSpeed = 14f;
@@ -114,7 +115,10 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator Wait()
     {
-        yield return new WaitForSeconds(timeBetweenSteps);
+        if(handsAnim.GetBool("Running"))
+            yield return new WaitForSeconds(timeBetweenRunSteps);
+        else
+            yield return new WaitForSeconds(timeBetweenSteps);
         stepPlayed = false;
     }
 }
