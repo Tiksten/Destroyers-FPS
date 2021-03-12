@@ -19,7 +19,6 @@ public class WeaponSwitching : MonoBehaviour
     void Start()
     {
         SelectWeapon();
-        animator = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -28,6 +27,7 @@ public class WeaponSwitching : MonoBehaviour
         int previousSelectedWeapon = selectedWeapon;
         ReloadScript ammoScript = GetComponentInChildren<ReloadScript>();
         weaponScript = GetComponentInChildren<UniversalWeaponScript>();
+        animator = gameObject.GetComponent<Animator>();
 
         if (ammoScript != null)
         {

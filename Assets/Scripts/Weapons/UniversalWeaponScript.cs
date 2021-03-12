@@ -7,11 +7,10 @@ public class UniversalWeaponScript : MonoBehaviour
 {
     [Header("GENERAL")]
 
-    [HideInInspector]
     public Camera fpsCam;
-    [HideInInspector]
+
     public Animator animator;
-    [HideInInspector]
+
     public Memory memory;
 
     public bool pistolShootingType;
@@ -121,12 +120,6 @@ public class UniversalWeaponScript : MonoBehaviour
                 break;
             }
         }
-
-        fpsCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-
-        animator = gameObject.GetComponent<Animator>();
-
-        memory = FindObjectOfType<Memory>();
     }
 
     void Update()
