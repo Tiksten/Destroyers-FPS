@@ -24,7 +24,7 @@ public class UniversalWeaponScript : MonoBehaviour
     public int damage;
     public float impactForce;
     public float firespeed = 0.1f;
-    public float patternSizeMultiplier;
+    public float patternSizeMultiplier = 1f;
     [Space(10)]
 
     [Header("SOUNDS")]
@@ -72,8 +72,7 @@ public class UniversalWeaponScript : MonoBehaviour
     [HideInInspector]
     public int currentAmmo;
 
-    [HideInInspector]
-    public float recoilMultiplier;
+    public float recoilMultiplier = 1f;
 
     [System.Serializable]
     public class SoundPlan
