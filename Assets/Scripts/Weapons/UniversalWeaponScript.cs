@@ -263,6 +263,8 @@ public class UniversalWeaponScript : MonoBehaviour
         //Playing random reloading animation
         animator.Play(animation.name);
 
+        weaponAudioSource.pitch = 1;
+
         foreach (SoundPlan sp in reloadSoundsPlan)
         {
             yield return new WaitForSeconds(sp.timeToWait);
@@ -278,9 +280,10 @@ public class UniversalWeaponScript : MonoBehaviour
 
         //If sound plan shorter then animation
         if (totalWaitTime > 0)
+        {
             yield return new WaitForSeconds(totalWaitTime);
-
-        currentAmmo = maxAmmo;
+            currentAmmo = maxAmmo;
+        }
 
         ammoText.text = currentAmmo + "/" + maxAmmo;
 
