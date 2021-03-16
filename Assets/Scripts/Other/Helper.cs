@@ -53,7 +53,29 @@ public class Helper : MonoBehaviour
 
         else if (target4 != null)
             target4.ClickButton();
-    }  
+    }
+
+    static public void GiveDamage(GameObject target, float damage)
+    {
+        Destructible target1 = target.GetComponent<Destructible>();
+        PlayerHealth target2 = target.GetComponent<PlayerHealth>();
+        SC_NPCEnemy target3 = target.GetComponent<SC_NPCEnemy>();
+        ButtonScript target4 = target.GetComponent<ButtonScript>();
+
+        var _damage = Mathf.RoundToInt(damage);
+
+        if (target1 != null)
+            target1.TakeDamage(_damage);
+
+        else if (target2 != null)
+            target2.TakeDamage(_damage);
+
+        else if (target3 != null)
+            target3.ApplyDamage(_damage);
+
+        else if (target4 != null)
+            target4.ClickButton();
+    }
 
     static public void GiveRandomForce(GameObject target, float force)
     {
@@ -67,5 +89,11 @@ public class Helper : MonoBehaviour
             torque.z = Random.Range(-force, force);
             rb.AddForce(torque, ForceMode.Impulse);
         }
+    }
+
+    static public IEnumerator Deactivate(GameObject gameObject, float time)
+    {
+        yield return new WaitForSeconds(time);
+        gameObject.SetActive(false);
     }
 }

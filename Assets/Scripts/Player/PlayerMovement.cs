@@ -196,24 +196,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        //if(weaponScript != null)
-        //    if(isGrounded)
-        //    {
-        //        weaponScript.recoilMultiplier = 1f;
-        //        if (Input.GetKey("left ctrl"))
-        //        {
-        //            if(previousPos == gameObject.transform.position)
-        //                weaponScript.recoilMultiplier = 0.7f;
-        //        }
-        //        else if (handsAnim.GetBool("Running"))
-        //            weaponScript.recoilMultiplier = 3f;
-        //        else if
-        //    }
-        //else
-        //    {
-        //        weaponScript.recoilMultiplier = 3f;
-        //    }
-
 
         //Other
 
@@ -223,27 +205,6 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
 
         StepSoundPlay();
-
-
-
-        //Camera additional movement
-        var pos = cam.transform.localPosition;
-        var rotZ = cam.transform.localRotation.eulerAngles.z; //In degrees
-
-        var isZero = pos.x < 0.1f && pos.x > -0.1f;
-
-        if (Input.GetKey("a") && isZero)
-        {
-            cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(-1, 0.5f, 0), 0.01f);
-        }
-        else if (Input.GetKey("d") && isZero)
-        {
-            cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(1, 0.5f, 0), 0.01f);
-        }
-        else if (pos.x < 0 || pos.x > 0)
-        {
-            cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(0, 0.5f, 0), 0.01f);
-        }
     }
 
     void OnTriggerEnter(Collider info)

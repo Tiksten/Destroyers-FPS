@@ -14,6 +14,8 @@ public class UniversalMeleeWeaponScript : MonoBehaviour
     [HideInInspector]
     public Animator animator;
 
+    public bool strongHitTypeIsMomental = true;
+
     public GameObject meleeHitHole;
     [Space(10)]
 
@@ -21,19 +23,25 @@ public class UniversalMeleeWeaponScript : MonoBehaviour
     public AnimationClip[] tagHitVariations;
     public AnimationClip[] tagStrongHitVariations;
     public AnimationClip[] tagIdleVariations;
+    public AnimationClip strongHitGettingReady;
     [Space(10)]
 
     [Header("SOUNDS")]
     public AudioClip[] hitSoundsVariations;
     public AudioClip[] strongHitSoundsVariations;
+
+    public float hitPitch = 1;
+    public float strongHitPitch = 0.9f;
     [Space(10)]
 
     [Header("STATS")]
-    public float meleeRange;
-    public int damage;
-    public int strongDamage;
-    public int weaponWeight;
-    public float hitForce;
+    public float meleeRange = 0.8f;
+    public float damage = 20;
+    public int strongDamage = 40;
+    public int weaponWeight = 1;
+    public float hitForce = 5;
+    public float strongHitForce = 8;
+    public float strongHitReadyTime = 1;
     [Space(10)]
 
     [Header("PARTICLES")]
@@ -77,26 +85,34 @@ public class UniversalMeleeWeaponScript : MonoBehaviour
             {
                 var animation = tagHitVariations[Random.Range(0, tagHitVariations.Length)];
                 animator.Play(animation.name);
-                Hit(damage);
-                if(hitSoundsVariations.Length != null)
+
+                Hit(damage, hitForce);
+
+                if(hitSoundsVariations.Length != 0)
                     audioSource.clip = hitSoundsVariations[Random.Range(0, hitSoundsVariations.Length)];
-                audioSource.pitch = 1;
+                audioSource.pitch = hitPitch;
                 audioSource.Play();
             }
-            else if (Input.GetKey("mouse 1"))
+            else if (Input.GetKey("mouse 1") && strongHitTypeIsMomental)
             {
                 var animation = tagStrongHitVariations[Random.Range(0, tagStrongHitVariations.Length)];
                 animator.Play(animation.name);
-                Hit(strongDamage);
-                if (strongHitSoundsVariations.Length != null)
+
+                Hit(strongDamage, strongHitForce);
+
+                if (strongHitSoundsVariations.Length != 0)
                     audioSource.clip = strongHitSoundsVariations[Random.Range(0, strongHitSoundsVariations.Length)];
-                audioSource.pitch = 0.9f;
+                audioSource.pitch = strongHitPitch;
                 audioSource.Play();
+            }
+            else if (Input.GetKey("mouse 1") && !strongHitTypeIsMomental)
+            {
+                StartCoroutine(StartStrongHitTotalSumCounter());
             }
         }
     }
 
-    private void Hit(int damage)
+    private void Hit(float damage, float force)
     {
         RaycastHit hit;
 
@@ -126,8 +142,36 @@ public class UniversalMeleeWeaponScript : MonoBehaviour
             //Impact
             if (hit.rigidbody != null)
             {
-                hit.rigidbody.AddForceAtPosition((hit.point - gameObject.transform.position) * hitForce, hit.point, ForceMode.Impulse);
+                hit.rigidbody.AddForceAtPosition((hit.point - gameObject.transform.position) * force, hit.point, ForceMode.Impulse);
             }
         }
+    }
+
+    private IEnumerator StartStrongHitTotalSumCounter()
+    {
+        var totalTime = strongHitReadyTime;
+        var _damage = (strongDamage - damage)/(totalTime * 10);
+        var totalDamage = damage;
+
+
+        animator.Play(strongHitGettingReady.name);
+
+        while (Input.GetKey("mouse 1"))
+        {
+            if(totalTime > 0)
+                yield return new WaitForSeconds(0.1f);
+                totalDamage += _damage;
+                totalTime -= 0.1f;
+        }
+
+        var animation = tagStrongHitVariations[Random.Range(0, tagStrongHitVariations.Length)];
+        animator.Play(animation.name);
+
+        Hit(strongDamage, totalDamage);
+
+        if (strongHitSoundsVariations.Length != 0)
+            audioSource.clip = strongHitSoundsVariations[Random.Range(0, strongHitSoundsVariations.Length)];
+        audioSource.pitch = strongHitPitch;
+        audioSource.Play();
     }
 }
