@@ -14,9 +14,12 @@ public class SpecAbilities : MonoBehaviour
 
 
     [Header("SPEC ABILITIES")]
+    public Camera fpsCam;
     public AnimationClip meleeKnife;
     public GameObject soliderGloves;
     public GameObject knife;
+    public ParticleSystem[] hitEffects;
+    public GameObject meleeHitHole;
 
 
     private Animator specAbilityAnim;
@@ -39,11 +42,48 @@ public class SpecAbilities : MonoBehaviour
         {
             knife.SetActive(true);
             soliderGloves.SetActive(true);
+            specAbilityAnim.Rebind();
+            Hit(50, 5);
             handsAnim.Play(weaponPullAway.name);
             specAbilityAnim.Play(meleeKnife.name);
             handsAnim.Play(weaponPullOut.name);
             StartCoroutine(Helper.Deactivate(soliderGloves, 0.5f));
             StartCoroutine(Helper.Deactivate(knife, 0.5f));
+        }
+    }
+
+    private void Hit(float damage, float force)
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 1))
+        {
+            Helper.GiveDamage(hit.collider.gameObject, damage);
+
+            Debug.Log(hit.collider.gameObject.name);
+
+
+            //Impact Effects
+            if (hitEffects.Length != 0)
+            {
+                foreach (ParticleSystem ps in hitEffects)
+                    Instantiate(ps, hit.point, Quaternion.LookRotation(hit.normal));
+            }
+
+
+
+            //Meele Hit Hole
+            GameObject bulletHole = Instantiate(meleeHitHole, hit.point, Quaternion.LookRotation(hit.normal));
+
+            bulletHole.transform.parent = hit.transform;
+
+
+
+            //Impact
+            if (hit.rigidbody != null)
+            {
+                hit.rigidbody.AddForceAtPosition((hit.point - gameObject.transform.position) * force, hit.point, ForceMode.Impulse);
+            }
         }
     }
 }

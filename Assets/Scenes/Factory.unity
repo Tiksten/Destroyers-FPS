@@ -17776,9 +17776,13 @@ MonoBehaviour:
   handsAnim: {fileID: 1960022205}
   weaponPullAway: {fileID: 7400000, guid: 85d067fe4bb9e814c8d0b5bd917e049f, type: 2}
   weaponPullOut: {fileID: 7400000, guid: bfd24be3a47933c4192bd47fc3349f4d, type: 2}
+  fpsCam: {fileID: 994192529}
   meleeKnife: {fileID: 7400000, guid: a69c1ff732c03184eac6e6aa9996e9f2, type: 2}
   soliderGloves: {fileID: 9026226156469512203}
   knife: {fileID: 1202009455837911339}
+  hitEffects: []
+  meleeHitHole: {fileID: 7437847035787299649, guid: 127fc746496c9dd4ba7aa05bc2f61069,
+    type: 3}
 --- !u!1001 &829267141
 PrefabInstance:
   m_ObjectHideFlags: 0
