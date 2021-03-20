@@ -190,7 +190,7 @@ public class PlayerMovement : MonoBehaviour
             if (!Physics.CheckSphere(cellingCheck.position, 0.5f, groundMask))
             {
                 gameObject.transform.localScale = new Vector3(1, 1, 1);
-                gameObject.transform.position += new Vector3(0, gameObject.transform.position.y + 1, 0);
+                gameObject.transform.position += new Vector3(0, 1, 0);
                 foreach (Transform i in transform)
                     i.localScale = new Vector3(1, i.localScale.y / 2.5f, 1);
             }

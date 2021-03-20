@@ -8,8 +8,6 @@ public class SpecAbilities : MonoBehaviour
     public Animator handsAnim;
 
     public AnimationClip weaponPullAway;
-
-    public AnimationClip weaponPullOut;
     [Space(10)]
 
 
@@ -46,7 +44,6 @@ public class SpecAbilities : MonoBehaviour
             Hit(50, 5);
             handsAnim.Play(weaponPullAway.name);
             specAbilityAnim.Play(meleeKnife.name);
-            handsAnim.Play(weaponPullOut.name);
             StartCoroutine(Helper.Deactivate(soliderGloves, 0.5f));
             StartCoroutine(Helper.Deactivate(knife, 0.5f));
         }
@@ -56,7 +53,7 @@ public class SpecAbilities : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 1))
+        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, 1.5f))
         {
             Helper.GiveDamage(hit.collider.gameObject, damage);
 
