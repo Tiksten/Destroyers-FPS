@@ -63,10 +63,13 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
                 }
             }
         }
-        //Move towardst he player
-        agent.destination = playerTransform.position;
-        //Always look at player
-        transform.LookAt(new Vector3(playerTransform.transform.position.x, transform.position.y, playerTransform.position.z));
+        //Move towardst he player if see
+        RaycastHit hit2;
+        if (Physics.Raycast(transform.position, playerTransform.position - transform.position, out hit2, 100))
+            if(hit2.collider.gameObject.tag == "Player")
+                agent.destination = playerTransform.position;
+        //Always look at player if see
+        transform.LookAt(new Vector3(agent.destination.x, transform.position.y, agent.destination.z));
         //Gradually reduce rigidbody velocity if the force was applied by the bullet
         r.velocity *= 0.99f;
 
@@ -79,13 +82,14 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
 
     public void ApplyDamage(float points)
     {
+        agent.destination = playerTransform.position;
         npcHP -= points;
         if (npcHP <= 0)
         {
             //Destroy the NPC
             GameObject npcDead = Instantiate(npcDeadPrefab, transform.position, transform.rotation);
             //Slightly bounce the npc dead prefab up
-            npcDead.GetComponent<Rigidbody>().velocity = (-(playerTransform.position - transform.position).normalized * 8) + new Vector3(0, 5, 0);
+            //npcDead.GetComponent<Rigidbody>().velocity = (-(playerTransform.position - transform.position).normalized * 8) + new Vector3(0, 5, 0);
             Destroy(npcDead, 10);
             es.EnemyEliminated(this);
             Destroy(gameObject);
