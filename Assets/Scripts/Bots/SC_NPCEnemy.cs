@@ -9,7 +9,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
     public Transform viewPoint;
     public EnemyAnimationController enemyAnim;
 
-    public float attackDistance = 3f;
+    public float attackDistance = 5f;
     public float movementSpeed = 4f;
     public float npcHP = 100;
     public float maxHP = 100;

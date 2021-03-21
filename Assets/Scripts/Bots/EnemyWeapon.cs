@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
 {
+    public GameObject bulletHolePrefab;
     public AudioSource shotSound;
     public Transform shootingPointA;
     public Transform shootingPointB;
@@ -25,6 +26,10 @@ public class EnemyWeapon : MonoBehaviour
             Debug.DrawRay(shootingPointA.position, shootingPointB.position - shootingPointA.position, Color.red, 1);
 
             Destroy(Instantiate(hitEffect, hit3.point, Quaternion.LookRotation(hit3.normal)), 1);
+
+            var bh = Instantiate(hitEffect, hit3.point, Quaternion.LookRotation(hit3.normal));
+            bh.transform.SetParent(hit3.transform);
+            Destroy(bh, 30);
         }
 
         shotSound.pitch = Random.Range(0.9f, 1.1f);

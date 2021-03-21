@@ -32,6 +32,9 @@ public class EnemyAnimationController : MonoBehaviour
     public AnimationClip chestWalk;
 
 
+    public Vector3 currentTarget;
+
+
     public float damage;
 
     [HideInInspector]
@@ -41,6 +44,7 @@ public class EnemyAnimationController : MonoBehaviour
     void Start()
     {
         previousPos = enemy.transform.position;
+        currentTarget = transform.position + new Vector3(0, 0, 2);
     }
 
     // Update is called once per frame
@@ -59,6 +63,19 @@ public class EnemyAnimationController : MonoBehaviour
         }
 
         previousPos = enemy.transform.position;
+
+        //Look
+        var look = mainLookArmature.transform;
+        look.LookAt(currentTarget);
+        var lookInDegrees = look.rotation.eulerAngles;
+
+        if (lookInDegrees.x < 320 && lookInDegrees.x > 180)
+            lookInDegrees.x = 320;
+        else if (lookInDegrees.x > 40 && lookInDegrees.x < 180)
+            lookInDegrees.x = 40;
+
+        mainLookArmature.transform.rotation = Quaternion.Euler(-lookInDegrees.x, lookInDegrees.y + 180, lookInDegrees.z);
+        Debug.Log(-lookInDegrees.x);
     }
 
     public void DamageGiven(float npcHP, float maxHP)
@@ -71,8 +88,7 @@ public class EnemyAnimationController : MonoBehaviour
 
     public void Shoot(Vector3 target)
     {
-        //mainLookArmature.transform.LookAt(target);
-
+        currentTarget = target + new Vector3(0, 0.5f, 0);
         chestAnimator.Play(chestShoot.name);
         chestAnimator.SetBool("HaveSeenPlayer", true);
     }

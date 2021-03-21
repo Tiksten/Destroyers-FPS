@@ -61,7 +61,7 @@ public class SC_EnemySpawner : MonoBehaviour
                 //Spawn enemy 
                 if (totalEnemiesSpawned < enemiesToEliminate)
                 {
-                    Transform randomPoint = spawnPoints[Random.Range(0, spawnPoints.Length - 1)];
+                    Transform randomPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
                     GameObject enemy = Instantiate(enemyPrefab, randomPoint.position, Quaternion.identity);
                     SC_NPCEnemy npc = enemy.GetComponent<SC_NPCEnemy>();

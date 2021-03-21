@@ -180,7 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewPoint: {fileID: 3241711825066493345}
   enemyAnim: {fileID: 4863822054007392685}
-  attackDistance: 1
+  attackDistance: 5
   movementSpeed: 4
   npcHP: 100
   maxHP: 100
@@ -661,6 +661,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e4375fa0c65f44b8ab3776c9f477a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletHolePrefab: {fileID: 0}
   shotSound: {fileID: 8701025382879437716}
   shootingPointA: {fileID: 146519279817696161}
   shootingPointB: {fileID: 3706967196257391613}
@@ -1323,6 +1324,7 @@ MonoBehaviour:
   chestLookingForPlayer:
   - {fileID: 7400000, guid: 2eaa7667f5d2f384a8d73264a4e944f7, type: 2}
   chestWalk: {fileID: 7400000, guid: 4408c71a40fc00442b13e38d2192e35a, type: 2}
+  currentTarget: {x: 0, y: 0, z: 0}
   damage: 5
 --- !u!1 &5033825617448705065
 GameObject:
