@@ -6,9 +6,12 @@ using UnityEngine.AI;
 
 public class SC_NPCEnemy : MonoBehaviour, IEntity
 {
+    public EnemyAnimationController enemyAnim;
+
     public float attackDistance = 3f;
     public float movementSpeed = 4f;
     public float npcHP = 100;
+    public float maxHP = 100;
     //How much damage will npc deal to the player
     public int npcDamage = 5;
     public float attackRate = 0.5f;
@@ -63,17 +66,22 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
                 }
             }
         }
-        //Move towardst he player if see
+        //Move towards the player if see
         RaycastHit hit2;
         if (Physics.Raycast(transform.position, playerTransform.position - transform.position, out hit2, 100))
-            if(hit2.collider.gameObject.tag == "Player")
+            if (hit2.collider.gameObject.tag == "Player")
+            {
                 agent.destination = playerTransform.position;
+                enemyAnim.Shoot(agent.destination);
+            }
+
         //Always look at player if see
         transform.LookAt(new Vector3(agent.destination.x, transform.position.y, agent.destination.z));
+
         //Gradually reduce rigidbody velocity if the force was applied by the bullet
         r.velocity *= 0.99f;
 
-        if (Random.Range(0, 1000) <= 2)
+        if (Random.Range(0, 1000) <= 1)
         {
             audioSource.clip = enemyBreatheSounds[Random.Range(0, enemyBreatheSounds.Length)];
             audioSource.Play();
@@ -101,6 +109,8 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
         {
             audioSource.clip = enemyHitSounds[Random.Range(0, enemyHitSounds.Length)];
             audioSource.Play();
+
+            enemyAnim.DamageGiven(npcHP, maxHP);
         }
     }
 }

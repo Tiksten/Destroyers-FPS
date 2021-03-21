@@ -148,9 +148,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b4bfa156a315434882cde037b8bd265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyAnim: {fileID: 0}
   attackDistance: 1
   movementSpeed: 4
   npcHP: 100
+  maxHP: 100
   npcDamage: 5
   attackRate: 0.5
   firePoint: {fileID: 7984525240305677186}
@@ -576,7 +578,7 @@ Animator:
   m_GameObject: {fileID: 2027740123475829696}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a228de1a03025634da4c0fcec3f1fb94, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -894,6 +896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2932731753170382210}
+  - component: {fileID: 483270298534450312}
   m_Layer: 0
   m_Name: Bone
   m_TagString: Untagged
@@ -917,6 +920,25 @@ Transform:
   m_Father: {fileID: 8387814037898157680}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &483270298534450312
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3186471039906018366}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a864bf43be483d24799cea912be3025d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3752176781616130895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,12 +1175,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1311bd7083509488ea74e62f5a90c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  legsAnimator: {fileID: 3853688720596019673}
-  chestAnimator: {fileID: 3712929927747667295}
   enemy: {fileID: 674495028441635140}
   mainLookArmature: {fileID: 2027740123475829696}
+  legsAnimator: {fileID: 3853688720596019673}
   legsIdle: {fileID: 7400000, guid: 868e86ba07cbab847b4d49ffe23bfade, type: 2}
   legsWalk: {fileID: 7400000, guid: 7b2a4bcfeef4081498664eddb574cf01, type: 2}
+  chestAnimator: {fileID: 3712929927747667295}
+  chestShoot: {fileID: 0}
+  chestIdle: []
+  chestHit: {fileID: 0}
+  chestLookingForPlayer: []
+  chestWalk: {fileID: 0}
 --- !u!1 &5033825617448705065
 GameObject:
   m_ObjectHideFlags: 0
