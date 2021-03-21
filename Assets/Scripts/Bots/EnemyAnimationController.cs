@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAnimationController : MonoBehaviour
-{   
+{
+    public EnemyWeapon weaponScript;
+
     public GameObject enemy;
 
     public GameObject mainLookArmature; //Armature that controls bot view
@@ -29,6 +31,8 @@ public class EnemyAnimationController : MonoBehaviour
 
     public AnimationClip chestWalk;
 
+
+    public float damage;
 
     [HideInInspector]
     Vector3 previousPos;
@@ -67,7 +71,7 @@ public class EnemyAnimationController : MonoBehaviour
 
     public void Shoot(Vector3 target)
     {
-        mainLookArmature.transform.LookAt(target);
+        //mainLookArmature.transform.LookAt(target);
 
         chestAnimator.Play(chestShoot.name);
         chestAnimator.SetBool("HaveSeenPlayer", true);

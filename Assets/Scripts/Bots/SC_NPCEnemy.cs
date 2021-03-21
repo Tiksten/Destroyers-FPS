@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class SC_NPCEnemy : MonoBehaviour, IEntity
 {
+    public Transform viewPoint;
     public EnemyAnimationController enemyAnim;
 
     public float attackDistance = 3f;
@@ -68,7 +69,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
         }
         //Move towards the player if see
         RaycastHit hit2;
-        if (Physics.Raycast(transform.position, playerTransform.position - transform.position, out hit2, 100))
+        if (Physics.Raycast(viewPoint.position, playerTransform.position - viewPoint.position, out hit2, 100))
             if (hit2.collider.gameObject.tag == "Player")
             {
                 agent.destination = playerTransform.position;
@@ -93,7 +94,9 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
         agent.destination = playerTransform.position;
         npcHP -= points;
         if (npcHP <= 0)
-        {
+        {   
+            audioSource.clip = enemyDeathSounds[Random.Range(0, enemyDeathSounds.Length)];
+            audioSource.Play();
             //Destroy the NPC
             GameObject npcDead = Instantiate(npcDeadPrefab, transform.position, transform.rotation);
             //Slightly bounce the npc dead prefab up
@@ -101,9 +104,6 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
             Destroy(npcDead, 10);
             es.EnemyEliminated(this);
             Destroy(gameObject);
-
-            audioSource.clip = enemyDeathSounds[Random.Range(0, enemyDeathSounds.Length)];
-            audioSource.Play();
         }
         else
         {
