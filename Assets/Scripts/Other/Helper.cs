@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Helper : MonoBehaviour
 {
+    private static Memory mem = GameObject.FindGameObjectWithTag("Memory").GetComponent<Memory>();
+
     [System.Serializable]
     public class SprayPattern
     {
@@ -95,5 +97,149 @@ public class Helper : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         gameObject.SetActive(false);
+    }
+
+    static public void Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance)
+    {
+        var shotDir = posTo - posFrom;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(posFrom, shotDir, out hit, shotDistance))
+        {
+            //Damage
+            GiveDamage(hit.collider.gameObject, damage);
+
+
+            //Impact Effects
+            var chosenImpactEffect = mem.ImpactEffectChose(hit.collider);
+
+            foreach (GameObject i in chosenImpactEffect)
+                Destroy(Instantiate(i, hit.point, Quaternion.LookRotation(hit.normal)), Random.Range(10f, 15f));
+
+
+            //Bullet Hole
+            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+
+            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+
+            bulletHole.transform.parent = hit.transform;
+
+            Destroy(bulletHole, Random.Range(45f, 60f));
+
+
+            //Impact
+            if (hit.rigidbody != null)
+                hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+        }
+    }
+
+    static public void Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject muzzleFlash)
+    {
+        var shotDir = posTo - posFrom;
+        Destroy(Instantiate(muzzleFlash, posFrom, Quaternion.Euler(shotDir)), 2);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(posFrom, shotDir, out hit, shotDistance))
+        {
+            //Damage
+            GiveDamage(hit.collider.gameObject, damage);
+
+
+            //Impact Effects
+            var chosenImpactEffect = mem.ImpactEffectChose(hit.collider);
+
+            foreach(GameObject i in chosenImpactEffect)
+                Destroy(Instantiate(i, hit.point, Quaternion.LookRotation(hit.normal)), Random.Range(10f, 15f));
+
+
+            //Bullet Hole
+            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+
+            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+
+            bulletHole.transform.parent = hit.transform;
+
+            Destroy(bulletHole, Random.Range(45f, 60f));
+
+
+            //Impact
+            if (hit.rigidbody != null)
+                hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+        }
+    }
+
+    static public void ShotForward(Transform transformFrom, float damage, float shotDistance)
+    {
+        var posFrom = transformFrom.position;
+        var shotDir = transformFrom.forward;
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(posFrom, shotDir, out hit, shotDistance))
+        {
+            //Damage
+            GiveDamage(hit.collider.gameObject, damage);
+
+
+            //Impact Effects
+            var chosenImpactEffect = mem.ImpactEffectChose(hit.collider);
+
+            foreach (GameObject i in chosenImpactEffect)
+                Destroy(Instantiate(i, hit.point, Quaternion.LookRotation(hit.normal)), Random.Range(10f, 15f));
+
+
+            //Bullet Hole
+            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+
+            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+
+            bulletHole.transform.parent = hit.transform;
+
+            Destroy(bulletHole, Random.Range(45f, 60f));
+
+
+            //Impact
+            if (hit.rigidbody != null)
+                hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+        }
+    }
+
+    static public void ShotForward(Transform transformFrom, float damage, float shotDistance, GameObject muzzleFlash)
+    {
+        var posFrom = transformFrom.position;
+        var shotDir = transformFrom.forward;
+        Destroy(Instantiate(muzzleFlash, posFrom, Quaternion.Euler(shotDir)), 2);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(posFrom, shotDir, out hit, shotDistance))
+        {
+            //Damage
+            GiveDamage(hit.collider.gameObject, damage);
+
+
+            //Impact Effects
+            var chosenImpactEffect = mem.ImpactEffectChose(hit.collider);
+
+            foreach (GameObject i in chosenImpactEffect)
+                Destroy(Instantiate(i, hit.point, Quaternion.LookRotation(hit.normal)), Random.Range(10f, 15f));
+
+
+            //Bullet Hole
+            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+
+            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+
+            bulletHole.transform.parent = hit.transform;
+
+            Destroy(bulletHole, Random.Range(45f, 60f));
+
+
+            //Impact
+            if (hit.rigidbody != null)
+                hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+        }
     }
 }

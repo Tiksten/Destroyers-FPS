@@ -38,7 +38,7 @@ public class UniversalWeaponScript : MonoBehaviour
     [Space(10)]
 
     [Header("PARTICLES")]
-    public ParticleSystem[] muzzleFlashes;
+    public ParticleSystem muzzleFlash;
     [Space(10)]
     public ParticleSystem[] impactEffects;
     [Space(10)]
@@ -190,14 +190,12 @@ public class UniversalWeaponScript : MonoBehaviour
 
     private IEnumerator Shot()
     {
+        Helper.ShotForward(fpsCam.transform, damage, 1000);
+
+        muzzleFlash.Play();
+
         var animation = tagShootVariations[Random.Range(0, tagShootVariations.Length)];
         animator.Play(animation.name);
-
-        if (muzzleFlashes.Length != 0)
-        {
-            foreach (ParticleSystem ps in muzzleFlashes)
-                ps.Play();
-        }
 
         var cartrige = Instantiate(cartrigePrefab, cartrigeEjector.position, cartrigeEjector.rotation);
         Destroy(cartrige, 2f);
@@ -211,37 +209,6 @@ public class UniversalWeaponScript : MonoBehaviour
         weaponAudioSource.clip = shots[Random.Range(0, shots.Length)];
         weaponAudioSource.Play();
 
-
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
-        {
-            Helper.GiveDamage(hit.collider.gameObject, 40);
-
-            //Impact Effects
-            if (impactEffects.Length != 0)
-            {
-                foreach (ParticleSystem ps in impactEffects)
-                    Instantiate(ps, hit.point, Quaternion.LookRotation(hit.normal));
-            }
-
-
-            //Bullet Hole
-            var chosenBulletHole = memory.BulletHoleChose(hit.collider);
-
-            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
-
-            bulletHole.transform.parent = hit.transform;
-
-
-
-            //Impact
-            if (hit.rigidbody != null)
-            {
-                hit.rigidbody.AddForceAtPosition((hit.point - gameObject.transform.position) * impactForce, hit.point, ForceMode.Impulse);
-            }
-        }
         MoveNextSprayStep();
         
         yield return new WaitForSeconds(firespeed);

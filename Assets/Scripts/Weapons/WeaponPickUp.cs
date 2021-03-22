@@ -33,7 +33,7 @@ public class WeaponPickUp : MonoBehaviour
 
     // Update is called once per frame
 private void OnTriggerEnter(Collider other) {
-    if(other.tag == "Weapon")
+    if(other.tag == "Weapon" && Input.GetKey("f"))
     {
         if(other.name == "AK47")
         {

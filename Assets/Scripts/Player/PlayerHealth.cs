@@ -20,7 +20,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) & (currentHealth < maxHealth))
+        if (Input.GetKeyDown(KeyCode.H) & (currentHealth < maxHealth))
         {
             TakeDamage(-20);
             GameObject effectH = Instantiate(healthEffect, bloodPoint.position, bloodPoint.rotation);

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class DynamicCameraMovement : MonoBehaviour
 {
+    public Transform qPosCheck;
+    public Transform ePosCheck;
+
     public Camera cam;
 
     public MeshRenderer playerBody;
@@ -23,6 +26,9 @@ public class DynamicCameraMovement : MonoBehaviour
     float rotZ = 0f;
 
     private float camDefaultPosY;
+
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private float checkDistance;
 
     private void Start()
     {
@@ -71,13 +77,13 @@ public class DynamicCameraMovement : MonoBehaviour
         else
             cam.transform.localPosition = new Vector3(0, camDefaultPosY, 0);
 
-        if (Input.GetKey("q"))
+        if (Input.GetKey("q") && !Physics.CheckSphere(qPosCheck.position, checkDistance, groundMask))
         {
             AddRotation(rotTiltChangeStep);
             cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(-maxPlayerTiltPos, camDefaultPosY, 0), posTiltChangeStep);
             playerBody.enabled = false;
         }
-        else if (Input.GetKey("e"))
+        else if (Input.GetKey("e") && !Physics.CheckSphere(ePosCheck.position, checkDistance, groundMask))
         {
             AddRotation(-rotTiltChangeStep);
             cam.transform.localPosition = Vector3.Lerp(pos, new Vector3(maxPlayerTiltPos, camDefaultPosY, 0), posTiltChangeStep);

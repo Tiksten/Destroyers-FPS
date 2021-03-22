@@ -75,7 +75,6 @@ public class EnemyAnimationController : MonoBehaviour
             lookInDegrees.x = 40;
 
         mainLookArmature.transform.rotation = Quaternion.Euler(-lookInDegrees.x, lookInDegrees.y + 180, lookInDegrees.z);
-        Debug.Log(-lookInDegrees.x);
     }
 
     public void DamageGiven(float npcHP, float maxHP)
