@@ -38,7 +38,7 @@ public class UniversalWeaponScript : MonoBehaviour
     [Space(10)]
 
     [Header("PARTICLES")]
-    public ParticleSystem muzzleFlash;
+    public ParticleSystem[] shotEffects;
     [Space(10)]
     public ParticleSystem[] impactEffects;
     [Space(10)]
@@ -191,8 +191,8 @@ public class UniversalWeaponScript : MonoBehaviour
     private IEnumerator Shot()
     {
         Helper.ShotForward(fpsCam.transform, damage, 1000);
-
-        muzzleFlash.Play();
+        foreach (ParticleSystem i in shotEffects)
+            i.Play();
 
         var animation = tagShootVariations[Random.Range(0, tagShootVariations.Length)];
         animator.Play(animation.name);

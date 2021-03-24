@@ -134,10 +134,11 @@ public class Helper : MonoBehaviour
         }
     }
 
-    static public void Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject muzzleFlash)
+    static public void Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject[] shotEffects)
     {
         var shotDir = posTo - posFrom;
-        Destroy(Instantiate(muzzleFlash, posFrom, Quaternion.Euler(shotDir)), 2);
+        foreach(GameObject i in shotEffects)
+            Destroy(Instantiate(i, posFrom, Quaternion.Euler(shotDir)), 2);
 
         RaycastHit hit;
 
@@ -206,11 +207,16 @@ public class Helper : MonoBehaviour
         }
     }
 
-    static public void ShotForward(Transform transformFrom, float damage, float shotDistance, GameObject muzzleFlash)
+    static public void ShotForward(Transform transformFrom, float damage, float shotDistance, GameObject[] shotEffects)
     {
         var posFrom = transformFrom.position;
         var shotDir = transformFrom.forward;
-        Destroy(Instantiate(muzzleFlash, posFrom, Quaternion.Euler(shotDir)), 2);
+        var fwd = transformFrom.rotation;
+
+        foreach (GameObject i in shotEffects)
+            Destroy(Instantiate(i, posFrom, fwd), 2);
+
+        Debug.Log(shotDir);
 
         RaycastHit hit;
 
