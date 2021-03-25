@@ -44,12 +44,13 @@ public class EnemyAnimationController : MonoBehaviour
     void Start()
     {
         previousPos = enemy.transform.position;
-        currentTarget = transform.position + new Vector3(0, 0, 2);
+        currentTarget = transform.position + new Vector3(0, 0, 1.5f);
     }
 
     // Update is called once per frame
     void Update()
     {
+
         //Legs
         if (previousPos == enemy.transform.position)
         {

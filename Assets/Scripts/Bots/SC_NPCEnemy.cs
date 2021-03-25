@@ -1,15 +1,20 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody))]
 
 public class SC_NPCEnemy : MonoBehaviour, IEntity
 {
+    public bool canMoveRandomly = false;
+    public bool alwaysSeePlayer = false;
+
     public Transform viewPoint;
     public EnemyAnimationController enemyAnim;
 
-    public float attackDistance = 5f;
+    public float meleeAttackDistance = 5f;
     public float movementSpeed = 4f;
     public float npcHP = 100;
     public float maxHP = 100;
@@ -32,11 +37,13 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
     public AudioClip[] enemyBreatheSounds;
     public AudioSource audioSource;
 
+    [HideInInspector] public bool canSeePlayer = false;
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.stoppingDistance = attackDistance;
+        agent.stoppingDistance = meleeAttackDistance;
         agent.speed = movementSpeed;
         r = GetComponent<Rigidbody>();
         r.useGravity = false;
@@ -46,7 +53,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
     // Update is called once per frame
     void Update()
     {
-        if (agent.remainingDistance - attackDistance < 0.01f)
+        if (agent.remainingDistance - meleeAttackDistance < 0.01f)
         {
             if (Time.time > nextAttackTime)
             {
@@ -54,11 +61,11 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
 
                 //Attack
                 RaycastHit hit;
-                if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, attackDistance))
+                if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, meleeAttackDistance))
                 {
                     if (hit.transform.CompareTag("Player"))
                     {
-                        Debug.DrawLine(firePoint.position, firePoint.position + firePoint.forward * attackDistance, Color.cyan);
+                        Debug.DrawLine(firePoint.position, firePoint.position + firePoint.forward * meleeAttackDistance, Color.cyan);
 
                         IEntity player = hit.transform.GetComponent<IEntity>();
                         PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
@@ -66,21 +73,43 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
                     }
                 }
             }
+
+            if(canMoveRandomly && agent.remainingDistance - meleeAttackDistance < 0.01f)
+            {
+                agent.destination = agent.destination + new Vector3(Random.Range(-15, 15), 0, Random.Range(-15, 15));
+                enemyAnim.currentTarget = agent.destination;
+                canMoveRandomly = false;
+                StartCoroutine(WaitForRandomMovementEnd());
+            }
         }
+
+        
+
+
         //Move towards the player if see
         RaycastHit hit2;
         if (Physics.Raycast(viewPoint.position, playerTransform.position - viewPoint.position, out hit2, 100))
+        {
             if (hit2.collider.gameObject.tag == "Player")
             {
+                canSeePlayer = true;
                 agent.destination = playerTransform.position;
                 enemyAnim.Shoot(agent.destination);
             }
+            else
+            {
+                canSeePlayer = false;
+                StartCoroutine(WaitForRandomMovementEnd());
+            }
+        }
+
 
         //Always look at player if see
         transform.LookAt(new Vector3(agent.destination.x, transform.position.y, agent.destination.z));
 
+
         //Gradually reduce rigidbody velocity if the force was applied by the bullet
-        r.velocity *= 0.99f;
+        r.velocity *= 0.5f;
 
         if (Random.Range(0, 1000) <= 1)
         {
@@ -93,6 +122,8 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
     {
         agent.destination = playerTransform.position;
         npcHP -= points;
+        enemyAnim.currentTarget = playerTransform.position;
+
         if (npcHP <= 0)
         {   
             audioSource.clip = enemyDeathSounds[Random.Range(0, enemyDeathSounds.Length)];
@@ -105,6 +136,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
             es.EnemyEliminated(this);
             Destroy(gameObject);
         }
+
         else
         {
             audioSource.clip = enemyHitSounds[Random.Range(0, enemyHitSounds.Length)];
@@ -112,5 +144,12 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
 
             enemyAnim.DamageGiven(npcHP, maxHP);
         }
+    }
+
+    public IEnumerator WaitForRandomMovementEnd()
+    {
+        yield return new WaitForSeconds(Random.Range(5, 25));
+        if(!canSeePlayer)
+            canMoveRandomly = true;
     }
 }
