@@ -26,6 +26,33 @@ TextureImporter:
   - first:
       213: 971383702343228272
     second: BulletHoleTypes_7
+  - first:
+      213: 9073365705169850483
+    second: BulletHoleTypes_8
+  - first:
+      213: -766824749300500001
+    second: BulletHoleTypes_9
+  - first:
+      213: -5505560103121412097
+    second: BulletHoleTypes_10
+  - first:
+      213: -6708783110188200487
+    second: BulletHoleTypes_11
+  - first:
+      213: 1677604784967544229
+    second: BulletHoleTypes_12
+  - first:
+      213: 4567978240795786359
+    second: BulletHoleTypes_13
+  - first:
+      213: 8575366390928438252
+    second: BulletHoleTypes_14
+  - first:
+      213: -3332129750148020265
+    second: BulletHoleTypes_15
+  - first:
+      213: -491271637914767669
+    second: BulletHoleTypes_16
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -122,8 +149,8 @@ TextureImporter:
         y: 138
         width: 20
         height: 19
-      alignment: 9
-      pivot: {x: 0.36001754, y: 0.58288497}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -143,8 +170,8 @@ TextureImporter:
         y: 136
         width: 22
         height: 20
-      alignment: 9
-      pivot: {x: 0.49999982, y: 0.44750747}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -160,10 +187,10 @@ TextureImporter:
       name: BulletHoleTypes_2
       rect:
         serializedVersion: 2
-        x: 9
-        y: 122
-        width: 8
-        height: 8
+        x: 66
+        y: 147
+        width: 6
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,10 +208,10 @@ TextureImporter:
       name: BulletHoleTypes_3
       rect:
         serializedVersion: 2
-        x: 23
-        y: 121
-        width: 7
-        height: 8
+        x: 106
+        y: 151
+        width: 16
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,10 +229,10 @@ TextureImporter:
       name: BulletHoleTypes_4
       rect:
         serializedVersion: 2
-        x: 38
-        y: 121
-        width: 6
-        height: 6
+        x: 88
+        y: 141
+        width: 11
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,10 +250,10 @@ TextureImporter:
       name: BulletHoleTypes_5
       rect:
         serializedVersion: 2
-        x: 14
-        y: 110
-        width: 8
-        height: 7
+        x: 109
+        y: 143
+        width: 16
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -244,10 +271,10 @@ TextureImporter:
       name: BulletHoleTypes_6
       rect:
         serializedVersion: 2
-        x: 31
-        y: 113
-        width: 5
-        height: 6
+        x: 67
+        y: 138
+        width: 7
+        height: 5
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -265,12 +292,12 @@ TextureImporter:
       name: BulletHoleTypes_7
       rect:
         serializedVersion: 2
-        x: 7
-        y: 97
-        width: 45
-        height: 6
-      alignment: 9
-      pivot: {x: 0.4922232, y: 0.58749133}
+        x: 68
+        y: 129
+        width: 6
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -278,6 +305,195 @@ TextureImporter:
       bones: []
       spriteID: 07b95c6a45c0b7d00800000000000000
       internalID: 971383702343228272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_8
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 126
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3705cdd39021bed70800000000000000
+      internalID: 9073365705169850483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_9
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 132
+        width: 15
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd937fc04f0bb55f0800000000000000
+      internalID: -766824749300500001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_10
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 122
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fff92e381425893b0800000000000000
+      internalID: -5505560103121412097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_11
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 121
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9dd87125e4d95e2a0800000000000000
+      internalID: -6708783110188200487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_12
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 121
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5ad6c71e9ac084710800000000000000
+      internalID: 1677604784967544229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_13
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 125
+        width: 13
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77cb8500208b46f30800000000000000
+      internalID: 4567978240795786359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_14
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 110
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce3fc1e5c42d10770800000000000000
+      internalID: 8575366390928438252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_15
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 113
+        width: 5
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d78ae885a5e1c1d0800000000000000
+      internalID: -3332129750148020265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BulletHoleTypes_16
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 97
+        width: 45
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bceadd55c07ae29f0800000000000000
+      internalID: -491271637914767669
       vertices: []
       indices: 
       edges: []

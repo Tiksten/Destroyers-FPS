@@ -28080,6 +28080,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4066485998840908341, guid: d84d9aca57d04ea4d96509c40be8b8b4,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 01571ba68fb2dad46aa03094ab219579,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d84d9aca57d04ea4d96509c40be8b8b4, type: 3}
 --- !u!1 &1166292340
@@ -30108,18 +30114,28 @@ MonoBehaviour:
     - {fileID: 7113406816565869387, guid: 4fdd1227ae325ef4aa64d46a312d319b, type: 3}
   - material: {fileID: 13400000, guid: 0980d5d13c447864b9ca68e365f7a0db, type: 2}
     bulletHolePrefab:
-    - {fileID: 8699535780418129341, guid: 997cc38cf3c5462468e2321eb7793b19, type: 3}
+    - {fileID: 2502435908473932018, guid: f85435f4d658e654dbcd681a044806e7, type: 3}
+    - {fileID: 5675027654092592818, guid: 66c68a6b5d653854489a5e74991bd0fd, type: 3}
+    - {fileID: 5364311078173209070, guid: 03f21869a4c166e49886d00ed484e16a, type: 3}
     impactEffectParticles:
     - {fileID: 1180487155811094846, guid: 5d32b34179e898e4c9727817900daea6, type: 3}
     - {fileID: 5221369981866751632, guid: b7697fda6e4ab914789371dbe53f264a, type: 3}
     - {fileID: 5156338670358730221, guid: e7a12bd8433aefe4287981cba784d91b, type: 3}
-  - material: {fileID: 13400000, guid: 0980d5d13c447864b9ca68e365f7a0db, type: 2}
+  - material: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
     bulletHolePrefab:
-    - {fileID: 8699535780418129341, guid: 997cc38cf3c5462468e2321eb7793b19, type: 3}
+    - {fileID: 8839551912358641727, guid: 1cb4b3637e793a24abe628d761b49fb1, type: 3}
+    - {fileID: 8420768515046213043, guid: 636ed4424d6fae54b993664f5c02d663, type: 3}
+    - {fileID: 228253001445968064, guid: 03db0c9ebe218784cb4287c2c55b0a81, type: 3}
     impactEffectParticles:
-    - {fileID: 1180487155811094846, guid: 5d32b34179e898e4c9727817900daea6, type: 3}
-    - {fileID: 5221369981866751632, guid: b7697fda6e4ab914789371dbe53f264a, type: 3}
-    - {fileID: 5156338670358730221, guid: e7a12bd8433aefe4287981cba784d91b, type: 3}
+    - {fileID: 4709411863478360246, guid: 00d4774e66e06a64e892ba699cba3de8, type: 3}
+    - {fileID: 8472223552183443294, guid: 002eb76037458944e8e5217d7242b51a, type: 3}
+  - material: {fileID: 13400000, guid: 01571ba68fb2dad46aa03094ab219579, type: 2}
+    bulletHolePrefab:
+    - {fileID: 3346919944102112830, guid: 4ee3c7f7cb6979042b39ec6b21973433, type: 3}
+    - {fileID: 8819893229596857874, guid: 430cc98dc7edd884a9fa3460316e284e, type: 3}
+    impactEffectParticles:
+    - {fileID: 7142597563180256797, guid: 252b6b4b0a7cc4948b5c6887183e3403, type: 3}
+    - {fileID: 8472223552183443294, guid: 002eb76037458944e8e5217d7242b51a, type: 3}
   sprayPatterns:
   - weaponPatternName: StrongPistol
     weaponSprayPattern:

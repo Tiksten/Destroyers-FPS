@@ -14,7 +14,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
     public float npcHP = 100;
     public float maxHP = 100;
     //How much damage will npc deal to the player
-    public int npcDamage = 5;
+    public int npcMeleeDamage = 5;
     public float attackRate = 0.5f;
     public Transform firePoint;
     public GameObject npcDeadPrefab;
@@ -62,7 +62,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
 
                         IEntity player = hit.transform.GetComponent<IEntity>();
                         PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
-                        playerHealth.TakeDamage(npcDamage);
+                        playerHealth.TakeDamage(npcMeleeDamage);
                     }
                 }
             }

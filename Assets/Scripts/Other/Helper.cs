@@ -119,18 +119,23 @@ public class Helper : MonoBehaviour
 
 
             //Bullet Hole
-            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+            if (hit.collider.gameObject.tag != "Player")
+            {
+                var chosenBulletHole = mem.BulletHoleChose(hit.collider);
 
-            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+                GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
 
-            bulletHole.transform.parent = hit.transform;
+                bulletHole.transform.parent = hit.transform;
 
-            Destroy(bulletHole, Random.Range(45f, 60f));
+                Destroy(bulletHole, Random.Range(45f, 60f));
+            }
 
 
             //Impact
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+
+            Debug.Log(hit.collider.gameObject.tag);
         }
     }
 
@@ -156,18 +161,23 @@ public class Helper : MonoBehaviour
 
 
             //Bullet Hole
-            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+            if (hit.collider.gameObject.tag != "Player")
+            {
+                var chosenBulletHole = mem.BulletHoleChose(hit.collider);
 
-            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+                GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
 
-            bulletHole.transform.parent = hit.transform;
+                bulletHole.transform.parent = hit.transform;
 
-            Destroy(bulletHole, Random.Range(45f, 60f));
+                Destroy(bulletHole, Random.Range(45f, 60f));
+            }
 
 
             //Impact
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+
+            Debug.Log(hit.collider.gameObject.tag);
         }
     }
 
@@ -192,13 +202,16 @@ public class Helper : MonoBehaviour
 
 
             //Bullet Hole
-            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+            if (hit.collider.gameObject.tag != "Player")
+            {
+                var chosenBulletHole = mem.BulletHoleChose(hit.collider);
 
-            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+                GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
 
-            bulletHole.transform.parent = hit.transform;
+                bulletHole.transform.parent = hit.transform;
 
-            Destroy(bulletHole, Random.Range(45f, 60f));
+                Destroy(bulletHole, Random.Range(45f, 60f));
+            }
 
 
             //Impact
@@ -216,8 +229,6 @@ public class Helper : MonoBehaviour
         foreach (GameObject i in shotEffects)
             Destroy(Instantiate(i, posFrom, fwd), 2);
 
-        Debug.Log(shotDir);
-
         RaycastHit hit;
 
         if (Physics.Raycast(posFrom, shotDir, out hit, shotDistance))
@@ -234,13 +245,16 @@ public class Helper : MonoBehaviour
 
 
             //Bullet Hole
-            var chosenBulletHole = mem.BulletHoleChose(hit.collider);
+            if (hit.collider.gameObject.tag != "Player")
+            {
+                var chosenBulletHole = mem.BulletHoleChose(hit.collider);
 
-            GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
+                GameObject bulletHole = Instantiate(chosenBulletHole, hit.point, Quaternion.LookRotation(hit.normal));
 
-            bulletHole.transform.parent = hit.transform;
+                bulletHole.transform.parent = hit.transform;
 
-            Destroy(bulletHole, Random.Range(45f, 60f));
+                Destroy(bulletHole, Random.Range(45f, 60f));
+            }
 
 
             //Impact
