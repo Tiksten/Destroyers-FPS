@@ -288,7 +288,7 @@ public class UniversalWeaponScript : MonoBehaviour
         currentSprayStep++;
     }
 
-    private void Recoil(float vertical, float horizontal)
+    private void Recoil(float horizontal, float vertical)
     {
         var ml = fpsCam.GetComponent<MouseLook>();
         ml.AddRotation(horizontal * recoilMultiplier, vertical * recoilMultiplier, 0);

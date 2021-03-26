@@ -14,6 +14,8 @@ public class EnemyWeapon : MonoBehaviour
 
     public void Shot(float damage)
     {
+        shootingPointA.LookAt(shootingPointB);
+
         Helper.ShotForward(shootingPointA, damage, 100, shotEffects);
 
         shotSound.pitch = Random.Range(0.9f, 1.1f);

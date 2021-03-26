@@ -178,13 +178,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b4bfa156a315434882cde037b8bd265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canMoveRandomly: 0
+  alwaysSeePlayer: 0
   viewPoint: {fileID: 3241711825066493345}
   enemyAnim: {fileID: 4863822054007392685}
-  attackDistance: 5
+  meleeAttackDistance: 5
   movementSpeed: 4
   npcHP: 100
   maxHP: 100
-  npcDamage: 1
+  npcMeleeDamage: 5
   attackRate: 0.5
   firePoint: {fileID: 7984525240305677186}
   npcDeadPrefab: {fileID: 1916813835547904983, guid: 83f0687f4ffd5904ab994398345fcfd8,
@@ -204,6 +206,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 603f43309e463684e8f4fcdf7c937ddc, type: 3}
   - {fileID: 8300000, guid: 6cdd3526708eed245babc6f9e61167ad, type: 3}
   audioSource: {fileID: 4487760854124771530}
+  canSeePlayer: 0
 --- !u!65 &4462014232258457908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -661,7 +664,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e4375fa0c65f44b8ab3776c9f477a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletHolePrefab: {fileID: 0}
+  bulletHolePrefab: {fileID: 8699535780418129341, guid: 997cc38cf3c5462468e2321eb7793b19,
+    type: 3}
   shotSound: {fileID: 8701025382879437716}
   shootingPointA: {fileID: 146519279817696161}
   shootingPointB: {fileID: 3706967196257391613}
@@ -1079,7 +1083,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4385258063184473375}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0, y: 0, z: -2.315}
+  m_LocalPosition: {x: 0.04, y: 1.37, z: -2.315}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2615419037954499560}
