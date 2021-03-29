@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4214997939682252}
   - component: {fileID: 33333961306265238}
   - component: {fileID: 23085772919944206}
-  - component: {fileID: 4945741726236205831}
-  m_Layer: 0
+  - component: {fileID: 4027479532409831388}
+  m_Layer: 9
   m_Name: Storage_03_snaps002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,6 +55,8 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -67,6 +69,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -79,8 +82,9 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &4945741726236205831
-BoxCollider:
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4027479532409831388
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -89,6 +93,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.00005, y: 1.0001373, z: 1.0627341}
-  m_Center: {x: 0.000000059604645, y: 0.50006866, z: 0.00000023841858}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 6cc6621e3581f3449b0e01aa95ebe997, type: 2}

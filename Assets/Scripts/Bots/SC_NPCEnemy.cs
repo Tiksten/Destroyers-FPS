@@ -26,8 +26,8 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
 
     [HideInInspector]
     public Transform playerTransform;
-    [HideInInspector]
-    public SC_EnemySpawner es;
+    //[HideInInspector]
+    //public SC_EnemySpawner es;
     NavMeshAgent agent;
     float nextAttackTime = 0;
     Rigidbody r;
@@ -42,6 +42,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
     // Start is called before the first frame update
     void Start()
     {
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         agent.stoppingDistance = meleeAttackDistance;
         agent.speed = movementSpeed;
@@ -133,7 +134,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
             //Slightly bounce the npc dead prefab up
             //npcDead.GetComponent<Rigidbody>().velocity = (-(playerTransform.position - transform.position).normalized * 8) + new Vector3(0, 5, 0);
             Destroy(npcDead, 10);
-            es.EnemyEliminated(this);
+            //es.EnemyEliminated(this);
             Destroy(gameObject);
         }
 

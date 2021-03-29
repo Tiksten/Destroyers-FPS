@@ -99,7 +99,7 @@ public class Helper : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    static public void Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance)
+    static public Collider Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance)
     {
         var shotDir = posTo - posFrom;
 
@@ -135,11 +135,13 @@ public class Helper : MonoBehaviour
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
 
-            Debug.Log(hit.collider.gameObject.tag);
+            return hit.collider;
         }
+
+        else return null;
     }
 
-    static public void Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject[] shotEffects)
+    static public Collider Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject[] shotEffects)
     {
         var shotDir = posTo - posFrom;
         foreach(GameObject i in shotEffects)
@@ -177,11 +179,13 @@ public class Helper : MonoBehaviour
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
 
-            Debug.Log(hit.collider.gameObject.tag);
+            return hit.collider;
         }
+
+        else return null;
     }
 
-    static public void ShotForward(Transform transformFrom, float damage, float shotDistance)
+    static public Collider ShotForward(Transform transformFrom, float damage, float shotDistance)
     {
         var posFrom = transformFrom.position;
         var shotDir = transformFrom.forward;
@@ -217,10 +221,14 @@ public class Helper : MonoBehaviour
             //Impact
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+
+            return hit.collider;
         }
+
+        else return null;
     }
 
-    static public void ShotForward(Transform transformFrom, float damage, float shotDistance, GameObject[] shotEffects)
+    static public Collider ShotForward(Transform transformFrom, float damage, float shotDistance, GameObject[] shotEffects)
     {
         var posFrom = transformFrom.position;
         var shotDir = transformFrom.forward;
@@ -260,6 +268,10 @@ public class Helper : MonoBehaviour
             //Impact
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
+
+            return hit.collider;
         }
+
+        else return null;
     }
 }

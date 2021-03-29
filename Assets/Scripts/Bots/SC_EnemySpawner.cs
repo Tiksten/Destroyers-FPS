@@ -66,7 +66,7 @@ public class SC_EnemySpawner : MonoBehaviour
                     GameObject enemy = Instantiate(enemyPrefab, randomPoint.position, Quaternion.identity);
                     SC_NPCEnemy npc = enemy.GetComponent<SC_NPCEnemy>();
                     npc.playerTransform = player.transform;
-                    npc.es = this;
+                    //npc.es = this;
                     totalEnemiesSpawned++;
                 }
             }
