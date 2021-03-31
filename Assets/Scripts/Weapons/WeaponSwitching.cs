@@ -2,7 +2,7 @@
 
 public class WeaponSwitching : MonoBehaviour
 {
-    public Collider playerPickUpTrigger;
+    [HideInInspector]
     public int selectedWeapon = 0;
 
     [HideInInspector]

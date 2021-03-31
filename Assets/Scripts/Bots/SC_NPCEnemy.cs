@@ -77,7 +77,7 @@ public class SC_NPCEnemy : MonoBehaviour, IEntity
 
             if(canMoveRandomly && agent.remainingDistance - meleeAttackDistance < 0.01f)
             {
-                agent.destination = agent.destination + new Vector3(Random.Range(-15, 15), 0, Random.Range(-15, 15));
+                agent.destination = agent.destination + new Vector3(Random.Range(-15, 15), Random.Range(-5, 5), Random.Range(-15, 15));
                 enemyAnim.currentTarget = agent.destination;
                 canMoveRandomly = false;
                 StartCoroutine(WaitForRandomMovementEnd());

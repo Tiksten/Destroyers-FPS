@@ -17,7 +17,6 @@ public class UniversalWeaponScript : MonoBehaviour
     [Space(10)]
 
     [Header("ANIMATIONS")]
-    //public AnimationClip weaponDraw; Not working
     public AnimationClip[] tagShootVariations;
     public AnimationClip[] tagReloadVariations;
     public AnimationClip[] tagIdleVariations;
@@ -47,8 +46,28 @@ public class UniversalWeaponScript : MonoBehaviour
 
     [Header("AMMO")]
     public int maxAmmo;
-    public int startAmmo;
+    private int ammo;
+    public int Ammo
+    {
+        set
+        {
+            ammo = (value <= maxAmmo) ? value : maxAmmo;
+            ammoText.text = ammoInMag + "/" + ammo;
+        }
+        get => ammo;
+    }
+
+    public int maxAmmoInMag;
+    private int ammoInMag;
+    public int AmmoInMag
+    {
+        set => ammoInMag = (value <= maxAmmoInMag) ? value : maxAmmoInMag;
+        get => ammoInMag;
+    }
+
     public Text ammoText;
+
+    public AudioClip noAmmo;
     [Space(10)]
 
     [Header("CARTRIGES")]
@@ -73,9 +92,6 @@ public class UniversalWeaponScript : MonoBehaviour
     [HideInInspector]
     public bool weaponPutAway;
 
-    [HideInInspector]
-    public int currentAmmo;
-
     public float recoilMultiplier = 1f;
 
     [System.Serializable]
@@ -97,8 +113,7 @@ public class UniversalWeaponScript : MonoBehaviour
 
     void Start()
     {
-        currentAmmo = startAmmo;
-        ammoText.text = currentAmmo + "/" + maxAmmo;
+        ammoText.text = ammoInMag + "/" + ammo;
         foreach (AnimationClip i in tagShootVariations)
         {
             i.wrapMode = WrapMode.Once;
@@ -130,7 +145,7 @@ public class UniversalWeaponScript : MonoBehaviour
             {
                 if (Input.GetButton("Fire1"))
                 {
-                    if (currentAmmo != 0)
+                    if (ammoInMag != 0)
                     {
                         StartCoroutine(Shot());
 
@@ -140,13 +155,20 @@ public class UniversalWeaponScript : MonoBehaviour
                                 ps.Stop();
                         }
 
-                        currentAmmo--;
+                        ammoInMag--;
 
-                        ammoText.text = currentAmmo + "/" + maxAmmo;
+                        ammoText.text = ammoInMag + "/" + ammo;
                     }
 
-                    else
+                    else if (ammo > 0)
                         StartCoroutine(Reload());
+
+                    else
+                    {
+                        weaponAudioSource.clip = noAmmo;
+                        weaponAudioSource.pitch = 1;
+                        weaponAudioSource.Play();
+                    }
                 }
 
                 else if (Input.GetButtonUp("Fire1"))
@@ -162,7 +184,7 @@ public class UniversalWeaponScript : MonoBehaviour
             {
                 if (Input.GetButtonDown("Fire1"))
                 {
-                    if (currentAmmo != 0)
+                    if (ammoInMag != 0)
                     {
                         StartCoroutine(Shot());
 
@@ -172,17 +194,24 @@ public class UniversalWeaponScript : MonoBehaviour
                                 ps.Play();
                         }
 
-                        currentAmmo--;
+                        ammoInMag--;
 
-                        ammoText.text = currentAmmo + "/" + maxAmmo;
+                        ammoText.text = ammoInMag + "/" + ammo;
                     }
 
-                    else
+                    else if (ammo > 0)
                         StartCoroutine(Reload());
+
+                    else
+                    {
+                        weaponAudioSource.clip = noAmmo;
+                        weaponAudioSource.pitch = 1;
+                        weaponAudioSource.Play();
+                    }
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo)
+            if (Input.GetKeyDown(KeyCode.R) && ammoInMag < maxAmmoInMag && ammo > 0)
                 StartCoroutine(Reload());
         }
     }
@@ -221,7 +250,7 @@ public class UniversalWeaponScript : MonoBehaviour
 
     private IEnumerator Reload()
     {
-        ammoText.text = "Reload/" + maxAmmo;
+        ammoText.text = ammoInMag + "/" + ammo;
 
         var totalWaitTime = 0f;
         var animation = tagReloadVariations[Random.Range(0, tagReloadVariations.Length)];
@@ -249,10 +278,22 @@ public class UniversalWeaponScript : MonoBehaviour
         if (totalWaitTime > 0)
         {
             yield return new WaitForSeconds(totalWaitTime);
-            currentAmmo = maxAmmo;
+            ammo -= (maxAmmoInMag - ammoInMag);
+            ammoInMag = maxAmmoInMag;
+            if (ammo < 0)
+            {
+                ammoInMag += ammo;
+                ammo = 0;
+            }
         }
 
-        ammoText.text = currentAmmo + "/" + maxAmmo;
+        else
+        {
+            ammo -= maxAmmoInMag - ammoInMag;
+            ammoInMag = maxAmmoInMag;
+        }
+
+        ammoText.text = ammoInMag + "/" + ammo;
 
         NextIdle();
 

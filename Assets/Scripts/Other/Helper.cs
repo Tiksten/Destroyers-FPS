@@ -37,6 +37,13 @@ public class Helper : MonoBehaviour
         public float timeToResetFullPattern; //After this time pattern pos resets
     }
 
+    [System.Serializable]
+    public class DroppedWeapon
+    {
+        public string weaponName;
+        public int ammoInMag;
+    }
+
     static public void GiveDamage(GameObject target, int damage)
     {
         Destructible target1 = target.GetComponent<Destructible>();
