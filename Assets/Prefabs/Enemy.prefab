@@ -192,7 +192,6 @@ MonoBehaviour:
   npcDeadPrefab: {fileID: 1916813835547904983, guid: 83f0687f4ffd5904ab994398345fcfd8,
     type: 3}
   playerTransform: {fileID: 0}
-  es: {fileID: 0}
   enemyHitSounds:
   - {fileID: 8300000, guid: 4ff8519fd8517344f81205466bba297c, type: 3}
   - {fileID: 8300000, guid: ddf5f2eb4a78fe64c8a75712e3fe45e7, type: 3}
@@ -2364,7 +2363,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 89d4b1136ae46ea47aa6443840cd4d99, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.8
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2372,10 +2371,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 5
+  MaxDistance: 300
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -2383,10 +2382,19 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.016666668
       value: 1
       inSlope: 0
       outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.49789846
+      value: 0.1925832
+      inSlope: -1.0169492
+      outSlope: -1.0169492
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
@@ -2394,12 +2402,12 @@ AudioSource:
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: -0.5285784
+      outSlope: -0.5285784
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0.18054451
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -2408,7 +2416,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

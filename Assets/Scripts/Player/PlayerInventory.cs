@@ -27,11 +27,12 @@ public class PlayerInventory : MonoBehaviour
             {
                 if (ammo.count < ammo.maxCount)
                     return true;
-                break;
+
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     //public bool CanPickThatGunType(string type) ******************************************************Work in progress********************************************************
@@ -46,8 +47,17 @@ public class PlayerInventory : MonoBehaviour
             if (ammo.type == type)
             {
                 ammo.count += count;
+                count = 0;
                 break;
             }
+        }
+
+        if(count > 0)
+        {
+            var newAmmo = new Ammo();
+            newAmmo.count = count;
+            newAmmo.type = type;
+            ammoInPlayerInvenory[ammoInPlayerInvenory.Length] = newAmmo;
         }
     }
 }
