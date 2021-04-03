@@ -14,13 +14,13 @@ public class UniversalWeaponScript : MonoBehaviour
     public Memory memory;
 
     public bool pistolShootingType;
-    [Space(10)]
+    [Space(20)]
 
     [Header("ANIMATIONS")]
     public AnimationClip[] tagShootVariations;
     public AnimationClip[] tagReloadVariations;
     public AnimationClip[] tagIdleVariations;
-    [Space(10)]
+    [Space(20)]
 
     [Header("STATS")]
     public int range;
@@ -28,21 +28,24 @@ public class UniversalWeaponScript : MonoBehaviour
     public float impactForce;
     public float firespeed = 0.1f;
     public float patternSizeMultiplier = 1f;
-    [Space(10)]
+    [Space(20)]
 
     [Header("SOUNDS")]
     public AudioSource weaponAudioSource;
     public AudioClip[] shots;
     public SoundPlan[] reloadSoundsPlan;
-    [Space(10)]
+    [Space(20)]
 
     [Header("PARTICLES")]
     public ParticleSystem[] shotEffects;
     [Space(10)]
-    public ParticleSystem[] impactEffects;
+    public ParticleSystem[] directionalShotEffects;
+    public Vector3 defaultRot;
     [Space(10)]
     public ParticleSystem[] barrelSmokes;
     [Space(10)]
+    public Transform shootingPoint;
+    [Space(20)]
 
     [Header("AMMO")]
     public int maxAmmo;
@@ -68,13 +71,13 @@ public class UniversalWeaponScript : MonoBehaviour
     public Text ammoText;
 
     public AudioClip noAmmo;
-    [Space(10)]
+    [Space(20)]
 
     [Header("CARTRIGES")]
     public Transform cartrigeEjector;
     public GameObject cartrigePrefab;
     public float cartrigeForce = 5f;
-    [Space(10)]
+    [Space(20)]
 
     [Header("SPRAY PATTERN")]
     public string sprayPatternName;
@@ -82,9 +85,6 @@ public class UniversalWeaponScript : MonoBehaviour
     public float timeToResetFullRecoil;
 
 
-
-    [HideInInspector]
-    public Transform shootingPoint;
 
     [HideInInspector]
     public int currentSprayStep;
@@ -211,17 +211,21 @@ public class UniversalWeaponScript : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && ammoInMag < maxAmmoInMag && ammo > 0)
-                StartCoroutine(Reload());
+            if (Input.GetKeyDown(KeyCode.R))
+                if(ammoInMag < maxAmmoInMag && ammo > 0)
+                    StartCoroutine(Reload());
         }
     }
 
 
     private IEnumerator Shot()
     {
-        Helper.ShotForward(fpsCam.transform, damage, 1000);
+        var hit = Helper.ShotForward(fpsCam.transform, 1000, damage, impactForce, shotEffects);
+
         foreach (ParticleSystem i in shotEffects)
             i.Play();
+
+        Helper.DirectionalShotEffect(shootingPoint.position, hit.point, directionalShotEffects, 5, defaultRot);
 
         var animation = tagShootVariations[Random.Range(0, tagShootVariations.Length)];
         animator.Play(animation.name);
