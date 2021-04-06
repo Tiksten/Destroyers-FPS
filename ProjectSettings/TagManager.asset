@@ -8,6 +8,7 @@ TagManager:
   - Memory
   - CanBePickedUp
   - Weapon
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Postprocessing
   - Player
   - Garbage
-  - 
+  - Enemy
   - 
   - 
   - 

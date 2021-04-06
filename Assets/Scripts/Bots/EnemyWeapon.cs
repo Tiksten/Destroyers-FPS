@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
 {
-    public GameObject bulletHolePrefab;
     public AudioSource shotSound;
     public Transform shootingPointA;
     public Transform shootingPointB;

@@ -6,6 +6,28 @@ public class Helper : MonoBehaviour
 {
     private static Memory mem = GameObject.FindGameObjectWithTag("Memory").GetComponent<Memory>();
 
+    public enum WeaponType
+    {
+        Pistol,
+        Rifle,
+        Rifle_Burst,
+        Shotgun,
+        Singleshot
+    }
+
+    public enum TargetType
+    {
+        HideFromDanger = 11,
+        Player = 10,
+        Shot = 9,
+        DeadBody = 8,
+        Sound = 7,
+        LookingForPlayer = 6,
+        Patrolling = 5,
+        Staying = 4,
+        Nothing = 3
+    }
+
     [System.Serializable]
     public class SprayPattern
     {

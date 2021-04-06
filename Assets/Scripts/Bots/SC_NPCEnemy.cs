@@ -1,156 +1,399 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody))]
 
-public class SC_NPCEnemy : MonoBehaviour, IEntity
+public class SC_NPCEnemy : MonoBehaviour
 {
+    [System.Serializable]
+    public class CurrentTarget
+    {
+        public Helper.TargetType type;
+        public Vector3 position;
+    }
+
+    [Header("STATS")]
+
+    //HP
+    public float maxHP = 100;
+    public float _npcHP;
+    public float npcHP
+    {
+        get => _npcHP;
+        set => _npcHP = (value <= maxHP) ? value : maxHP;
+    }
+    [Space(10)]
+
+    //Movement
+    private float currentSpeed;
+    public float walkSpeed = 3;
+    public float runspeed = 6.5f;
+    public float stoppingDistance = 5;
+    [Space(10)]
+
+    //Shooting
+    public float fireRate = 0.1f;
+    public float damage = 5;
+    public int ammoInMag = 15;
+    public float reloadTime = 3;
+    public float fireDistance = 1000;
+    [Space(10)]
+
+    //Melee
+    public float meleeRate = 1;
+    public float meleeDamage = 20;
+    public float meleeDistance = 1;
+
+    //Bool
     public bool canMoveRandomly = false;
     public bool alwaysSeePlayer = false;
+    public bool startFriendly = false;
+    [Space(20)]
 
+
+    [Header("REFERENCES")]
     public Transform viewPoint;
-    public EnemyAnimationController enemyAnim;
-
-    public float meleeAttackDistance = 5f;
-    public float movementSpeed = 4f;
-    public float npcHP = 100;
-    public float maxHP = 100;
-    //How much damage will npc deal to the player
-    public int npcMeleeDamage = 5;
-    public float attackRate = 0.5f;
     public Transform firePoint;
     public GameObject npcDeadPrefab;
+    [Space(10)]
+    public Transform[] patrolingPoints;
 
-    [HideInInspector]
-    public Transform playerTransform;
-    //[HideInInspector]
-    //public SC_EnemySpawner es;
-    NavMeshAgent agent;
-    float nextAttackTime = 0;
-    Rigidbody r;
+    public EnemyWeapon weapon;
+    [Space(20)]
 
+
+    [Header("OTHER")]
+    //Sounds
+    public LayerMask botViewMask;
     public AudioClip[] enemyHitSounds;
     public AudioClip[] enemyDeathSounds;
-    public AudioClip[] enemyBreatheSounds;
+    public AudioClip[] enemyIdleSounds;
     public AudioSource audioSource;
+    [Space(20)]
 
-    [HideInInspector] public bool canSeePlayer = false;
+    [Header("ANIMATION")]
+    public Animator legsAnimator;
+    public Animator chestAnimator;
+    public GameObject mainLookArmature;
 
-    // Start is called before the first frame update
+    //Legs
+    public AnimationClip legsIdle;
+
+    public AnimationClip legsWalk;
+
+    //Chest
+    public AnimationClip chestShoot;
+
+    public AnimationClip[] chestIdle;
+
+    public AnimationClip chestHit;
+
+    public AnimationClip[] chestLookingForPlayer;
+
+    public AnimationClip chestWalk;
+
+
+
+
+
+    //Flags
+    [HideInInspector] public bool canSeePlayer = false; //Literally can see player
+    [HideInInspector] public bool tryingToAttack = false; //Flag
+    [HideInInspector] public bool canAct = true; //Chest can act (all cooldowns are over)
+    [HideInInspector] public bool thereIsPlayerNearby = false; //Bot's flag to look for player
+
+    //Other hidden
+    public Transform playerTransform;
+    [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public Rigidbody r;
+    [HideInInspector] public CurrentTarget currentTarget;
+    [HideInInspector] public Vector3 previousPos;
+    [HideInInspector] public Quaternion defaultChestRotation;
+
+
     void Start()
     {
+        previousPos = transform.position;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        agent.stoppingDistance = meleeAttackDistance;
-        agent.speed = movementSpeed;
+        agent.stoppingDistance = stoppingDistance;
+        agent.speed = walkSpeed;
         r = GetComponent<Rigidbody>();
         r.useGravity = false;
         r.isKinematic = true;
+        StartCoroutine(DoIdleThings());
+        defaultChestRotation = mainLookArmature.transform.localRotation;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (agent.remainingDistance - meleeAttackDistance < 0.01f)
-        {
-            if (Time.time > nextAttackTime)
-            {
-                nextAttackTime = Time.time + attackRate;
+        tryingToAttack = false;
 
-                //Attack
-                RaycastHit hit;
-                if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, meleeAttackDistance))
+        //Setting current target
+        if (CheckPlayerVisibility())
+        {
+            SetTarget(Helper.TargetType.Player, playerTransform.position);
+            StopCoroutine(LookForPlayer());
+            StopCoroutine(DoIdleThings());
+            thereIsPlayerNearby = true;
+            tryingToAttack = true;
+        }
+        else if (thereIsPlayerNearby)
+        {
+            SetTarget(Helper.TargetType.LookingForPlayer, playerTransform.position);
+        }
+
+        //Follow instruction to every target type
+        switch(currentTarget.type)
+        {
+            case Helper.TargetType.Player:
                 {
-                    if (hit.transform.CompareTag("Player"))
-                    {
-                        Debug.DrawLine(firePoint.position, firePoint.position + firePoint.forward * meleeAttackDistance, Color.cyan);
+                    if (tryingToAttack && canAct)
+                        TryToAttack();
 
-                        IEntity player = hit.transform.GetComponent<IEntity>();
-                        PlayerHealth playerHealth = hit.transform.GetComponent<PlayerHealth>();
-                        playerHealth.TakeDamage(npcMeleeDamage);
-                    }
+                    LookAtTarget();
+                    //Look at player if see
+                    var look = transform;
+                    look.LookAt(currentTarget.position);
+                    transform.rotation = Quaternion.Euler(transform.rotation.x, look.rotation.y, transform.rotation.z);//Need Fix*****************************************************************************
+
+                    break;
                 }
-            }
-
-            if(canMoveRandomly && agent.remainingDistance - meleeAttackDistance < 0.01f)
-            {
-                agent.destination = agent.destination + new Vector3(Random.Range(-15, 15), Random.Range(-5, 5), Random.Range(-15, 15));
-                enemyAnim.currentTarget = agent.destination;
-                canMoveRandomly = false;
-                StartCoroutine(WaitForRandomMovementEnd());
-            }
+            case Helper.TargetType.Shot://Ignore
+                {
+                    LookDefault();
+                    break;
+                }
+            case Helper.TargetType.DeadBody://Ignore
+                {
+                    LookDefault();
+                    break;
+                }
+            case Helper.TargetType.Sound://Ignore
+                {
+                    LookDefault();
+                    break;
+                }
+            case Helper.TargetType.LookingForPlayer:
+                {
+                    LookDefault();
+                    StartCoroutine(LookForPlayer());
+                    break;
+                }
+            case Helper.TargetType.Patrolling:
+                {
+                    LookDefault();
+                    break;
+                }
+            case Helper.TargetType.Staying:
+                {
+                    LookDefault();
+                    break;
+                }
+            case Helper.TargetType.Nothing:
+                {
+                    LookDefault();
+                    break;
+                }
         }
 
-        
 
 
-        //Move towards the player if see
-        RaycastHit hit2;
-        if (Physics.Raycast(viewPoint.position, playerTransform.position - viewPoint.position, out hit2, 100))
+        //Legs anim
+        if (previousPos == transform.position)
         {
-            if (hit2.collider.gameObject.tag == "Player")
-            {
-                canSeePlayer = true;
-                agent.destination = playerTransform.position;
-                enemyAnim.Shoot(agent.destination);
-            }
-            else
-            {
-                canSeePlayer = false;
-                StartCoroutine(WaitForRandomMovementEnd());
-            }
+            legsAnimator.SetBool("IsStaying", true);
+            chestAnimator.SetBool("IsStaying", true);
         }
-
-
-        //Always look at player if see
-        transform.LookAt(new Vector3(agent.destination.x, transform.position.y, agent.destination.z));
-
-
-        //Gradually reduce rigidbody velocity if the force was applied by the bullet
-        r.velocity *= 0.5f;
-
-        if (Random.Range(0, 1000) <= 1)
+        else
         {
-            audioSource.clip = enemyBreatheSounds[Random.Range(0, enemyBreatheSounds.Length)];
-            audioSource.Play();
+            legsAnimator.SetBool("IsStaying", false);
+            chestAnimator.SetBool("IsStaying", false);
         }
+
+        previousPos = transform.position;
+
+
+
+        agent.SetDestination(currentTarget.position);
     }
 
-    public void ApplyDamage(float points)
+    public void ApplyDamage(float damage)
     {
-        agent.destination = playerTransform.position;
-        npcHP -= points;
-        enemyAnim.currentTarget = playerTransform.position;
+        currentTarget.type = Helper.TargetType.Player;
+        currentTarget.position = playerTransform.position;
+        npcHP -= damage;
 
         if (npcHP <= 0)
-        {   
-            audioSource.clip = enemyDeathSounds[Random.Range(0, enemyDeathSounds.Length)];
-            audioSource.Play();
-            //Destroy the NPC
-            GameObject npcDead = Instantiate(npcDeadPrefab, transform.position, transform.rotation);
-            //Slightly bounce the npc dead prefab up
-            //npcDead.GetComponent<Rigidbody>().velocity = (-(playerTransform.position - transform.position).normalized * 8) + new Vector3(0, 5, 0);
-            Destroy(npcDead, 10);
-            //es.EnemyEliminated(this);
+        {
+            //Death
+            Destroy(Instantiate(npcDeadPrefab, transform.position, transform.rotation), 30);
             Destroy(gameObject);
         }
 
         else
         {
+            chestAnimator.Play(chestHit.name);
+
+            if (npcHP / maxHP <= 0.5f)
+                chestAnimator.SetBool("Wounded", true);
+
+            //Got hit & not dead
             audioSource.clip = enemyHitSounds[Random.Range(0, enemyHitSounds.Length)];
             audioSource.Play();
-
-            enemyAnim.DamageGiven(npcHP, maxHP);
         }
     }
 
-    public IEnumerator WaitForRandomMovementEnd()
+    public bool CheckPlayerVisibility()
     {
-        yield return new WaitForSeconds(Random.Range(5, 25));
-        if(!canSeePlayer)
-            canMoveRandomly = true;
+        if(alwaysSeePlayer)
+            return true;
+
+        RaycastHit hit;
+        if (Physics.Raycast(viewPoint.position, playerTransform.position - viewPoint.position, out hit, (int)fireDistance, botViewMask))
+        {
+            Debug.Log(hit.collider.gameObject.name);
+            if(hit.collider.gameObject.CompareTag("Player"))
+                return true;
+        }
+        Debug.Log(hit.collider.gameObject.name);
+        return false;
+    }
+
+    public IEnumerator LookForPlayer()
+    {
+        var i = Random.Range(4, 10);
+        while (i >= 0)
+        {
+            //Go search random point
+            currentTarget.type = Helper.TargetType.LookingForPlayer;
+            currentTarget.position = transform.position + Random.insideUnitSphere * 5;
+
+            yield return new WaitForSeconds(Random.Range(3, 8));
+
+            //Stay
+            currentTarget.position = transform.position;
+            yield return new WaitForSeconds(Random.Range(2, 5));
+            i--;
+        }
+        thereIsPlayerNearby = false;
+    }
+
+    public void SetTarget(Helper.TargetType type, Vector3 pos)
+    {
+        if ((int)currentTarget.type < (int)type)
+        {
+            currentTarget.type = type;
+            currentTarget.position = pos;
+        }
+    }
+
+    public void TryToAttack()
+    {
+        if (agent.remainingDistance < meleeDistance)
+            StartCoroutine(Melee());
+
+        else if (ammoInMag > 0)
+            StartCoroutine(Shot());
+
+        else
+        {
+            Hide();
+            StartCoroutine(Reload());
+        }
+    }
+
+    public IEnumerator Melee()
+    {
+        canAct = false;
+
+        RaycastHit hit;
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, meleeDistance))
+        {
+            if (hit.transform.CompareTag("Player"))
+            {
+                Helper.GiveDamage(hit.transform.gameObject, meleeDamage);
+            }
+        }
+
+        yield return new WaitForSeconds(meleeRate);
+        canAct = true;
+    }
+
+    public IEnumerator Shot()
+    {
+        canAct = false;
+
+        chestAnimator.Play(chestShoot.name);
+        chestAnimator.SetBool("HaveSeenPlayer", true);
+
+        weapon.Shot(damage);
+
+        yield return new WaitForSeconds(fireRate);
+        canAct = true;
+    }
+
+    public void Hide()
+    {
+        //Find nearest hiding spot, check if player see it, go there if not
+    }
+
+    public IEnumerator Reload()
+    {
+        canAct = false;
+
+        //Play anim, wait time, give max ammo
+
+        yield return new WaitForSeconds(reloadTime);
+        canAct = true;
+    }
+
+    public IEnumerator DoIdleThings()
+    {
+        if (patrolingPoints.Length > 0)
+        {
+            //Patrolling
+            currentTarget.type = Helper.TargetType.Patrolling;
+            while (true)
+            {
+                currentTarget.position = patrolingPoints[Random.Range(0, patrolingPoints.Length)].position;
+                yield return new WaitForSeconds(Random.Range(25, 45));
+            }
+        }
+        else if (canMoveRandomly)
+        {
+            currentTarget.type = Helper.TargetType.Nothing;
+            while (true)
+            {
+                currentTarget.position = transform.position + Random.insideUnitSphere * 5;
+                yield return new WaitForSeconds(Random.Range(10, 35));
+            }
+        }
+        else
+        {
+            LookForPlayer();
+        }
+    }
+
+    public void LookAtTarget()
+    {
+        var look = mainLookArmature.transform;
+        look.LookAt(currentTarget.position);
+        var lookInDegrees = look.rotation.eulerAngles;
+
+        if (lookInDegrees.x < 320 && lookInDegrees.x > 180)
+            lookInDegrees.x = 320;
+        else if (lookInDegrees.x > 40 && lookInDegrees.x < 180)
+            lookInDegrees.x = 40;
+
+        mainLookArmature.transform.rotation = Quaternion.Euler(-lookInDegrees.x, look.rotation.y, look.rotation.z);
+
+    }
+
+    public void LookDefault()
+    {
+        mainLookArmature.transform.localRotation = defaultChestRotation;
     }
 }

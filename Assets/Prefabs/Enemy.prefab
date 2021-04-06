@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3130734889520304978}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: CartrigeEjector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4226781995912685559}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9109681744432707541}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.016_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,9 +105,10 @@ GameObject:
   - component: {fileID: 7965414462485978099}
   - component: {fileID: 4462014232258457908}
   - component: {fileID: 4487760854124771530}
-  m_Layer: 9
+  - component: {fileID: 3298569035094227406}
+  m_Layer: 13
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -178,20 +179,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b4bfa156a315434882cde037b8bd265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHP: 100
+  _npcHP: 100
+  walkSpeed: 3
+  runspeed: 6.5
+  stoppingDistance: 5
+  fireRate: 0.1
+  damage: 5
+  ammoInMag: 15
+  reloadTime: 3
+  fireDistance: 100
+  meleeRate: 1
+  meleeDamage: 20
+  meleeDistance: 1
   canMoveRandomly: 0
   alwaysSeePlayer: 0
+  startFriendly: 0
   viewPoint: {fileID: 3241711825066493345}
-  enemyAnim: {fileID: 4863822054007392685}
-  meleeAttackDistance: 5
-  movementSpeed: 4
-  npcHP: 100
-  maxHP: 100
-  npcMeleeDamage: 5
-  attackRate: 0.5
   firePoint: {fileID: 7984525240305677186}
   npcDeadPrefab: {fileID: 1916813835547904983, guid: 83f0687f4ffd5904ab994398345fcfd8,
     type: 3}
-  playerTransform: {fileID: 0}
+  patrolingPoints: []
+  weapon: {fileID: 3197484649904855047}
+  botViewMask:
+    serializedVersion: 2
+    m_Bits: 7987
   enemyHitSounds:
   - {fileID: 8300000, guid: 4ff8519fd8517344f81205466bba297c, type: 3}
   - {fileID: 8300000, guid: ddf5f2eb4a78fe64c8a75712e3fe45e7, type: 3}
@@ -199,13 +211,32 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d6e2e06b43dc0594cb4fd527fcf1e880, type: 3}
   enemyDeathSounds:
   - {fileID: 8300000, guid: 53b52962b03891f40943d1d5b7ac4d54, type: 3}
-  enemyBreatheSounds:
-  - {fileID: 8300000, guid: 004808603d2f67b4a8da77f0097c422f, type: 3}
-  - {fileID: 8300000, guid: 864b7ac776017f745ad8abbd7df4d1ab, type: 3}
-  - {fileID: 8300000, guid: 603f43309e463684e8f4fcdf7c937ddc, type: 3}
-  - {fileID: 8300000, guid: 6cdd3526708eed245babc6f9e61167ad, type: 3}
+  enemyIdleSounds: []
   audioSource: {fileID: 4487760854124771530}
+  legsAnimator: {fileID: 3853688720596019673}
+  chestAnimator: {fileID: 3712929927747667295}
+  mainLookArmature: {fileID: 6036037555272828240}
+  legsIdle: {fileID: 7400000, guid: 868e86ba07cbab847b4d49ffe23bfade, type: 2}
+  legsWalk: {fileID: 7400000, guid: 7b2a4bcfeef4081498664eddb574cf01, type: 2}
+  chestShoot: {fileID: 7400000, guid: 807774d4a3ca7794d960f63cfb5fd367, type: 2}
+  chestIdle:
+  - {fileID: 7400000, guid: f91aa503cd710bf4893575abab34d9f7, type: 2}
+  chestHit: {fileID: 7400000, guid: a674eb7f0e7996f448736da42fff66d6, type: 2}
+  chestLookingForPlayer:
+  - {fileID: 7400000, guid: 2eaa7667f5d2f384a8d73264a4e944f7, type: 2}
+  chestWalk: {fileID: 7400000, guid: 4408c71a40fc00442b13e38d2192e35a, type: 2}
   canSeePlayer: 0
+  tryingToAttack: 0
+  canAct: 1
+  thereIsPlayerNearby: 0
+  playerTransform: {fileID: 0}
+  agent: {fileID: 0}
+  r: {fileID: 0}
+  currentTarget:
+    type: 0
+    position: {x: 0, y: 0, z: 0}
+  previousPos: {x: 0, y: 0, z: 0}
+  defaultChestRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!65 &4462014232258457908
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -315,6 +346,49 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3298569035094227406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674495028441635140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boneShape: 1
+  drawBones: 1
+  drawTripods: 0
+  boneSize: 1
+  tripodSize: 1
+  boneColor: {r: 0, g: 0.028357029, b: 1, a: 1}
+  m_Transforms:
+  - {fileID: 2932731753170382210}
+  - {fileID: 1765312780410600758}
+  - {fileID: 2765598909644941332}
+  - {fileID: 3084783239640470841}
+  - {fileID: 2692624424299092904}
+  - {fileID: 482792903398867572}
+  - {fileID: 7644367328760426948}
+  - {fileID: 3852288704373946097}
+  - {fileID: 2151689650802035412}
+  - {fileID: 9109681744432707541}
+  - {fileID: 844135931795786118}
+  - {fileID: 4384157533132613325}
+  - {fileID: 7515195559626252834}
+  - {fileID: 3713537011670602426}
+  - {fileID: 2237991715333766856}
+  - {fileID: 8850441238335250464}
+  - {fileID: 2737596483404292625}
+  - {fileID: 5097477828583937492}
+  - {fileID: 6197770286423138037}
+  - {fileID: 5550572789103888924}
+  - {fileID: 363156911525080363}
+  - {fileID: 4226781995912685559}
+  - {fileID: 7059523547000677168}
+  - {fileID: 5988494908299846357}
 --- !u!1 &837323988403803049
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,7 +399,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6900240779263546394}
   - component: {fileID: 5067735550529127533}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -425,7 +499,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2151689650802035412}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.016
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -456,7 +530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5550572789103888924}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.004_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2737596483404292625}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: R_Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -517,7 +591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 482792903398867572}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.015_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -547,7 +621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3241711825066493345}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -562,7 +636,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1653926499230104011}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.476, z: -0.69}
+  m_LocalPosition: {x: -0, y: 0.476, z: -0.804}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2237991715333766856}
@@ -577,7 +651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8850441238335250464}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.001_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -609,7 +683,7 @@ GameObject:
   - component: {fileID: 844135931795786118}
   - component: {fileID: 3712929927747667295}
   - component: {fileID: 3197484649904855047}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Chest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -663,8 +737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e4375fa0c65f44b8ab3776c9f477a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletHolePrefab: {fileID: 8699535780418129341, guid: 997cc38cf3c5462468e2321eb7793b19,
-    type: 3}
   shotSound: {fileID: 8701025382879437716}
   shootingPointA: {fileID: 146519279817696161}
   shootingPointB: {fileID: 3706967196257391613}
@@ -684,7 +756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 905035555191386796}
   - component: {fileID: 4592093981085718364}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -784,7 +856,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3910186071722749375}
   - component: {fileID: 3131517299186866465}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -884,7 +956,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4282045080818191228}
   - component: {fileID: 1703192216961843794}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -984,7 +1056,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2932731753170382210}
   - component: {fileID: 483270298534450312}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1035,7 +1107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6197770286423138037}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1067,7 +1139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3706967196257391613}
   - component: {fileID: 1066590612802895674}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ShootingPointB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1116,7 +1188,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7984525240305677186}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1146,7 +1218,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4384157533132613325}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: StartChest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1178,7 +1250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3447378633890341802}
   - component: {fileID: 3855489241655342141}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1277,8 +1349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8790370200112407162}
-  - component: {fileID: 4863822054007392685}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1300,34 +1371,6 @@ Transform:
   m_Father: {fileID: 8450991701314681979}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &4863822054007392685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4875005292879477110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c1311bd7083509488ea74e62f5a90c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponScript: {fileID: 0}
-  enemy: {fileID: 674495028441635140}
-  mainLookArmature: {fileID: 2027740123475829696}
-  legsAnimator: {fileID: 3853688720596019673}
-  legsIdle: {fileID: 7400000, guid: 868e86ba07cbab847b4d49ffe23bfade, type: 2}
-  legsWalk: {fileID: 7400000, guid: 7b2a4bcfeef4081498664eddb574cf01, type: 2}
-  chestAnimator: {fileID: 3712929927747667295}
-  chestShoot: {fileID: 7400000, guid: 807774d4a3ca7794d960f63cfb5fd367, type: 2}
-  chestIdle:
-  - {fileID: 7400000, guid: f91aa503cd710bf4893575abab34d9f7, type: 2}
-  chestHit: {fileID: 7400000, guid: 474e4a841b8501c4fa07f3bba2ff45e2, type: 2}
-  chestLookingForPlayer:
-  - {fileID: 7400000, guid: 2eaa7667f5d2f384a8d73264a4e944f7, type: 2}
-  chestWalk: {fileID: 7400000, guid: 4408c71a40fc00442b13e38d2192e35a, type: 2}
-  currentTarget: {x: 0, y: 0, z: 0}
-  damage: 5
 --- !u!1 &5033825617448705065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,7 +1380,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2237991715333766856}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1370,7 +1413,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3315950033166304959}
   - component: {fileID: 3799087120247249192}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1472,7 +1515,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6967767889667933322}
   - component: {fileID: 3707827865048731748}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1571,7 +1614,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5988494908299846357}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.007_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1601,7 +1644,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2765598909644941332}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1632,7 +1675,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7644367328760426948}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1664,7 +1707,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3804027472172674060}
   - component: {fileID: 2088897299325837247}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1763,7 +1806,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3713537011670602426}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: UpperChest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1777,7 +1820,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6036037555272828240}
-  m_LocalRotation: {x: 0, y: 0.000000119209275, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.00000012744329, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0.47582224, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1796,7 +1839,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8921151315250015432}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Geometry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1838,7 +1881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5097477828583937492}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1869,7 +1912,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2692624424299092904}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.015
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1901,7 +1944,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8609337080432243406}
   - component: {fileID: 2449583021163421237}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2000,7 +2043,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7059523547000677168}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2031,7 +2074,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 146519279817696161}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ShootingPointA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2061,7 +2104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 363156911525080363}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: L_Shoulder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2093,7 +2136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1765312780410600758}
   - component: {fileID: 3853688720596019673}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Legs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2144,7 +2187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3852288704373946097}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.014
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2176,7 +2219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4617921345731773717}
   - component: {fileID: 521644183642258437}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2278,7 +2321,7 @@ GameObject:
   - component: {fileID: 3609812148159284843}
   - component: {fileID: 1617843335150798836}
   - component: {fileID: 8701025382879437716}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2465,7 +2508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3084783239640470841}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Bone.013
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2497,7 +2540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5348058444544258977}
   - component: {fileID: 7299356924988875977}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2597,7 +2640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1973205857199697249}
   - component: {fileID: 3958447473146802978}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2697,7 +2740,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7515195559626252834}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MiddleChest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2728,7 +2771,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8387814037898157680}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
