@@ -246,9 +246,9 @@ public class Weapon : MonoBehaviour
         weaponAnimator.SetInteger("RandomNumber", Random.Range(0, maxNum));
     }
 
-    public void SetHandPose(bool rightHand, string pose)
+    public void SetHandPose(bool isRightHand, string pose)
     {
-        if (rightHand)
+        if (isRightHand)
             HandAnimator_R.Play(pose);
         else
             HandAnimator_L.Play(pose);
@@ -262,5 +262,22 @@ public class Weapon : MonoBehaviour
     public void SetGunReadyToShoot(bool _gunReadyToShoot)
     {
         gunReadyToShoot = _gunReadyToShoot;
+    }
+
+    public IEnumerator HandPoseTransitionToFree(bool isRightHand)
+    {
+        if(isRightHand)
+        {
+            HandAnimator_R.SetBool("Transition", true);
+            yield return new WaitForSeconds(0.05f);
+            HandAnimator_R.SetBool("Transition", false);
+        }
+
+        else
+        {
+            HandAnimator_L.SetBool("Transition", true);
+            yield return new WaitForSeconds(0.05f);
+            HandAnimator_L.SetBool("Transition", false);
+        }
     }
 }
