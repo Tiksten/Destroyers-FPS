@@ -1,0 +1,34 @@
+
+
+************************************************OLD VERSION************************************************
+
+Every weapon animator has states:
+
+//Main states
+Idle
+Aiming
+
+AltIdle (if has)
+AltAiming (if has)
+
+Inspection (this anim not changing canAct bool)
+
+//Shooting
+Shooting
+AimedShooting (weapon sight is not moving or moving slightly)
+AltShooting (if has)
+AltAimedShooting (if has) (weapon sight not moving or moving slightly)
+
+//Reloading
+Reloading
+ReloadingAlt
+
+
+!!!Every animation cant move main weapon body (first in unactive weapons or hands hierarchy)!!!
+
+You can go from every state if bool canAct in UWS (UniversalWeaponScript) is true (it changes by events in animations)
+
+
+************************************************NEW VERSION************************************************
+
+All weapon animations controlls by scripts and events (now every weapon has its own script (from Weapon instance))

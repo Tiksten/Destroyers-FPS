@@ -43,9 +43,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 previousPos;
 
     [HideInInspector]
-    public UniversalWeaponScript weaponScript;
-
-    [HideInInspector]
     public bool isStaying;
 
     [HideInInspector]
@@ -66,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        weaponScript = weaponSwitching.weaponScript;
 
 
         //Bool defenition
@@ -128,42 +124,35 @@ public class PlayerMovement : MonoBehaviour
 
 
         //Move
+
+
         if (!Input.GetKey("left ctrl") && Input.GetKey("left shift"))
         {
             //Run
             currentSpeed = runSpeed;
             currentTimeBetweenSteps = timeBetweenSteps_Run;
-            if (weaponScript != null)
-                weaponScript.recoilMultiplier = 3f;
         }
         else if (!Input.GetKey("left ctrl"))
         {
             //Walk
             currentSpeed = walkSpeed;
             currentTimeBetweenSteps = timeBetweenSteps_Walk;
-            if(weaponScript != null)
-                weaponScript.recoilMultiplier = 2f;
         }
         else if (Input.GetKey("left ctrl"))
         {
             //Crouch
             currentSpeed = crouchSpeed;
             currentTimeBetweenSteps = timeBetweenSteps_Crouch;
-            if (weaponScript != null)
-                weaponScript.recoilMultiplier = 0.7f;
         }
             
         if(isStaying && !Input.GetKey("left ctrl"))
-            if (weaponScript != null)
-                weaponScript.recoilMultiplier = 1f;
-
-        if(!isGrounded)
-            if (weaponScript != null)
-                weaponScript.recoilMultiplier = 4f;
 
         controller.Move(move * currentSpeed * Time.deltaTime);
 
+
         //Jump
+
+
         if (Input.GetKeyDown("space") && isGrounded)
             velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravity);
 
@@ -174,6 +163,7 @@ public class PlayerMovement : MonoBehaviour
             if(inAirMultiplier > minInAirMultiplier)
                 inAirMultiplier -= 0.001f;
         }
+
 
         //Crouching
 

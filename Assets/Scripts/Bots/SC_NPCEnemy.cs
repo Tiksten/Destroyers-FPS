@@ -36,6 +36,7 @@ public class SC_NPCEnemy : MonoBehaviour
     //Shooting
     public float fireRate = 0.1f;
     public float damage = 5;
+    public int maxAmmoInMag = 15;
     public int ammoInMag = 15;
     public float reloadTime = 3;
     public float fireDistance = 1000;
@@ -94,6 +95,8 @@ public class SC_NPCEnemy : MonoBehaviour
 
     public AnimationClip chestWalk;
 
+
+    public Transform enemyTotalRotation;
 
 
 
@@ -155,46 +158,40 @@ public class SC_NPCEnemy : MonoBehaviour
 
                     LookAtTarget();
                     //Look at player if see
-                    var look = transform;
+                    var look = enemyTotalRotation;
                     look.LookAt(currentTarget.position);
-                    transform.rotation = Quaternion.Euler(transform.rotation.x, look.rotation.y, transform.rotation.z);//Need Fix*****************************************************************************
+                    Debug.Log(enemyTotalRotation.position + "   " + look.rotation);
+                    enemyTotalRotation.rotation = Quaternion.Euler(enemyTotalRotation.rotation.x, look.rotation.eulerAngles.y, enemyTotalRotation.rotation.z);//Need Fix*****************************************************************************
 
                     break;
                 }
             case Helper.TargetType.Shot://Ignore
                 {
-                    LookDefault();
                     break;
                 }
             case Helper.TargetType.DeadBody://Ignore
                 {
-                    LookDefault();
                     break;
                 }
             case Helper.TargetType.Sound://Ignore
                 {
-                    LookDefault();
                     break;
                 }
             case Helper.TargetType.LookingForPlayer:
                 {
-                    LookDefault();
                     StartCoroutine(LookForPlayer());
                     break;
                 }
             case Helper.TargetType.Patrolling:
                 {
-                    LookDefault();
                     break;
                 }
             case Helper.TargetType.Staying:
                 {
-                    LookDefault();
                     break;
                 }
             case Helper.TargetType.Nothing:
                 {
-                    LookDefault();
                     break;
                 }
         }
@@ -254,11 +251,9 @@ public class SC_NPCEnemy : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(viewPoint.position, playerTransform.position - viewPoint.position, out hit, (int)fireDistance, botViewMask))
         {
-            Debug.Log(hit.collider.gameObject.name);
             if(hit.collider.gameObject.CompareTag("Player"))
                 return true;
         }
-        Debug.Log(hit.collider.gameObject.name);
         return false;
     }
 
@@ -283,7 +278,7 @@ public class SC_NPCEnemy : MonoBehaviour
 
     public void SetTarget(Helper.TargetType type, Vector3 pos)
     {
-        if ((int)currentTarget.type < (int)type)
+        if ((int)currentTarget.type <= (int)type)
         {
             currentTarget.type = type;
             currentTarget.position = pos;
@@ -326,6 +321,8 @@ public class SC_NPCEnemy : MonoBehaviour
     {
         canAct = false;
 
+        ammoInMag--;
+
         chestAnimator.Play(chestShoot.name);
         chestAnimator.SetBool("HaveSeenPlayer", true);
 
@@ -347,6 +344,7 @@ public class SC_NPCEnemy : MonoBehaviour
         //Play anim, wait time, give max ammo
 
         yield return new WaitForSeconds(reloadTime);
+        ammoInMag = maxAmmoInMag;
         canAct = true;
     }
 

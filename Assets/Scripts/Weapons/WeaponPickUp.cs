@@ -80,16 +80,16 @@ public class WeaponPickUp : MonoBehaviour
                 {
                     if (activeWeapon.name == objName)
                     {
-                        var UWS = activeWeapon.GetComponent<UniversalWeaponScript>();
+                        //var UWS = activeWeapon.GetComponent<UniversalWeaponScript>();
                         var weaponStats = collider.gameObject.GetComponent<UniversalDropStats>();
 
-                        if (UWS != null)
-                        {
-                            if (weaponIsNew)
-                                UWS.AmmoInMag = weaponStats.ammoInMag;
-                            else
-                                UWS.Ammo += weaponStats.ammoInMag;
-                        }
+                        //if (UWS != null)
+                        //{
+                        //    if (weaponIsNew)
+                        //        UWS.AmmoInMag = weaponStats.ammoInMag;
+                        //    else
+                        //        UWS.Ammo += weaponStats.ammoInMag;
+                        //}
 
                         Destroy(collider.gameObject);
                     }

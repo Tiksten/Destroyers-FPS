@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    public Ammo[] ammoInPlayerInvenory;
+    private Ammo[] ammoInPlayerInvenory;
 
     [System.Serializable]
     public class Ammo
@@ -14,7 +14,7 @@ public class PlayerInventory : MonoBehaviour
         public int count
         {
             get => _count;
-            set => _count = (value + _count <= maxCount) ? _count + value : maxCount;
+            set => _count = Mathf.Clamp(value, 0, maxCount);
         }
         public int maxCount;
     }
@@ -40,24 +40,75 @@ public class PlayerInventory : MonoBehaviour
     //    
     //}
 
-    public void PickAmmo(string type, int count)
+    public void PickAmmo(string type, int amount)
     {
         foreach (Ammo ammo in ammoInPlayerInvenory)
         {
             if (ammo.type == type)
             {
-                ammo.count += count;
-                count = 0;
+                ammo.count += amount;
+                amount = 0;
                 break;
             }
         }
 
-        if(count > 0)
+        if(amount > 0)
         {
             var newAmmo = new Ammo();
-            newAmmo.count = count;
+            newAmmo.count = amount;
             newAmmo.type = type;
             ammoInPlayerInvenory[ammoInPlayerInvenory.Length] = newAmmo;
+        }
+    }
+
+    public int GetAmmoCountOfType(string type)
+    {
+        foreach (Ammo ammo in ammoInPlayerInvenory)
+        {
+            if (ammo.type == type)
+            {
+                return ammo.count;
+            }
+        }
+
+        return 0;
+    }
+    
+    public void SetAmmoOfType(string type, int amount)
+    {
+        foreach (Ammo ammo in ammoInPlayerInvenory)
+        {
+            if (ammo.type == type)
+            {
+                ammo.count = amount;
+            }
+        }
+    }
+
+    public int FillMagFromInventory(int currentAmmoInMag, int maxAmmoInMag, string type)
+    {
+        var ammo = GetAmmoCountOfType(type);
+        var needToFill = maxAmmoInMag - currentAmmoInMag;
+
+        if(ammo < needToFill)
+        {
+            SetAmmoOfType(type, 0);
+            return currentAmmoInMag += ammo;
+        }
+
+        RemoveAmmoFromInventory(type, needToFill);
+        return maxAmmoInMag;
+    }
+
+    public void RemoveAmmoFromInventory(string type, int amount)
+    {
+        foreach (Ammo ammo in ammoInPlayerInvenory)
+        {
+            if (ammo.type == type)
+            {
+                ammo.count -= amount;
+                break;
+            }
         }
     }
 }

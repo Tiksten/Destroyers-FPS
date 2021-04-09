@@ -270,4 +270,14 @@ public class Helper : MonoBehaviour
 
         else return null;
     }
+
+    static public AudioClip ChooseRandomAudioClip(AudioClip[] audioClips)
+    {
+        return audioClips[Random.Range(0, audioClips.Length)];
+    }
+
+    static public Animation ChooseRandomAnimation(Animation[] animations)
+    {
+        return animations[Random.Range(0, animations.Length)];
+    }
 }
