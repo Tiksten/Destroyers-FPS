@@ -14,23 +14,21 @@ public class AK47 : Weapon
 
     public void Update()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (canAct)
         {
-            if (canAct)
+            if (Input.GetKey(KeyCode.Mouse0) && gunReadyToShoot)
             {
                 weaponAnimator.Play(randomWeaponShotStart.name);
-                Fire();
-                ResetRandomNumberInAnimator();
             }
-        }
 
-        else if (Input.GetKeyDown(KeyCode.R))
-        {
-            if(canAct)
+            else if (Input.GetKey(KeyCode.R))
             {
                 weaponAnimator.Play(randomWeaponReloadStart.name);
-                Reload();
-                ResetRandomNumberInAnimator();
+            }
+
+            else if (Input.GetKey(KeyCode.F))
+            {
+                weaponAnimator.Play(randomWeaponInspectionStart.name);
             }
         }
     }

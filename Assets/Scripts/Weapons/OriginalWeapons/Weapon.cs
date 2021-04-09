@@ -254,9 +254,13 @@ public class Weapon : MonoBehaviour
             HandAnimator_L.Play(pose);
     }
 
-    public void CanAct(bool canAct)
+    public void SetCanAct(bool _canAct)
     {
-        weaponSwitching.canChange = canAct;
-        weaponAnimator.SetBool("CanAct", canAct);
+        canAct = _canAct;
+    }
+    
+    public void SetGunReadyToShoot(bool _gunReadyToShoot)
+    {
+        gunReadyToShoot = _gunReadyToShoot;
     }
 }
