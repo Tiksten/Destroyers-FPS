@@ -55,11 +55,11 @@ public class Weapon : MonoBehaviour
 
     #region ANIMATIONS
     [Header("ANIMATIONS")]
-    public Animation randomWeaponInspectionStart; //Need to be 1 frame anim (only for events)
-    public Animation randomWeaponShotStart;
-    public Animation randomWeaponIdleStart;
-    public Animation randomWeaponReloadStart;
-    public Animation weaponDraw; //Normal anim
+    public AnimationClip randomWeaponInspectionStart; //Need to be 1 frame anim (only for events)
+    public AnimationClip randomWeaponShotStart;
+    public AnimationClip randomWeaponIdleStart;
+    public AnimationClip randomWeaponReloadStart;
+    public AnimationClip weaponDraw; //Normal anim
     [Space(20)]
     #endregion
 
@@ -102,13 +102,29 @@ public class Weapon : MonoBehaviour
     #endregion
 
 
+    #region ALTPROJECTILE
+    [Header("PROJECTILE")]
+    public GameObject altProjectile;
+
+    public Transform altFirePoint;
+
+    public float altEjectForce;
+    #endregion
+
+
+    #region FLAGS
+    public bool canAct;
+    public bool gunReadyToShoot;
+    #endregion
+
+
+
 
 
     //Main
     public void Fire()
     {
         Helper.ShotForward(fpsCam, damage, 1000);
-        StartRecoilResetter();
     }
 
     public void FireAnObject()
@@ -124,9 +140,12 @@ public class Weapon : MonoBehaviour
 
     }
 
-    public void FireAlt()//WorkInProgress
+    public void FireAlt()
     {
+        var _obj = Instantiate(altProjectile, altFirePoint.position, altFirePoint.rotation);
+        Destroy(_obj, 30);
 
+        _obj.GetComponent<Rigidbody>().AddForce(altFirePoint.forward * altEjectForce, ForceMode.Impulse);
     }
 
     public void Reload()
@@ -235,7 +254,7 @@ public class Weapon : MonoBehaviour
             HandAnimator_L.Play(pose);
     }
 
-    private void CanAct(bool canAct)
+    public void CanAct(bool canAct)
     {
         weaponSwitching.canChange = canAct;
         weaponAnimator.SetBool("CanAct", canAct);
