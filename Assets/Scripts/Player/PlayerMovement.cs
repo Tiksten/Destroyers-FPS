@@ -144,8 +144,6 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = crouchSpeed;
             currentTimeBetweenSteps = timeBetweenSteps_Crouch;
         }
-            
-        if(isStaying && !Input.GetKey("left ctrl"))
 
         controller.Move(move * currentSpeed * Time.deltaTime);
 

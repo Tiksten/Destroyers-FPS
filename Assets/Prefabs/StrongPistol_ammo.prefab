@@ -128,8 +128,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.090955496, y: 0.32063127, z: 0.13371468}
-  m_Center: {x: 0, y: 0.18, z: -0.001005888}
+  m_Size: {x: 0.09, y: 0.32, z: 0.133}
+  m_Center: {x: 0, y: 0.18, z: 0}
 --- !u!114 &2173118223665699397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,14 +142,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f1ae3e46ddcf14b98af2f4ef60d1ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: StrongPistol
-  ammoInMag: 13
-  hpToAdd: 0
+  type: 1
+  ammoType: Pistol
+  ammoToAdd: 9
+  changesMaxAmmo: 0
+  ammoMax: 0
   armorToAdd: 0
-  craftingObjectToAdd:
-  - 
-  ammoToAdd: 0
-  ammoType: 
+  craftingMaterialToAdd: []
+  hpToAdd: 0
+  weaponName: 
+  ammoInMag: 13
+  weaponMaxAmmo: 0
+  weaponAmmoType: 
 --- !u!54 &2173118223665699396
 Rigidbody:
   m_ObjectHideFlags: 0

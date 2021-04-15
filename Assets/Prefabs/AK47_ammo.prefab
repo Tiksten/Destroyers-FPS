@@ -225,13 +225,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5f1ae3e46ddcf14b98af2f4ef60d1ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: AK47
-  ammoInMag: 45
-  hpToAdd: 0
+  defaultMaxAmmo: 15
+  type: 1
+  ammoType: Rifle
+  ammoToAdd: 15
+  changesMaxAmmo: 0
+  ammoMax: 250
   armorToAdd: 0
-  craftingObjectToAdd: []
-  ammoToAdd: 0
-  ammoType: 
+  craftingMaterialToAdd: []
+  hpToAdd: 0
+  weaponName: 
+  ammoInMag: 45
+  weaponMaxAmmo: 0
+  weaponAmmoType: 
 --- !u!54 &5545003951704816334
 Rigidbody:
   m_ObjectHideFlags: 0
