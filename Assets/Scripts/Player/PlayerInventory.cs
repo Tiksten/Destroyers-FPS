@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    private Ammo[] ammoInPlayerInvenory;
+    [SerializeField]
+    private List<Ammo> ammoInPlayerInvenory;
 
     [System.Serializable]
     public class Ammo
@@ -14,22 +15,19 @@ public class PlayerInventory : MonoBehaviour
         public int count
         {
             get => _count;
-            set => _count = Mathf.Clamp(value, 0, maxCount);
+            set => _count = (value <= maxCount) ? value : maxCount;
         }
         public int maxCount;
     }
 
     public bool CanPickThatAmmoType(string type)
     {
-        foreach(Ammo ammo in ammoInPlayerInvenory)
-        {
-            if(ammo.type == type)
-            {
-                if (ammo.count < ammo.maxCount)
-                    return true;
+        var ammo = ammoInPlayerInvenory.Find(_ammo => _ammo.type == type);
 
+        if (ammo != null)
+        {
+            if(ammo.count >= ammo.maxCount)
                 return false;
-            }
         }
 
         return true;
@@ -40,24 +38,23 @@ public class PlayerInventory : MonoBehaviour
     //    
     //}
 
-    public void PickAmmo(string type, int amount)
+    public void PickAmmo(string type, int amount, int maxAmount) 
     {
-        foreach (Ammo ammo in ammoInPlayerInvenory)
+        SetMaxAmmoAmount(type, maxAmount);
+
+        var ammo = ammoInPlayerInvenory.Find(_ammo => _ammo.type == type);
+
+        if (ammo != null)
         {
-            if (ammo.type == type)
-            {
-                ammo.count += amount;
-                amount = 0;
-                break;
-            }
+            ammo.count += amount;
         }
 
-        if(amount > 0)
+        else if (amount > 0)
         {
             var newAmmo = new Ammo();
             newAmmo.count = amount;
             newAmmo.type = type;
-            ammoInPlayerInvenory[ammoInPlayerInvenory.Length] = newAmmo;
+            ammoInPlayerInvenory.Add(newAmmo);
         }
     }
 
@@ -80,7 +77,7 @@ public class PlayerInventory : MonoBehaviour
         {
             if (ammo.type == type)
             {
-                ammo.count = amount;
+                ammoInPlayerInvenory[ammoInPlayerInvenory.IndexOf(ammo)].count = amount;
             }
         }
     }
@@ -102,13 +99,29 @@ public class PlayerInventory : MonoBehaviour
 
     public void RemoveAmmoFromInventory(string type, int amount)
     {
-        foreach (Ammo ammo in ammoInPlayerInvenory)
+        var ammo = ammoInPlayerInvenory.Find(_ammo => _ammo.type == type);
+        if(ammo != null)
         {
-            if (ammo.type == type)
-            {
-                ammo.count -= amount;
-                break;
-            }
+            ammo.count -= amount;
+        }
+    }
+
+    public void SetMaxAmmoAmount(string type, int maxAmount)
+    {
+        var ammo = ammoInPlayerInvenory.Find(_ammo => _ammo.type == type);
+
+        if (ammo != null)
+        {
+            if(ammo.maxCount < maxAmount)
+                ammo.maxCount = maxAmount;
+        }
+
+        else
+        {
+            var newAmmo = new Ammo();
+            newAmmo.type = type;
+            newAmmo.maxCount = maxAmount;
+            ammoInPlayerInvenory.Add(newAmmo);
         }
     }
 }

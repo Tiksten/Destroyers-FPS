@@ -6,6 +6,7 @@ public class WeaponPickUp : MonoBehaviour
 {
     public PlayerHealth playerHealth;
     public WeaponSwitching switchingScript;
+    public PlayerInventory inventory;
     public Transform hands;
     public Transform unactiveWeapons;
     public string[] startWeapons;
@@ -29,74 +30,69 @@ public class WeaponPickUp : MonoBehaviour
 
     private void OnTriggerStay(Collider collider)
     {
-        var UDS = collider.GetComponent<UniversalDropStats>();
-        string objName = null;
+        var UDS = collider.gameObject.GetComponent<UniversalDropStats>();
 
-        if (UDS != null)
+        UniversalDropStats.dropType objType = UniversalDropStats.dropType.None;
+
+        if (UDS != null && Input.GetKey(KeyCode.F))
         {
-            objName = UDS._name;
+            objType = UDS.type;
 
 
-            //Ammo Health Armor Crafting material etc
-            if (collider.tag == "CanBePickedUp")
+            switch(objType)
             {
-                if (objName == "Health")
-                {
-                    playerHealth.currentHealth += UDS.hpToAdd;
-                }
-
-                else if (objName == "Armor")
-                {
-                    Debug.Log("Armor");
-                }
-
-                else if (objName == "Crafting material")
-                {
-                    Debug.Log("Crafting material");
-                }
-            }
-
-
-            //Weapon
-            else if (collider.tag == "Weapon" && Input.GetKey("f"))
-            {
-                Debug.Log("trying to pick up weapon");
-                bool weaponIsNew = false;
-
-                //Setting active weapon (if new)
-                foreach (Transform unactiveWeapon in unactiveWeapons)
-                {
-                    if (unactiveWeapon.name == objName)
+                case UniversalDropStats.dropType.Weapon:
                     {
-                        unactiveWeapon.SetParent(hands);
-                        weaponIsNew = true;
+                        //Setting active weapon (if new)
+                        foreach (Transform unactiveWeapon in unactiveWeapons)
+                        {
+                            if (unactiveWeapon.name == UDS.weaponName)
+                            {
+                                unactiveWeapon.SetParent(hands);
+                                switchingScript.SelectWeapon();
+                                break;
+                            }
+                        }
+
+
+                        //Adding ammo
+                        inventory.PickAmmo(UDS.weaponAmmoType, UDS.ammoInMag, UDS.weaponMaxAmmo);
+                        Destroy(collider.gameObject);
+
                         break;
                     }
-                }
-
-
-                //Adding ammo
-                foreach (Transform activeWeapon in hands)
-                {
-                    if (activeWeapon.name == objName)
+                case UniversalDropStats.dropType.Ammo:
                     {
-                        //var UWS = activeWeapon.GetComponent<UniversalWeaponScript>();
-                        var weaponStats = collider.gameObject.GetComponent<UniversalDropStats>();
-
-                        //if (UWS != null)
-                        //{
-                        //    if (weaponIsNew)
-                        //        UWS.AmmoInMag = weaponStats.ammoInMag;
-                        //    else
-                        //        UWS.Ammo += weaponStats.ammoInMag;
-                        //}
-
+                        inventory.PickAmmo(UDS.ammoType, UDS.ammoToAdd, UDS.ammoMax);
                         Destroy(collider.gameObject);
-                    }
-                }
-            }
 
-            switchingScript.SelectWeapon();
+                        break;
+                    }
+                case UniversalDropStats.dropType.Health:
+                    {
+                        playerHealth.currentHealth += UDS.hpToAdd;
+                        Destroy(collider.gameObject);
+
+                        break;
+                    }
+                case UniversalDropStats.dropType.Armor:
+                    {
+                        Debug.Log("Armor");
+                        Destroy(collider.gameObject);
+
+                        break;
+                    }
+                case UniversalDropStats.dropType.CraftingMaterial:
+                    {
+                        Debug.Log("CraftingMaterial");
+                        Destroy(collider.gameObject);
+
+                        break;
+                    }
+            }    
+
+            
+            
         }
     }
 

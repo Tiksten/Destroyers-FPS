@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MyBox;
 
 public class Weapon : MonoBehaviour
 {
     #region REFERENCES 
-    [Header("REFERENCES")]
+    [Separator("REFERENCES")]
 
     public WeaponSwitching weaponSwitching;
 
@@ -21,21 +22,22 @@ public class Weapon : MonoBehaviour
     public AudioSource weaponAudioSource;
 
     public Transform fpsCam;
+    
+    public Text ammoText;
     [Space(20)]
     #endregion
 
 
     #region STATS
-    [Header("STATS")]
+    [Separator("STATS")]
     public float damage;
     [Space(20)]
     #endregion
 
 
     #region AMMO
-    [Header("AMMO")]
+    [Separator("AMMO")]
     public string ammoType;
-    public Text ammoText;
 
     public int maxAmmoInMag;
     public int currentAmmoInMag
@@ -43,8 +45,7 @@ public class Weapon : MonoBehaviour
         get => _currentAmmoInMag;
         set
         {
-            currentAmmoInMag = (value <= maxAmmoInMag) ? value : maxAmmoInMag;
-            ReloadAmmoText();
+            _currentAmmoInMag = (value <= maxAmmoInMag) ? value : maxAmmoInMag;
         }
     }
     [HideInInspector]
@@ -54,10 +55,9 @@ public class Weapon : MonoBehaviour
 
 
     #region ANIMATIONS
-    [Header("ANIMATIONS")]
+    [Separator("ANIMATIONS")]
     public AnimationClip randomWeaponInspectionStart; //Need to be 1 frame anim (only for events)
     public AnimationClip randomWeaponShotStart;
-    public AnimationClip randomWeaponIdleStart;
     public AnimationClip randomWeaponReloadStart;
     public AnimationClip weaponDraw; //Normal anim
     [Space(20)]
@@ -65,9 +65,10 @@ public class Weapon : MonoBehaviour
 
 
     #region EFFECTS
-    [Header("EFFECTS")]
+    [Separator("EFFECTS")]
     public ParticleSystem[] barrelSmokes;
     public ParticleSystem[] muzzleFlashes;
+    public ParticleSystem[] directionalShotEffects;
 
     public Transform cartrigeEjector;
 
@@ -80,41 +81,63 @@ public class Weapon : MonoBehaviour
 
 
     #region SPRAY PATTERN
-    [Header("SPRAY PATTERN")]
-    public string sprayPatternName;
-    public float timeToResetOneStep;
-    public float timeToResetFullRecoil;
+    [Separator("SPRAY PATTERN")]
+
+    public bool hasSprayPattern;
+
+    [ConditionalField(nameof(hasSprayPattern))] public string sprayPatternName;
+    [ConditionalField(nameof(hasSprayPattern))] public float timeToResetOneStep;
+    [ConditionalField(nameof(hasSprayPattern))] public float timeToResetFullRecoil;
 
     [HideInInspector]
     public int currentSprayStep;
     [HideInInspector]
     public float recoilRandomnessMultiplier;
+
+    [Space(20)]
     #endregion
 
 
     #region PROJECTILE
-    [Header("PROJECTILE")]
-    public GameObject projectile;
+    [Separator("PROJECTILE")]
 
-    public Transform firePoint;
+    public bool hasProjectile;
 
-    public float ejectForce;
+    [ConditionalField(nameof(hasProjectile))] public GameObject projectile;
+
+    [ConditionalField(nameof(hasProjectile))] public Transform firePoint;
+
+    [ConditionalField(nameof(hasProjectile))] public float ejectForce;
+
+    [Space(20)]
     #endregion
 
 
     #region ALTPROJECTILE
-    [Header("PROJECTILE")]
-    public GameObject altProjectile;
+    [Separator("ALTPROJECTILE")]
 
-    public Transform altFirePoint;
+    public bool hasAltProjectile;
 
-    public float altEjectForce;
+    [ConditionalField(nameof(hasAltProjectile))] public GameObject altProjectile;
+
+    [ConditionalField(nameof(hasAltProjectile))] public Transform altFirePoint;
+
+    [ConditionalField(nameof(hasAltProjectile))] public float altEjectForce;
+
+    [Space(20)]
+    #endregion
+
+
+    #region SOUNDS
+    [Separator("ALTPROJECTILE")]
+    public AudioClip[] sounds;
+    [Space(20)]
     #endregion
 
 
     #region FLAGS
-    public bool canAct;
-    public bool gunReadyToShoot;
+    [HideInInspector] public bool canAct;
+    [HideInInspector] public bool gunReadyToShoot;
     #endregion
 
 
@@ -124,7 +147,9 @@ public class Weapon : MonoBehaviour
     //Main
     public void Fire()
     {
-        Helper.ShotForward(fpsCam, damage, 1000);
+        currentAmmoInMag--;
+        var to = Helper.ShotForward(fpsCam, damage, 1000).point;
+        PlayShotTrial(to);
     }
 
     public void FireAnObject()
@@ -148,7 +173,7 @@ public class Weapon : MonoBehaviour
         _obj.GetComponent<Rigidbody>().AddForce(altFirePoint.forward * altEjectForce, ForceMode.Impulse);
     }
 
-    public void Reload()
+    public void ReloadMag()
     {
         currentAmmoInMag = inventory.FillMagFromInventory(currentAmmoInMag, maxAmmoInMag, ammoType);
         StopAllCoroutines();
@@ -163,11 +188,6 @@ public class Weapon : MonoBehaviour
     {
         //Change UI to scope texture, change cam fov, change recoil
     }//WorkInProgress
-
-    private void Inspect()
-    {
-        weaponAnimator.Play(randomWeaponInspectionStart.name);
-    }
 
 
 
@@ -193,6 +213,11 @@ public class Weapon : MonoBehaviour
     {
         foreach (ParticleSystem i in muzzleFlashes)
             i.Play();
+    }
+
+    public void PlayShotTrial(Vector3 to)
+    {
+        Helper.DirectionalShotEffect(to, directionalShotEffects, 5);
     }
 
 
@@ -236,9 +261,9 @@ public class Weapon : MonoBehaviour
 
 
     //Methods for animator
-    public void PlaySound(AudioClip sound, float volume)
+    public void PlaySound(int soundNumber, float volume)
     {
-        weaponAudioSource.PlayOneShot(sound, volume);
+        weaponAudioSource.PlayOneShot(sounds[soundNumber], volume);
     }
 
     public void ResetRandomNumberInAnimator(int maxNum = 1)
@@ -246,27 +271,31 @@ public class Weapon : MonoBehaviour
         weaponAnimator.SetInteger("RandomNumber", Random.Range(0, maxNum));
     }
 
-    public void SetHandPose(bool isRightHand, string pose)
+    public void SetHandPose(int isRightHand, string pose)
     {
-        if (isRightHand)
+        var _isRightHand = System.Convert.ToBoolean(isRightHand);
+
+        if (_isRightHand)
             HandAnimator_R.Play(pose);
         else
             HandAnimator_L.Play(pose);
     }
 
-    public void SetCanAct(bool _canAct)
+    public void SetCanAct(int _canAct)
     {
-        canAct = _canAct;
+        weaponAnimator.SetBool("CanAct", System.Convert.ToBoolean(_canAct));
     }
     
-    public void SetGunReadyToShoot(bool _gunReadyToShoot)
+    public void SetGunReadyToShoot(int _gunReadyToShoot)
     {
-        gunReadyToShoot = _gunReadyToShoot;
+        weaponAnimator.SetBool("GunReadyToShoot", System.Convert.ToBoolean(_gunReadyToShoot));
     }
 
-    public IEnumerator HandPoseTransitionToFree(bool isRightHand)
+    public IEnumerator HandPoseTransitionToFree(int isRightHand)
     {
-        if(isRightHand)
+        var _isRightHand = System.Convert.ToBoolean(isRightHand);
+
+        if (_isRightHand)
         {
             HandAnimator_R.SetBool("Transition", true);
             yield return new WaitForSeconds(0.05f);

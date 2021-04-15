@@ -1,19 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MyBox;
 
 public class UniversalDropStats : MonoBehaviour
 {
-    public string _name;
+    public enum dropType
+    {
+        None,
+        Ammo,
+        Weapon,
+        Health,
+        Armor,
+        CraftingMaterial
+    }
 
-    public int ammoInMag;
+    public dropType type = dropType.None;
 
-    public int hpToAdd;
+    [ConditionalField(nameof(type), false, dropType.Ammo)]public string ammoType;
+    [ConditionalField(nameof(type), false, dropType.Ammo)]public int ammoToAdd;
+    [ConditionalField(nameof(type), false, dropType.Ammo)] public int ammoMax;
 
-    public int armorToAdd;
+    [ConditionalField(nameof(type), false, dropType.Armor)]public int armorToAdd;
 
-    public string[] craftingObjectToAdd;
+    [ConditionalField(nameof(type), false, dropType.CraftingMaterial)]public string[] craftingMaterialToAdd;
 
-    public int ammoToAdd;
-    public string ammoType;
+    [ConditionalField(nameof(type), false, dropType.Health)]public int hpToAdd;
+
+    [ConditionalField(nameof(type), false, dropType.Weapon)]public string weaponName;
+    [ConditionalField(nameof(type), false, dropType.Weapon)]public int ammoInMag;
+    [ConditionalField(nameof(type), false, dropType.Weapon)]public int weaponMaxAmmo;
+    [ConditionalField(nameof(type), false, dropType.Weapon)]public string weaponAmmoType;
 }

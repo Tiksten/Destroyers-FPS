@@ -8,26 +8,38 @@ public class AK47 : Weapon
 {
     public void OnEnable()
     {
-        weaponAnimator.Play(weaponDraw.name);
         weaponAnimator.Rebind();
     }
 
     public void Update()
     {
-        if (canAct)
+        ReloadAmmoText();
+
+        if (weaponAnimator.GetBool("CanAct"))
         {
-            if (Input.GetKey(KeyCode.Mouse0) && gunReadyToShoot)
+            if (Input.GetKey(KeyCode.Mouse0))
             {
-                weaponAnimator.Play(randomWeaponShotStart.name);
+                if (weaponAnimator.GetBool("GunReadyToShoot") && currentAmmoInMag > 0)
+                {
+
+                    weaponAnimator.Play(randomWeaponShotStart.name);
+
+                }
             }
 
             else if (Input.GetKey(KeyCode.R))
             {
-                weaponAnimator.Play(randomWeaponReloadStart.name);
+                if (currentAmmoInMag < maxAmmoInMag && inventory.GetAmmoCountOfType(ammoType) > 0)
+                {
+
+                    weaponAnimator.Play(randomWeaponReloadStart.name); 
+
+                }
             }
 
             else if (Input.GetKey(KeyCode.F))
             {
+
                 weaponAnimator.Play(randomWeaponInspectionStart.name);
             }
         }

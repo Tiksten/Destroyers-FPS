@@ -36,7 +36,7 @@ public class SpecAbilities : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("v") && !knife.active && !soliderGloves.active)
+        if(Input.GetKey("v") && !knife.activeSelf && !soliderGloves.activeSelf)
         {
             knife.SetActive(true);
             soliderGloves.SetActive(true);

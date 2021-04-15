@@ -95,7 +95,7 @@ public class Helper : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    static public Collider Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance)
+    static public RaycastHit Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance)
     {
         var shotDir = posTo - posFrom;
 
@@ -131,13 +131,13 @@ public class Helper : MonoBehaviour
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
 
-            return hit.collider;
+            return hit;
         }
 
-        else return null;
+        else return new RaycastHit();
     }
 
-    static public Collider Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject[] shotEffects)
+    static public RaycastHit Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject[] shotEffects)
     {
         var shotDir = posTo - posFrom;
         foreach(GameObject i in shotEffects)
@@ -175,13 +175,13 @@ public class Helper : MonoBehaviour
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
 
-            return hit.collider;
+            return hit;
         }
 
-        else return null;
+        else return new RaycastHit();
     }
 
-    static public Collider ShotForward(Transform transformFrom, float damage, float shotDistance)
+    static public RaycastHit ShotForward(Transform transformFrom, float damage, float shotDistance)
     {
         var posFrom = transformFrom.position;
         var shotDir = transformFrom.forward;
@@ -218,13 +218,13 @@ public class Helper : MonoBehaviour
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
 
-            return hit.collider;
+            return hit;
         }
 
-        else return null;
+        else return new RaycastHit();
     }
 
-    static public Collider ShotForward(Transform transformFrom, float damage, float shotDistance, GameObject[] shotEffects)
+    static public RaycastHit ShotForward(Transform transformFrom, float damage, float shotDistance, GameObject[] shotEffects)
     {
         var posFrom = transformFrom.position;
         var shotDir = transformFrom.forward;
@@ -265,10 +265,10 @@ public class Helper : MonoBehaviour
             if (hit.rigidbody != null)
                 hit.rigidbody.AddForceAtPosition((hit.point - posFrom) * (damage / 4), hit.point, ForceMode.Impulse);
 
-            return hit.collider;
+            return hit;
         }
 
-        else return null;
+        else return new RaycastHit();
     }
 
     static public AudioClip ChooseRandomAudioClip(AudioClip[] audioClips)
@@ -279,5 +279,28 @@ public class Helper : MonoBehaviour
     static public Animation ChooseRandomAnimation(Animation[] animations)
     {
         return animations[Random.Range(0, animations.Length)];
+    }
+
+    static public void DirectionalShotEffect(Vector3 posTo, ParticleSystem[] directionalShotEffects, float minDistance)
+    {
+        foreach (ParticleSystem i in directionalShotEffects)
+        {
+            if (Vector3.Distance(i.transform.position, posTo) >= minDistance)
+            {
+                if (posTo != new Vector3(0, 0, 0))
+                {
+                    var defRot = i.transform.rotation;
+
+                    i.transform.LookAt(posTo);
+                    i.Play();
+
+                    i.transform.rotation = defRot;
+                }
+                else
+                {
+                    i.Play();
+                }
+            }
+        }
     }
 }
