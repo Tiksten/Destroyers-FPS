@@ -1,8 +1,0 @@
-Left hand animations
-
-Left hand can: 
-default & other poses,
-hold mags, 
-hold weapons (different grips & handles),
-push mags,
-get bolt ready (exmp mp5).

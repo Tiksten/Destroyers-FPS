@@ -1,6 +1,0 @@
-Right hand animations
-
-Right hand can:
-default & other poses,
-hold weapon handle,
-push weapon bolt (exmp awp).
