@@ -160,7 +160,6 @@ public class SC_NPCEnemy : MonoBehaviour
                     //Look at player if see
                     var look = enemyTotalRotation;
                     look.LookAt(currentTarget.position);
-                    Debug.Log(enemyTotalRotation.position + "   " + look.rotation);
                     enemyTotalRotation.rotation = Quaternion.Euler(enemyTotalRotation.rotation.x, look.rotation.eulerAngles.y, enemyTotalRotation.rotation.z);//Need Fix*****************************************************************************
 
                     break;

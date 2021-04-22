@@ -24,6 +24,10 @@ public class Weapon : MonoBehaviour
     public Transform fpsCam;
     
     public Text ammoText;
+
+    public Memory memory;
+    [HideInInspector]
+    public MouseLook ml;
     [Space(20)]
     #endregion
 
@@ -48,6 +52,7 @@ public class Weapon : MonoBehaviour
             _currentAmmoInMag = (value <= maxAmmoInMag) ? value : maxAmmoInMag;
         }
     }
+
     [HideInInspector]
     public int _currentAmmoInMag;
     [Space(20)]
@@ -90,9 +95,13 @@ public class Weapon : MonoBehaviour
     [ConditionalField(nameof(hasSprayPattern))] public float timeToResetFullRecoil;
 
     [HideInInspector]
-    public int currentSprayStep;
+    public int currentSprayStep = 0;
     [HideInInspector]
-    public float recoilRandomnessMultiplier;
+    private float recoilMultiplier = 1;
+    [HideInInspector]
+    private float shotRandomnessMultiplier = 1;
+    [HideInInspector]
+    public Helper.SprayPattern sprayPattern;
 
     [Space(20)]
     #endregion
@@ -129,7 +138,7 @@ public class Weapon : MonoBehaviour
 
 
     #region SOUNDS
-    [Separator("ALTPROJECTILE")]
+    [Separator("SOUNDS")]
     public AudioClip[] sounds;
     [Space(20)]
     #endregion
@@ -140,6 +149,11 @@ public class Weapon : MonoBehaviour
     [HideInInspector] public bool gunReadyToShoot;
     #endregion
 
+
+    public void Start()
+    {
+        ml = fpsCam.GetComponent<MouseLook>();
+    }
 
 
 
@@ -177,6 +191,7 @@ public class Weapon : MonoBehaviour
     {
         currentAmmoInMag = inventory.FillMagFromInventory(currentAmmoInMag, maxAmmoInMag, ammoType);
         StopAllCoroutines();
+        ResetRecoil();
     }
 
     public void Aim()
@@ -233,7 +248,7 @@ public class Weapon : MonoBehaviour
     //Recoil
     public void StartRecoilResetter()
     {
-        StopCoroutine(RecoilResetter());
+        StopAllCoroutines();
         StartCoroutine(RecoilResetter());
     }
 
@@ -244,7 +259,8 @@ public class Weapon : MonoBehaviour
         while(totalWaitTime > timeToResetOneStep)
         {
             yield return new WaitForSecondsRealtime(timeToResetOneStep);
-            currentSprayStep--;
+            if(currentSprayStep > 0)
+                currentSprayStep--;
             totalWaitTime -= timeToResetOneStep;
         }
 
@@ -254,16 +270,64 @@ public class Weapon : MonoBehaviour
 
     public void Recoil(float horizontal, float vertical)
     {
-        var ml = fpsCam.GetComponent<MouseLook>();
-        ml.AddRotation(horizontal * recoilRandomnessMultiplier, vertical * recoilRandomnessMultiplier, 0);
+        ml.AddRotation(horizontal * recoilMultiplier, vertical * recoilMultiplier, 0);
+    }
+
+    public void ResetRecoil()
+    {
+        currentSprayStep = 0;
+        StopAllCoroutines();
+    }
+
+    public void MoveNextSprayStep()
+    {
+        Debug.Log(currentSprayStep);
+        //Moves shootingPoint to next step
+        if (sprayPattern.weaponSprayPattern.Length >= currentSprayStep + 1)
+        {
+            var step = sprayPattern.weaponSprayPattern[currentSprayStep];
+
+            Recoil(step.x, step.y);
+        }
+        else
+        {
+            if (currentSprayStep == sprayPattern.weaponCyclePattern.Length + sprayPattern.weaponSprayPattern.Length)
+                currentSprayStep = sprayPattern.weaponSprayPattern.Length;
+
+            var step = sprayPattern.weaponCyclePattern[currentSprayStep - sprayPattern.weaponSprayPattern.Length];
+
+            Recoil(step.x, step.y);
+        }
+        currentSprayStep++;
+        Debug.Log(currentSprayStep);
+        Debug.Log("    ");
+    }
+    
+    public void SetSprayPattern(string name)
+    {
+        foreach(Helper.SprayPattern i in memory.sprayPatterns)
+        {
+            if(i.weaponPatternName == name)
+            {
+                sprayPattern = i;
+                return;
+            }
+        }
+
+        Debug.Log("ERROR NO SPRAY PATTERN");
     }
 
 
 
     //Methods for animator
-    public void PlaySound(int soundNumber, float volume)
+    public void PlaySound(int soundNumber)
     {
-        weaponAudioSource.PlayOneShot(sounds[soundNumber], volume);
+        weaponAudioSource.PlayOneShot(sounds[soundNumber]);
+    }
+
+    public void SetVolume(int volume)
+    {
+        weaponAudioSource.volume = volume / 100;
     }
 
     public void ResetRandomNumberInAnimator(int maxNum = 1)

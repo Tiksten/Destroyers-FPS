@@ -9,6 +9,8 @@ public class AK47 : Weapon
     public void OnEnable()
     {
         weaponAnimator.Rebind();
+        SetSprayPattern(sprayPatternName);
+        ResetRecoil();
     }
 
     public void Update()
@@ -21,9 +23,9 @@ public class AK47 : Weapon
             {
                 if (weaponAnimator.GetBool("GunReadyToShoot") && currentAmmoInMag > 0)
                 {
-
+                    StartRecoilResetter();
                     weaponAnimator.Play(randomWeaponShotStart.name);
-
+                    MoveNextSprayStep();
                 }
             }
 
@@ -41,6 +43,7 @@ public class AK47 : Weapon
             {
 
                 weaponAnimator.Play(randomWeaponInspectionStart.name);
+
             }
         }
     }
