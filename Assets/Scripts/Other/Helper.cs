@@ -95,13 +95,11 @@ public class Helper : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    static public RaycastHit Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance)
+    static public RaycastHit Shot(Vector3 posFrom, Vector3 dir, float damage, float shotDistance)
     {
-        var shotDir = posTo - posFrom;
-
         RaycastHit hit;
 
-        if (Physics.Raycast(posFrom, shotDir, out hit, shotDistance))
+        if (Physics.Raycast(posFrom, dir, out hit, shotDistance))
         {
             //Damage
             GiveDamage(hit.collider.gameObject, damage);
@@ -137,15 +135,14 @@ public class Helper : MonoBehaviour
         else return new RaycastHit();
     }
 
-    static public RaycastHit Shot(Vector3 posFrom, Vector3 posTo, float damage, float shotDistance, GameObject[] shotEffects)
+    static public RaycastHit Shot(Vector3 posFrom, Vector3 dir, float damage, float shotDistance, GameObject[] shotEffects)
     {
-        var shotDir = posTo - posFrom;
         foreach(GameObject i in shotEffects)
-            Destroy(Instantiate(i, posFrom, Quaternion.Euler(shotDir)), 2);
+            Destroy(Instantiate(i, posFrom, Quaternion.Euler(dir)), 2);
 
         RaycastHit hit;
 
-        if (Physics.Raycast(posFrom, shotDir, out hit, shotDistance))
+        if (Physics.Raycast(posFrom, dir, out hit, shotDistance))
         {
             //Damage
             GiveDamage(hit.collider.gameObject, damage);
@@ -179,7 +176,7 @@ public class Helper : MonoBehaviour
         }
 
         else return new RaycastHit();
-    }
+    }//LayerMask need to be added
 
     static public RaycastHit ShotForward(Transform transformFrom, float damage, float shotDistance)
     {
@@ -302,5 +299,27 @@ public class Helper : MonoBehaviour
                 }
             }
         }
+    }
+
+    static public RaycastHit[] ShotgunShotForward(Transform transformFrom, float damagePerPellet, int pelletsNumber, float shotDistance, float spread)
+    {
+        var hits = new List<RaycastHit>();
+        while(pelletsNumber > 0)
+        {
+            var randomRotation = Random.insideUnitCircle * spread;
+            var dir = transformFrom.rotation.eulerAngles;
+
+            dir += new Vector3(randomRotation.x, randomRotation.y, 0);
+
+            hits.Add(Shot(transformFrom.position, dir, damagePerPellet, shotDistance));
+
+            Debug.Log(transformFrom.position);
+            Debug.Log(dir);
+            Debug.Log("   ");
+
+            pelletsNumber--;
+        }
+
+        return hits.ToArray();
     }
 }

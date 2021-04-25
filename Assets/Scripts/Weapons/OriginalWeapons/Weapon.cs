@@ -176,7 +176,12 @@ public class Weapon : MonoBehaviour
 
     public void FireShotgun()//WorkInProgress
     {
-
+        currentAmmoInMag--;
+        var to = Helper.ShotgunShotForward(fpsCam, damage, 10, 1000, 1);
+        foreach(RaycastHit i in to)
+        {
+            PlayShotTrial(i.point);
+        }
     }
 
     public void FireAlt()
@@ -281,7 +286,6 @@ public class Weapon : MonoBehaviour
 
     public void MoveNextSprayStep()
     {
-        Debug.Log(currentSprayStep);
         //Moves shootingPoint to next step
         if (sprayPattern.weaponSprayPattern.Length >= currentSprayStep + 1)
         {
